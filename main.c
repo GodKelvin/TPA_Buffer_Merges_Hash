@@ -315,12 +315,19 @@ Ultimo char do arquivo eh necessario ser um '\n' (POR ENQUANTO. Futuras melhoria
 */
 int main(int argc, char *argv[])
 {
-    int result = mkdir("Teste", 0777);
-    printf("RESULT: %d\n", result);
+    printf("..Criando diretorios e arquivos de saida...\n");
+    //Criando a pasta de arquivos de saida
+    char *nome_pasta_saida = "Arquivos_Saida";
+    mkdir(nome_pasta_saida, 0777);
     
-    printf("...Realizando merging...\n");
-    char nome_arquivo_aux[] = "Arquivos_Saida/arquivo_aux.txt";
-    char nome_arquivo_final[] = "Arquivos_Saida/arquivo_final.txt";
+    //Arquivos de saida
+    char nome_arquivo_aux[50], nome_arquivo_final[50];
+    strcpy(nome_arquivo_aux, nome_pasta_saida);
+    strcpy(nome_arquivo_final, nome_pasta_saida);
+
+    strcat(nome_arquivo_final, "/arquivo_aux.txt");
+    strcat(nome_arquivo_aux, "/arquivo_final.txt");
+    
 
     cria_reset_file(nome_arquivo_aux);
     cria_reset_file(nome_arquivo_final);
@@ -331,6 +338,7 @@ int main(int argc, char *argv[])
     buffer_1 = criaBuffer(argv[1], 200);
     buffer_2 = criaBuffer(argv[2], 200);
 
+    printf("...Realizando merging...\n");
     //realizando o merging do primeiro e segundo arquivo
     merging_files(nome_arquivo_aux, buffer_1, buffer_2);
 
