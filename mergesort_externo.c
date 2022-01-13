@@ -10,13 +10,14 @@
 void criarArquivoTeste(char *nome)
 {
     int i;
+    int div = 100;
     FILE *f = fopen(nome, "w");
     srand(time(NULL));
     for(i = 0; i < 10; i++)
     {
-        fprintf(f, "%d\n", rand() % 10);
+        fprintf(f, "%d\n", rand() % div);
     }
-    fprintf(f, "%d", rand() % 10);
+    fprintf(f, "%d", rand() % div);
     fclose(f);
 }
 
