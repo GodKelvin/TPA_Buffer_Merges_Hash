@@ -14,9 +14,9 @@ void criarArquivoTeste(char *nome)
     srand(time(NULL));
     for(i = 0; i < 10; i++)
     {
-        fprintf(f, "%d\n", rand() % 100);
+        fprintf(f, "%d\n", rand() % 10);
     }
-    fprintf(f, "%d", rand());
+    fprintf(f, "%d", rand() % 10);
     fclose(f);
 }
 
@@ -77,7 +77,6 @@ int criarArquivosOrdenados(char *nome)
         cont++;
         sprintf(novo, "Temp%d.txt", cont);
         //qsort(V, total, sizeof(int), compara);
-        quick_sort(V, 0, N-1);
         salvarArquivo(novo, V, total, 0);
     }
     fclose(f);
@@ -205,13 +204,12 @@ void merge(char *nome, int numArqs, int K)
     free(buffer);
 }
 
-void mergeSortExterno(char *nome_arq_entrada, char *nome_arq_saida)
+void mergeSortExterno(char *nome, char *nome_arq_saida)
 {
-    //nome dos arquivos temporarios
     char novo[20];
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
-    int numArqs = criarArquivosOrdenados(nome_arq_entrada);
+    int numArqs = criarArquivosOrdenados(nome);
 
     //N == Tamanho que a RAM comporta
     //k == numero de buffers que vao ser criados
@@ -221,8 +219,9 @@ void mergeSortExterno(char *nome_arq_entrada, char *nome_arq_saida)
 
     //Remove o arquivo original
     //remove(nome);
-    //Cria o arquivo com o mesmo nome e ja ordenado (criar com nome diferente?)
 
+    //Cria o arquivo com o mesmo nome e ja ordenado (criar com nome diferente?)
+    //merge(nome, numArqs, k);
     merge(nome_arq_saida, numArqs, k);
 
     //Apagar os arquivos temporarios
@@ -233,12 +232,24 @@ void mergeSortExterno(char *nome_arq_entrada, char *nome_arq_saida)
         remove(novo);
     }
 }
+//Limpa o conteudo de um arquivo, tornando-o em branco
+void cria_reset_file(char *nome_arquivo)
+{
+    FILE *file;
+    file = fopen(nome_arquivo, "w");
+    fclose(file);
+}
 
 int main()
 {
     char nome_arquivo_entrada[] = "Arquivos_Entrada/funcao_rand.txt";
+    char nome_arquivo_saida[] = "Arquivos_Saida/saida_me.txt";
+
+    cria_reset_file(nome_arquivo_entrada);
+    cria_reset_file(nome_arquivo_saida);
+
     criarArquivoTeste(nome_arquivo_entrada);
-    mergeSortExterno(nome_arquivo_entrada, "Arquivos_Saida/saida_me.txt");
+    mergeSortExterno(nome_arquivo_entrada, nome_arquivo_saida);
 
     return 0;
 }
