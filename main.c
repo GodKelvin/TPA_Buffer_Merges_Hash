@@ -325,8 +325,8 @@ int main(int argc, char *argv[])
     strcpy(nome_arquivo_aux, nome_pasta_saida);
     strcpy(nome_arquivo_final, nome_pasta_saida);
 
-    strcat(nome_arquivo_final, "/arquivo_aux.txt");
-    strcat(nome_arquivo_aux, "/arquivo_final.txt");
+    strcat(nome_arquivo_final, "/arquivo_final.txt");
+    strcat(nome_arquivo_aux, "/arquivo_aux.txt");
     
 
     cria_reset_file(nome_arquivo_aux);
@@ -360,7 +360,7 @@ int main(int argc, char *argv[])
     */
     merging_files(nome_arquivo_final, buffer_1, buffer_2);
 
-    //Desalocando memoria dos pontieros de TAD criados (buffers);
+    //Desalocando memoria dos ponteiros de TAD criados (buffers);
     freeBuffer(buffer_1);
     freeBuffer(buffer_2);
 
