@@ -121,14 +121,6 @@ void freeBuffer(Buffer* buffer)
     free(buffer);
 }
 
-//Limpa o conteudo de um arquivo, tornando-o em branco
-void cria_reset_file(char *nome_arquivo)
-{
-    FILE *file;
-    file = fopen(nome_arquivo, "w");
-    fclose(file);
-}
-
 void merging_buffers_to_file(char nome_arquivo_destino[], Buffer *buffer1, Buffer *buffer2)
 {
     /*

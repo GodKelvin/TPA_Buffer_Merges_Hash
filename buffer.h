@@ -16,7 +16,6 @@ typedef struct
 }Buffer;
 
 void freeBuffer(Buffer* buffer);
-void cria_reset_file(char *nome_arquivo);
 void merging_buffers_to_file(char nome_arquivo_destino[], Buffer *buffer1, Buffer *buffer2);
 void write_buffer_on_file(char *nome_arquivo_destino, Buffer* buffer);
 void merging_files(char *nome_arquivo_final, Buffer* buffer1, Buffer* buffer2);
