@@ -230,7 +230,7 @@ void mergeSortExterno(char *nome, char *nome_arq_saida)
     {
         //Formata o nome dos arquivos e os apaga
         sprintf(novo, "Temp%d.txt", i+1);
-        remove(novo);
+        //remove(novo);
     }
 }
 //Limpa o conteudo de um arquivo, tornando-o em branco

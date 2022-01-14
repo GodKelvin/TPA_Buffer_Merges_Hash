@@ -313,7 +313,7 @@ void deletaArquivo(char *nome_arquivo)
 Recebe como argumento arquivos ordenados para merging sem repeticao
 Ultimo char do arquivo eh necessario ser um '\n' (POR ENQUANTO. Futuras melhorias virao)
 */
-int main(int argc, char *argv[])
+int main_original(int argc, char *argv[])
 {
     printf("..Criando diretorios e arquivos de saida...\n");
     //Criando a pasta de arquivos de saida
@@ -363,6 +363,115 @@ int main(int argc, char *argv[])
     //Desalocando memoria dos ponteiros de TAD criados (buffers);
     freeBuffer(buffer_1);
     freeBuffer(buffer_2);
+
+    //Removendo arquivo auxiliar
+    deletaArquivo(nome_arquivo_aux);
+
+    printf("...Mergin finalizado...\n");
+    return 0;
+}
+
+/*
+Dado uma string, separador e a posicao
+retorna a palavra da respectiva posicao da string.
+*/
+char *get_word(char frase[], char separador[], int posicao)
+{
+    if(posicao < 0) return NULL;
+
+    char *item = NULL, *saveptr = NULL, *copy_frase = NULL;
+    int i = 0;
+
+    //O mesmo que: copy_frase = malloc(strlen(frase)+1) => strcpy(copy_frase, frase)
+    copy_frase = strdup(frase);
+    item = strtok_r(copy_frase, separador, &saveptr);
+
+    //Captura a palavra da respectiva posicao
+    while(i < posicao)
+    {
+        item = strtok_r(NULL, separador, &saveptr);
+        //item = strtok(NULL, separador);
+        i++;
+    }
+    
+
+    return item;
+}
+
+
+
+//MAIN DE TESTE
+int main(int argc, char *argv[])
+{
+    if(argc < 2)
+    {
+        printf("ERROR: Argumentos pendentesssssssss!\n");
+        return 0;
+    }
+    printf("..Criando diretorios e arquivos de saida...\n");
+    //Criando a pasta de arquivos de saida
+    char *nome_pasta_saida = "Arquivos_Saida";
+    mkdir(nome_pasta_saida, 0777);
+    
+    //Arquivos de saida
+    char nome_arquivo_aux[50], nome_arquivo_final[50];
+    
+    strcpy(nome_arquivo_aux, nome_pasta_saida);
+    strcpy(nome_arquivo_final, nome_pasta_saida);
+
+    strcat(nome_arquivo_final, "/arquivo_final.txt");
+    strcat(nome_arquivo_aux, "/arquivo_aux.txt");
+
+    cria_reset_file(nome_arquivo_aux);
+    cria_reset_file(nome_arquivo_final);
+
+    Buffer* buffer_1 = NULL;
+    Buffer* buffer_2 = NULL;
+
+    buffer_1 = criaBuffer(argv[1], 100);
+    loadBuffer(buffer_1);
+    //printBuffer(buffer_1);
+
+    char frase[] = "Kelvin, Lehrback, Guilherme";
+    char frase2[] = "NADA, A, VER";
+    //char *encontra_dados = get_word(buffer_1->conteudo, "\n", 0);
+    char *encontra_dados = get_word(frase, ",", 0);
+    printf("ENCONTROU 1: %s\n", encontra_dados);
+    printf("FRASE: %s\n", frase);
+    char *encontra_dados2 = get_word(frase2, ",", 2);
+    //printf("\n\nENCONTROU 1: %s\n", encontra_dados);
+    //char *encontra_campo = get_word(encontra_dados, ",", 0);
+
+    printf("ENCONTROU 2: %s\n", encontra_dados2);
+    printf("FRASE2: %s\n", frase2);
+    //printf("\n\nENCONTROU 2: %s\n", encontra_campo);
+    //buffer_2 = criaBuffer(argv[2], 200);
+    printf("OPA!\n");
+    printf("...Realizando merging...\n");
+    //realizando o merging do primeiro e segundo arquivo
+    //merging_files(nome_arquivo_aux, buffer_1, buffer_2);
+
+    //Limpando o conteudo do buffer 1 e 2
+    //limpaBuffer(buffer_1);
+    //limpaBuffer(buffer_2);
+
+    /*
+    Com o merging dos dois arquivos realizados, hora de fazer o merging do terceiro.
+    O buffer 1 agora aponta para o arquivo mergiado anteriormente
+    e o buffer 2 aponta para o terceiro arquivo.
+    */
+    //buffer_1 = criaBuffer(nome_arquivo_aux, 200);
+    //buffer_2 = criaBuffer(argv[3], 200);
+
+    /*
+    Realizando merging com os 3 arquivos.
+    (arquivo mergiado anteriormente + o terceiro arquivo)
+    */
+    //merging_files(nome_arquivo_final, buffer_1, buffer_2);
+
+    //Desalocando memoria dos ponteiros de TAD criados (buffers);
+    freeBuffer(buffer_1);
+    //freeBuffer(buffer_2);
 
     //Removendo arquivo auxiliar
     deletaArquivo(nome_arquivo_aux);
