@@ -11,6 +11,7 @@ typedef struct
     FILE *arquivo;
     char *conteudo;
     //0 -> 4.294.967.295
+    //Numero de bytes
     unsigned long int posicao;
     unsigned long int fim_arquivo;
 
