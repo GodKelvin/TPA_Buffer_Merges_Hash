@@ -374,31 +374,25 @@ int main_original(int argc, char *argv[])
 /*
 Dado uma string, separador e a posicao
 retorna a palavra da respectiva posicao da string.
+--> A Frase original eh modificada, portanto, recomenda-se passar uma copia.
 */
 char *get_word(char frase[], char separador[], int posicao)
 {
     if(posicao < 0) return NULL;
 
-    char *item = NULL, *saveptr = NULL, *copy_frase = NULL;
+    char *item = NULL, *saveptr = NULL;
     int i = 0;
 
-    //O mesmo que: copy_frase = malloc(strlen(frase)+1) => strcpy(copy_frase, frase)
-    copy_frase = strdup(frase);
-    item = strtok_r(copy_frase, separador, &saveptr);
-
+    item = strtok_r(frase, separador, &saveptr);
     //Captura a palavra da respectiva posicao
     while(i < posicao)
     {
         item = strtok_r(NULL, separador, &saveptr);
-        //item = strtok(NULL, separador);
         i++;
     }
-    
-
+    //printf("ITEM: %s\n", item);
     return item;
 }
-
-
 
 //MAIN DE TESTE
 int main(int argc, char *argv[])
@@ -430,23 +424,15 @@ int main(int argc, char *argv[])
 
     buffer_1 = criaBuffer(argv[1], 100);
     loadBuffer(buffer_1);
-    //printBuffer(buffer_1);
+    printBuffer(buffer_1);
+    //O mesmo que: copy_frase = malloc(strlen(frase)+1) => strcpy(copy_frase, frase)
+    char *copia_conteudo = strdup(buffer_1->conteudo);
+    char *encontra_dados = get_word(copia_conteudo, "\n", 0);
+    printf("Dados: %s\n", encontra_dados);
 
-    char frase[] = "Kelvin, Lehrback, Guilherme";
-    char frase2[] = "NADA, A, VER";
-    //char *encontra_dados = get_word(buffer_1->conteudo, "\n", 0);
-    char *encontra_dados = get_word(frase, ",", 0);
-    printf("ENCONTROU 1: %s\n", encontra_dados);
-    printf("FRASE: %s\n", frase);
-    char *encontra_dados2 = get_word(frase2, ",", 2);
-    //printf("\n\nENCONTROU 1: %s\n", encontra_dados);
-    //char *encontra_campo = get_word(encontra_dados, ",", 0);
+    char *conteudo = get_word(encontra_dados, ",", 0);
+    printf("Conteudo: %s\n", conteudo);
 
-    printf("ENCONTROU 2: %s\n", encontra_dados2);
-    printf("FRASE2: %s\n", frase2);
-    //printf("\n\nENCONTROU 2: %s\n", encontra_campo);
-    //buffer_2 = criaBuffer(argv[2], 200);
-    printf("OPA!\n");
     printf("...Realizando merging...\n");
     //realizando o merging do primeiro e segundo arquivo
     //merging_files(nome_arquivo_aux, buffer_1, buffer_2);
@@ -473,6 +459,8 @@ int main(int argc, char *argv[])
     freeBuffer(buffer_1);
     //freeBuffer(buffer_2);
 
+    //Desacolando memoria das variaveis auxiliares
+    free(copia_conteudo);
     //Removendo arquivo auxiliar
     deletaArquivo(nome_arquivo_aux);
 
