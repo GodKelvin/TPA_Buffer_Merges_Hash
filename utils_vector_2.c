@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //Calcula o endereco do pivo para a execucao do quick_sort
 /*Insere os elementos menores a esquerda e maiores a direita,
@@ -46,6 +47,52 @@ void quick_sort(int vetor[], int inicio, int fim)
 
         //Sublista a direita
         quick_sort(vetor, posPivo+1, fim);
+    }
+}
+
+int get_pos_pivo_string(char matriz[][100], int inicio, int fim)
+{
+    int index, desloca;
+    char pivo[100], aux[100];
+    strcpy(pivo, matriz[fim]);
+    //pivo = vetor[fim];
+    index = inicio;
+    desloca = inicio;
+    
+    for(desloca = inicio; desloca < fim; desloca++)
+    {
+        //Se menor ou igual
+        if((strcmp(matriz[desloca], pivo) <= 0))
+        {
+            strcpy(aux, matriz[desloca]);
+            strcpy(matriz[desloca], matriz[index]);
+            strcpy(matriz[index], aux);
+            index++;
+        }
+    }
+
+    //inserir o pivo na posicao correta
+    strcpy(aux, matriz[index]);
+    strcpy(matriz[index], matriz[fim]);
+    strcpy(matriz[fim], aux);
+
+    //Retorna a posicao do pivo para o quick_sort
+    return index;
+}
+
+void quick_sort_string(char matriz[][100], int inicio, int fim)
+{
+    int posPivo;
+    //Condicao de parada do algoritmo
+    if(inicio < fim)
+    {
+        //Calcular a posicao do pivo
+        posPivo = get_pos_pivo_string(matriz, inicio, fim);
+        //Sublista a esquerda
+        quick_sort_string(matriz, inicio, posPivo-1);
+
+        //Sublista a direita
+        quick_sort_string(matriz, posPivo+1, fim);
     }
 }
 

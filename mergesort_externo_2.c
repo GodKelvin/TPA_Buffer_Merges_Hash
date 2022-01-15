@@ -324,6 +324,9 @@ int main()
     //char **matriz_buffer = NULL;
     buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
     print_matriz(matriz_buffer, tamanho_matriz);
+    quick_sort_string(matriz_buffer, 0, tamanho_matriz-1);
+    print_matriz(matriz_buffer, tamanho_matriz);
+    
     /*
     char nome_arquivo_saida[] = "Arquivos_Saida/saida_me.txt";
     cria_reset_file(nome_arquivo_saida);
