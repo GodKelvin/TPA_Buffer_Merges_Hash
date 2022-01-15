@@ -6,7 +6,7 @@
 #define BUFFER_H
 typedef struct
 {
-    char nome_arquivo[50];
+    char nome_arquivo[255];
     FILE *arquivo;
     char *conteudo;
     //0 -> 4.294.967.295
@@ -27,6 +27,6 @@ void printBuffer(Buffer* buffer);
 void limpaBuffer(Buffer* buffer);
 void* loadBuffer(Buffer* buffer);
 unsigned long int calcula_tamanho_arquivo(char *nome_arquivo);
-Buffer* criaBuffer(char *nome_arquivo, unsigned long tamanho_buffer);
+Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer);
 
 #endif

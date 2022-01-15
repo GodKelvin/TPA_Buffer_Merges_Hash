@@ -8,6 +8,7 @@ Necessita dar um free no ponteiro que recebe o retorno
 Verificar se o ultimo character eh um '\n', por fins de consistencia dos dados
 Caso nao for, ler menos character (nao ler mais devido a estouro de memoria)
 */
+//Melhorar msgs de erro
 void* loadBuffer(Buffer* buffer)
 {
     
@@ -50,14 +51,28 @@ void* loadBuffer(Buffer* buffer)
                 }
                 else
                 {
-                    printf("ERROR AO SABER TAMANHO DO BUFFER\n");
                     //Verificar essa associacao para NULL
-                    buffer = NULL;
+                    //buffer = NULL;
                     buffer->tamanho = buffer->tamanho_original;
+                    printf("LoadBuffer ERROR 4\n");
                 }
             }
+            else
+            {
+                printf("LoadBuffer ERROR 3\n");
+            }
         }
-    }   
+        else
+        {
+            printf("LoadBuffer ERROR 2\n");
+        }
+    }
+    else
+    {
+        printf("LoadBuffer ERROR 1\n");
+    }
+
+    return 0;
 }
 
 //Necessario para definir quando meu buffer chegou ao fim do arquivo
@@ -83,7 +98,7 @@ unsigned long int calcula_tamanho_arquivo(char *nome_arquivo)
     return numbytes;
 }
 
-Buffer* criaBuffer(char *nome_arquivo, unsigned long tamanho_buffer)
+Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer)
 {
     //Alocando memoria pro buffer em si
     Buffer* buffer = (Buffer*) malloc(sizeof(Buffer));

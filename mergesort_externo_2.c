@@ -2,14 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+//#include <sys/stat.h>//MKDIR
 //RENOMEAR ARQUIVOS!
 #include "utils_vector_2.h"
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
 #define N 500
-
-
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -113,24 +112,25 @@ void salvarArquivo(char *nome, int *vetor, int tam, int mudarLinhaFinal)
     fclose(f);
 }
 
-int criarArquivosOrdenados(char *nome_arquivo_entrada)
+unsigned long int  criarArquivosOrdenados(char *nome_arquivo_entrada)
 {
     //total == numero total de registros que cabem na RAM (ou seja, N)
-    int V[N], qtd_arquivos = 0, total = 0;
+    //int V[N], total = 0;
+    unsigned long int qtd_arquivos = 0;
     //Buffer principal
     Buffer* buffer = criaBuffer(nome_arquivo_entrada, N);
     //Novo nome do arquivo
-    char nome_arquivos_temp[255];
+    char nome_arquivos_temp[500];
 
     //FILE *f = fopen(nome_arquivo_entrada, "r");
     //Enquanto nao estiver chegado ao fim do arquivo
     printf("OPA1\n");
     while(buffer->posicao < buffer->fim_arquivo)
     {
-
         qtd_arquivos++;
+        //printf("%ld\n", qtd_arquivos);
         //define nome do arquivo temporario
-        sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%d.txt", qtd_arquivos);
+        sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%ld.txt", qtd_arquivos);
         //Carrega os dados
         loadBuffer(buffer);
 
@@ -146,6 +146,7 @@ int criarArquivosOrdenados(char *nome_arquivo_entrada)
 
         //Salva os dados do respectivo buffer no arquivo de saida temporario
         matriz_to_file(nome_arquivos_temp, matriz_buffer, tamanho_matriz);
+
 
     }
     freeBuffer(buffer);
@@ -277,10 +278,11 @@ void merge(char *nome, int numArqs, int K)
 
 void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
 {
-    char novo[20];
+    //char novo[20];
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
-    int numArqs = criarArquivosOrdenados(nome_arquivo_entrada);
+    unsigned long int numArqs = criarArquivosOrdenados(nome_arquivo_entrada);
+    printf("%ld\n", numArqs);
 
     //N == Tamanho que a RAM comporta
     //k == numero de buffers que vao ser criados
@@ -316,6 +318,7 @@ int main()
     
     //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
     char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
+
     //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
     //cria_reset_file(nome_arquivo_saida_teste);
 
