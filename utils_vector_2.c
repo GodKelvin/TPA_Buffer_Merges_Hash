@@ -87,6 +87,44 @@ int busca_binaria(int alvo, int vetor[], int tam)
     return 0;
 }
 
+int busca_binaria_string(char alvo[], char matriz[][100], int tam)
+{
+    int lim_inf = 0, lim_sup = tam-1, meio;
+    while(lim_inf <= lim_sup)
+    {
+        meio = (lim_inf + lim_sup) / 2;
+        if(strcmp(alvo, matriz[meio]) == 0)
+        {
+            return 1;
+        }
+        //Alvo menor
+        else if(strcmp(alvo, matriz[meio]) < 0)
+        {
+            lim_sup = meio - 1;
+        }
+        //Alvo Maior
+        else
+        {
+            lim_inf = meio + 1;
+        }
+        /*
+        if(alvo == vetor[meio])
+        {
+            return 1;
+        }
+        else if(alvo < vetor[meio])
+        {
+            lim_sup = meio - 1;
+        }
+        else
+        {
+            lim_inf = meio + 1;
+        }
+        */
+    }
+    return 0;
+}
+
 /*
 -> Recebe o caminho do arquivo e o endereco do vetor.
 -> Popula o vetor com os dados do arquivo.

@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "utils_vector.h"
-#include "buffer.h"
+//RENOMEAR ARQUIVOS!
+#include "utils_vector_2.h"
+#include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
 #define N 200
@@ -304,21 +305,17 @@ void print_matriz(char matriz[][100], int tam_matriz)
 void buffer_to_matriz(Buffer* buffer, char matriz[][100], int tam_matriz)
 {
     //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
-
     for(int i = 0; i < tam_matriz; i++)
     {
         get_word(matriz[i], buffer->conteudo, "\n", i);
     }
-
-    print_matriz(matriz, tam_matriz);
-    printBuffer(buffer);
 }
 
 int main()
 {
     
     char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
-    Buffer* buffer = criaBuffer(nome_arquivo_entrada, 300);
+    Buffer* buffer = criaBuffer(nome_arquivo_entrada, 600);
     loadBuffer(buffer);
     //printBuffer(buffer);
     int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
@@ -326,7 +323,7 @@ int main()
     char matriz_buffer[tamanho_matriz][100];
     //char **matriz_buffer = NULL;
     buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
-
+    print_matriz(matriz_buffer, tamanho_matriz);
     /*
     char nome_arquivo_saida[] = "Arquivos_Saida/saida_me.txt";
     cria_reset_file(nome_arquivo_saida);
