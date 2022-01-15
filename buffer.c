@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "buffer.h"
 /*
 Armazena o conteudo de um arquivo em um buffer
 Necessita dar um free no ponteiro que recebe o retorno
