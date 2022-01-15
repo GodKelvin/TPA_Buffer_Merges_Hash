@@ -13,8 +13,8 @@ typedef struct
     unsigned long int posicao;
     unsigned long int fim_arquivo;
 
-    unsigned int tamanho;
-    unsigned int tamanho_original;
+    unsigned long int tamanho;
+    unsigned long int tamanho_original;
 
 }Buffer;
 
@@ -27,7 +27,6 @@ void printBuffer(Buffer* buffer);
 void limpaBuffer(Buffer* buffer);
 void* loadBuffer(Buffer* buffer);
 unsigned long int calcula_tamanho_arquivo(char *nome_arquivo);
-Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer);
-//char *get_word(char frase[], char separador[], int posicao);
+Buffer* criaBuffer(char *nome_arquivo, unsigned long tamanho_buffer);
 
 #endif

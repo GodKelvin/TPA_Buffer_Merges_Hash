@@ -9,12 +9,13 @@
 //Tamanho MAXIMO em bytes na RAM
 #define N 200
 
-void get_word(char destino[], char frase[], char separador[], int posicao)
+void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
     char *copy_conteudo = strdup(frase);
     char *item = NULL, *saveptr = NULL;
-    int i = 0;
+    unsigned long int i = 0;
 
+    printf("OPA2");
     item = strtok_r(copy_conteudo, separador, &saveptr);
     //Captura a palavra da respectiva posicao
     while(i < posicao)
@@ -22,7 +23,7 @@ void get_word(char destino[], char frase[], char separador[], int posicao)
         item = strtok_r(NULL, separador, &saveptr);
         i++;
     }
-    //printf("ITEM: %s\n", item);
+    printf("ITEM: %s\n", item);
     //return item;
     strcpy(destino, item);
     free(copy_conteudo);
@@ -277,9 +278,9 @@ void cria_reset_file(char *nome_arquivo)
 }
 
 //mover para o respectivo tipo de arquivo
-int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
+unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
 {
-    int tam = 0;
+    unsigned long int tam = 0;
     char *token = NULL;
     char *copy_frase = strdup(buffer->conteudo);
 
@@ -295,37 +296,59 @@ int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
     
 }
 
-void print_matriz(char matriz[][100], int tam_matriz)
+void print_matriz(char matriz[][255], unsigned long int tam_matriz)
 {
     printf("-----\n");
     for(int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
     printf("-----\n");
 }
 //Mudar forma de associacao a matriz
-void buffer_to_matriz(Buffer* buffer, char matriz[][100], int tam_matriz)
+void buffer_to_matriz(Buffer* buffer, char matriz[][255], unsigned long int tam_matriz)
 {
     //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
-    for(int i = 0; i < tam_matriz; i++)
+    for(unsigned long int i = 0; i < tam_matriz; i++)
     {
         get_word(matriz[i], buffer->conteudo, "\n", i);
     }
 }
 
+//Salva uma matriz de strings num arquivo
+//Recebe o nome do arquivos de destino, a matriz de strings e o tamanha da mesma
+void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int tam_matriz)
+{
+    FILE *file_dest = NULL;
+    file_dest = fopen(nome_arquivo, "w");
+    if(file_dest)
+    {
+        for(unsigned long int i = 0; i < tam_matriz; i++)
+        {
+            fprintf(file_dest, "%s\n", matriz[i]);
+        }
+    }
+    fclose(file_dest);
+}
+
 int main()
 {
     
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
-    Buffer* buffer = criaBuffer(nome_arquivo_entrada, 600);
+    
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
+    char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
+    cria_reset_file(nome_arquivo_saida_teste);
+    
+    Buffer* buffer = criaBuffer(nome_arquivo_entrada, 1000000);
+    printBuffer(buffer);
     loadBuffer(buffer);
     //printBuffer(buffer);
-    int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
-    //printf("Qtd Linhas: %d\n", tamanho_vetor);
-    char matriz_buffer[tamanho_matriz][100];
-    //char **matriz_buffer = NULL;
+    unsigned long int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
+    printf("Qtd Linhas: %ld\n", tamanho_matriz);
+    char matriz_buffer[tamanho_matriz][255];
     buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
-    print_matriz(matriz_buffer, tamanho_matriz);
+    //print_matriz(matriz_buffer, tamanho_matriz);
     quick_sort_string(matriz_buffer, 0, tamanho_matriz-1);
-    print_matriz(matriz_buffer, tamanho_matriz);
+    matriz_to_file(nome_arquivo_saida_teste, matriz_buffer, tamanho_matriz);
+
     
     /*
     char nome_arquivo_saida[] = "Arquivos_Saida/saida_me.txt";

@@ -50,10 +50,10 @@ void quick_sort(int vetor[], int inicio, int fim)
     }
 }
 
-int get_pos_pivo_string(char matriz[][100], int inicio, int fim)
+int get_pos_pivo_string(char matriz[][255], int inicio, int fim)
 {
     int index, desloca;
-    char pivo[100], aux[100];
+    char pivo[255], aux[255];
     strcpy(pivo, matriz[fim]);
     //pivo = vetor[fim];
     index = inicio;
@@ -80,7 +80,7 @@ int get_pos_pivo_string(char matriz[][100], int inicio, int fim)
     return index;
 }
 
-void quick_sort_string(char matriz[][100], int inicio, int fim)
+void quick_sort_string(char matriz[][255], int inicio, int fim)
 {
     int posPivo;
     //Condicao de parada do algoritmo
@@ -134,7 +134,7 @@ int busca_binaria(int alvo, int vetor[], int tam)
     return 0;
 }
 
-int busca_binaria_string(char alvo[], char matriz[][100], int tam)
+int busca_binaria_string(char alvo[], char matriz[][255], int tam)
 {
     int lim_inf = 0, lim_sup = tam-1, meio;
     while(lim_inf <= lim_sup)

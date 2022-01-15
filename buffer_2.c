@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "buffer.h"
+#include "buffer_2.h"
 /*
 Armazena o conteudo de um arquivo em um buffer
 Necessita dar um free no ponteiro que recebe o retorno
@@ -82,7 +82,7 @@ unsigned long int calcula_tamanho_arquivo(char *nome_arquivo)
     return numbytes;
 }
 
-Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer)
+Buffer* criaBuffer(char *nome_arquivo, unsigned long tamanho_buffer)
 {
     //Alocando memoria pro buffer em si
     Buffer* buffer = (Buffer*) malloc(sizeof(Buffer));
@@ -92,7 +92,6 @@ Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer)
     
     //Calculando o tamanho do arquivo
     buffer->fim_arquivo = calcula_tamanho_arquivo(buffer->nome_arquivo);
-
     //Abrindo o arquivo
     buffer->arquivo = fopen(buffer->nome_arquivo, "r");
     if(buffer->arquivo == NULL)
@@ -244,8 +243,8 @@ void printBuffer(Buffer* buffer)
     printf("ARQUIVO: %s\n", buffer->nome_arquivo);
     printf("POSICAO: %ld\n", buffer->posicao);
     printf("FIM_ARQUIVO: %ld\n", buffer->fim_arquivo);
-    printf("TAMANHO: %d\n", buffer->tamanho);
-    printf("TAMANHO_ORIGINAL: %d\n", buffer->tamanho_original);
+    printf("TAMANHO: %ld\n", buffer->tamanho);
+    printf("TAMANHO_ORIGINAL: %ld\n", buffer->tamanho_original);
     printf("CONTEUDO:%s", buffer->conteudo);
     printf("\n------\n");
 }
