@@ -8,33 +8,13 @@
 //Tamanho MAXIMO em bytes na RAM
 #define N 200
 
-
-char *get_word(char frase[], char separador[], int posicao)
+void get_word(char destino[], char frase[], char separador[], int posicao)
 {
-    if(posicao < 0) return NULL;
-
+    char *copy_conteudo = strdup(frase);
     char *item = NULL, *saveptr = NULL;
     int i = 0;
 
-    item = strtok_r(frase, separador, &saveptr);
-    //Captura a palavra da respectiva posicao
-    while(i < posicao)
-    {
-        item = strtok_r(NULL, separador, &saveptr);
-        i++;
-    }
-    //printf("ITEM: %s\n", item);
-    return item;
-}
-
-void get_word_2(char destino[], char frase[], char separador[], int posicao)
-{
-    //if(posicao < 0) strcpy(destino, NULL);
-
-    char *item = NULL, *saveptr = NULL;
-    int i = 0;
-
-    item = strtok_r(frase, separador, &saveptr);
+    item = strtok_r(copy_conteudo, separador, &saveptr);
     //Captura a palavra da respectiva posicao
     while(i < posicao)
     {
@@ -44,6 +24,7 @@ void get_word_2(char destino[], char frase[], char separador[], int posicao)
     //printf("ITEM: %s\n", item);
     //return item;
     strcpy(destino, item);
+    free(copy_conteudo);
 }
 
 //Cria arquivo com numeros aleatorios
@@ -326,18 +307,11 @@ void buffer_to_matriz(Buffer* buffer, char matriz[][100], int tam_matriz)
 
     for(int i = 0; i < tam_matriz; i++)
     {
-        char conteudo[100];
-        char *copy_conteudo = strdup(buffer->conteudo);        
-        //frase = get_word(copy_conteudo, "\n", i);
-        get_word_2(conteudo, copy_conteudo, "\n", i);
-        printf("%s\n", conteudo);
-        strcpy(matriz[i], conteudo);
-        free(copy_conteudo);
+        get_word(matriz[i], buffer->conteudo, "\n", i);
     }
 
     print_matriz(matriz, tam_matriz);
-
-    
+    printBuffer(buffer);
 }
 
 int main()
