@@ -8,7 +8,7 @@
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-#define N 10000
+#define N 10000 //10MB
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -120,13 +120,15 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
     //Buffer principal
     Buffer* buffer = criaBuffer(nome_arquivo_entrada, N);
     //Novo nome do arquivo
-    char nome_arquivos_temp[200];
+    //char nome_arquivos_temp[200];
+    char *nome_arquivos_temp = NULL;
 
     //FILE *f = fopen(nome_arquivo_entrada, "r");
     //Enquanto nao estiver chegado ao fim do arquivo
-    printf("OPA1\n");
+    printf("..Criando Arquivos menores e ordenados...\n");
     while(buffer->posicao < buffer->fim_arquivo)
     {
+        nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
         qtd_arquivos++;
         //printf("%ld\n", qtd_arquivos);
         //define nome do arquivo temporario
@@ -139,15 +141,32 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
 
         //Cria a matrix de string, com base no buffer lido
         char matriz_buffer[tamanho_matriz][255];
-        buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
+        /*
+        char **matriz_buffer;
+        matriz_buffer = malloc(tamanho_matriz * sizeof(char));
+        for(int i = 0; i < tamanho_matriz; i++)
+        {
+            matriz_buffer[i] = malloc(255 * sizeof(char));
+        }
+        */
 
+        buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
+        
         //Ordena os dados utilizando o quick_sort para strings
         quick_sort_string(matriz_buffer, 0, tamanho_matriz-1);
 
         //Salva os dados do respectivo buffer no arquivo de saida temporario
         matriz_to_file(nome_arquivos_temp, matriz_buffer, tamanho_matriz);
 
+        free(nome_arquivos_temp);
 
+        /*
+        for(int i = 0; i < tamanho_matriz; i++)
+        {
+            free(matriz_buffer[i]);
+        }
+        free(matriz_buffer);
+        */
     }
     freeBuffer(buffer);
 
@@ -282,7 +301,7 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
     unsigned long int numArqs = criarArquivosOrdenados(nome_arquivo_entrada);
-    printf("%ld\n", numArqs);
+    printf("Quantidade de Arquivos: %ld\n", numArqs);
 
     //N == Tamanho que a RAM comporta
     //k == numero de buffers que vao ser criados
@@ -290,7 +309,7 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     para a ram e fazer a intercalacao*/
 
     unsigned long int k = N / (numArqs + 1);
-    printf("k == %ld\n", k);
+    printf("Pedaco RAM pra cada arquivo == %ld\n", k);
     
     //Cria o arquivo de saida e ja ordenado
     //merge(nome_arq_saida, numArqs, k);
