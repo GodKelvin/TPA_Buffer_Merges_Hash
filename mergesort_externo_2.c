@@ -7,7 +7,9 @@
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-#define N 200
+#define N 500
+
+
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -15,7 +17,6 @@ void get_word(char destino[], char frase[], char separador[], unsigned long int 
     char *item = NULL, *saveptr = NULL;
     unsigned long int i = 0;
 
-    printf("OPA2");
     item = strtok_r(copy_conteudo, separador, &saveptr);
     //Captura a palavra da respectiva posicao
     while(i < posicao)
@@ -23,10 +24,60 @@ void get_word(char destino[], char frase[], char separador[], unsigned long int 
         item = strtok_r(NULL, separador, &saveptr);
         i++;
     }
-    printf("ITEM: %s\n", item);
     //return item;
     strcpy(destino, item);
     free(copy_conteudo);
+}
+
+//mover para o respectivo tipo de arquivo
+unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
+{
+    unsigned long int tam = 0;
+    char *token = NULL;
+    char *copy_frase = strdup(buffer->conteudo);
+
+    token = strtok(copy_frase, separador);
+    while(token != NULL)
+    {
+        tam++;
+        token = strtok(NULL, separador);
+    }
+
+    free(copy_frase);
+    return tam;
+    
+}
+
+void print_matriz(char matriz[][255], unsigned long int tam_matriz)
+{
+    printf("-----\n");
+    for(int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
+    printf("-----\n");
+}
+//Mudar forma de associacao a matriz
+void buffer_to_matriz(Buffer* buffer, char matriz[][255], unsigned long int tam_matriz)
+{
+    //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
+    for(unsigned long int i = 0; i < tam_matriz; i++)
+    {
+        get_word(matriz[i], buffer->conteudo, "\n", i);
+    }
+}
+
+//Salva uma matriz de strings num arquivo
+//Recebe o nome do arquivos de destino, a matriz de strings e o tamanha da mesma
+void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int tam_matriz)
+{
+    FILE *file_dest = NULL;
+    file_dest = fopen(nome_arquivo, "w");
+    if(file_dest)
+    {
+        for(unsigned long int i = 0; i < tam_matriz; i++)
+        {
+            fprintf(file_dest, "%s\n", matriz[i]);
+        }
+    }
+    fclose(file_dest);
 }
 
 //Cria arquivo com numeros aleatorios
@@ -69,58 +120,37 @@ int criarArquivosOrdenados(char *nome_arquivo_entrada)
     //Buffer principal
     Buffer* buffer = criaBuffer(nome_arquivo_entrada, N);
     //Novo nome do arquivo
-    char nome_arquivos_temp[20];
+    char nome_arquivos_temp[255];
 
-    FILE *f = fopen(nome_arquivo_entrada, "r");
+    //FILE *f = fopen(nome_arquivo_entrada, "r");
     //Enquanto nao estiver chegado ao fim do arquivo
+    printf("OPA1\n");
     while(buffer->posicao < buffer->fim_arquivo)
     {
 
         qtd_arquivos++;
         //define nome do arquivo temporario
-        sprintf(nome_arquivos_temp, "Temp%d.txt", qtd_arquivos);
+        sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%d.txt", qtd_arquivos);
         //Carrega os dados
         loadBuffer(buffer);
-        //Ordena os dados
-        quick_sort(V, 0, N-1);
-        //...
 
+        //Calcula a quantidade de linhas para o respectivo arquivo
+        unsigned long int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
+
+        //Cria a matrix de string, com base no buffer lido
+        char matriz_buffer[tamanho_matriz][255];
+        buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
+
+        //Ordena os dados utilizando o quick_sort para strings
+        quick_sort_string(matriz_buffer, 0, tamanho_matriz-1);
+
+        //Salva os dados do respectivo buffer no arquivo de saida temporario
+        matriz_to_file(nome_arquivos_temp, matriz_buffer, tamanho_matriz);
 
     }
-    while(!feof(f))
-    {
-        fscanf(f, "%d", &V[total]);
-        total++;
+    freeBuffer(buffer);
 
-        //Buffer cheio: Salva em disco
-        if(total == N)
-        {
-            qtd_arquivos++;
-            //Define o nome do novo arquivo
-            sprintf(nome_arquivos_temp, "Temp%d.txt", qtd_arquivos);
-
-            //Ordena o vetor (IMPLEMENTAR FUNCAO DE ORDENACAO)
-            //qsort(V, total, sizeof(int), compara);
-            quick_sort(V, 0, N-1);
-
-            //Salvar o arquivo
-            salvarArquivo(nome_arquivos_temp, V, total, 0);
-
-            //Zerar o total para continuar o procedimento para o proximo arquivo
-            total = 0;
-        }
-    }
-
-    /*Sobraram dados no Buffer: Salvar em disco
-    Ou seja, nao eh multiplo do tamanho do buffer*/
-    if(total > 0)
-    {
-        qtd_arquivos++;
-        sprintf(nome_arquivos_temp, "Temp%d.txt", qtd_arquivos);
-        //qsort(V, total, sizeof(int), compara);
-        salvarArquivo(nome_arquivos_temp, V, total, 0);
-    }
-    fclose(f);
+    //fclose(f);
 
     //Retorna a quantidade de arquivos
     return qtd_arquivos;
@@ -245,17 +275,19 @@ void merge(char *nome, int numArqs, int K)
     free(buffer);
 }
 
-void mergeSortExterno(char *nome, char *nome_arq_saida)
+void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
 {
     char novo[20];
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
-    int numArqs = criarArquivosOrdenados(nome);
+    int numArqs = criarArquivosOrdenados(nome_arquivo_entrada);
 
     //N == Tamanho que a RAM comporta
     //k == numero de buffers que vao ser criados
     /*ou seja, k eh o tamanho que comporta pelo menos um pedacinho de cada arquivo para levar
     para a ram e fazer a intercalacao*/
+
+    /*
     int i, k= N / (numArqs + 1);
     
     //Cria o arquivo de saida e ja ordenado
@@ -268,6 +300,7 @@ void mergeSortExterno(char *nome, char *nome_arq_saida)
         sprintf(novo, "Temp%d.txt", i+1);
         //remove(novo);
     }
+    */
 }
 //Limpa o conteudo de um arquivo, tornando-o em branco
 void cria_reset_file(char *nome_arquivo)
@@ -277,85 +310,35 @@ void cria_reset_file(char *nome_arquivo)
     fclose(file);
 }
 
-//mover para o respectivo tipo de arquivo
-unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
-{
-    unsigned long int tam = 0;
-    char *token = NULL;
-    char *copy_frase = strdup(buffer->conteudo);
-
-    token = strtok(copy_frase, separador);
-    while(token != NULL)
-    {
-        tam++;
-        token = strtok(NULL, separador);
-    }
-
-    free(copy_frase);
-    return tam;
-    
-}
-
-void print_matriz(char matriz[][255], unsigned long int tam_matriz)
-{
-    printf("-----\n");
-    for(int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
-    printf("-----\n");
-}
-//Mudar forma de associacao a matriz
-void buffer_to_matriz(Buffer* buffer, char matriz[][255], unsigned long int tam_matriz)
-{
-    //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
-    for(unsigned long int i = 0; i < tam_matriz; i++)
-    {
-        get_word(matriz[i], buffer->conteudo, "\n", i);
-    }
-}
-
-//Salva uma matriz de strings num arquivo
-//Recebe o nome do arquivos de destino, a matriz de strings e o tamanha da mesma
-void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int tam_matriz)
-{
-    FILE *file_dest = NULL;
-    file_dest = fopen(nome_arquivo, "w");
-    if(file_dest)
-    {
-        for(unsigned long int i = 0; i < tam_matriz; i++)
-        {
-            fprintf(file_dest, "%s\n", matriz[i]);
-        }
-    }
-    fclose(file_dest);
-}
-
 int main()
 {
     
     
     //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
     char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
-    char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
-    cria_reset_file(nome_arquivo_saida_teste);
-    
+    //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
+    //cria_reset_file(nome_arquivo_saida_teste);
+
+    /*
     Buffer* buffer = criaBuffer(nome_arquivo_entrada, 1000000);
     printBuffer(buffer);
     loadBuffer(buffer);
-    //printBuffer(buffer);
+    printBuffer(buffer);
     unsigned long int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
-    printf("Qtd Linhas: %ld\n", tamanho_matriz);
     char matriz_buffer[tamanho_matriz][255];
     buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
-    //print_matriz(matriz_buffer, tamanho_matriz);
+    print_matriz(matriz_buffer, tamanho_matriz);
     quick_sort_string(matriz_buffer, 0, tamanho_matriz-1);
     matriz_to_file(nome_arquivo_saida_teste, matriz_buffer, tamanho_matriz);
+    freeBuffer(buffer);
+    */
 
     
-    /*
+    
     char nome_arquivo_saida[] = "Arquivos_Saida/saida_me.txt";
     cria_reset_file(nome_arquivo_saida);
     mergeSortExterno(nome_arquivo_entrada, nome_arquivo_saida);
-    */
+    printf("TUDO CERTO!\n");
 
-    freeBuffer(buffer);
     return 0;
 }

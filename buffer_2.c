@@ -50,6 +50,7 @@ void* loadBuffer(Buffer* buffer)
                 }
                 else
                 {
+                    printf("ERROR AO SABER TAMANHO DO BUFFER\n");
                     //Verificar essa associacao para NULL
                     buffer = NULL;
                     buffer->tamanho = buffer->tamanho_original;
