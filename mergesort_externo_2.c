@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <sys/stat.h>//MKDIR
+#include <sys/stat.h>//MKDIR
 //RENOMEAR ARQUIVOS!
 #include "utils_vector_2.h"
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-#define N 500
+#define N 10000
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -112,7 +112,7 @@ void salvarArquivo(char *nome, int *vetor, int tam, int mudarLinhaFinal)
     fclose(f);
 }
 
-unsigned long int  criarArquivosOrdenados(char *nome_arquivo_entrada)
+unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
 {
     //total == numero total de registros que cabem na RAM (ou seja, N)
     //int V[N], total = 0;
@@ -120,7 +120,7 @@ unsigned long int  criarArquivosOrdenados(char *nome_arquivo_entrada)
     //Buffer principal
     Buffer* buffer = criaBuffer(nome_arquivo_entrada, N);
     //Novo nome do arquivo
-    char nome_arquivos_temp[500];
+    char nome_arquivos_temp[200];
 
     //FILE *f = fopen(nome_arquivo_entrada, "r");
     //Enquanto nao estiver chegado ao fim do arquivo
@@ -289,17 +289,18 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     /*ou seja, k eh o tamanho que comporta pelo menos um pedacinho de cada arquivo para levar
     para a ram e fazer a intercalacao*/
 
-    /*
-    int i, k= N / (numArqs + 1);
+    unsigned long int k = N / (numArqs + 1);
+    printf("k == %ld\n", k);
     
     //Cria o arquivo de saida e ja ordenado
-    merge(nome_arq_saida, numArqs, k);
+    //merge(nome_arq_saida, numArqs, k);
 
     //Apagar os arquivos temporarios
-    for(i = 0; i< numArqs; i++)
+    /*
+    for(int i = 0; i< numArqs; i++)
     {
         //Formata o nome dos arquivos e os apaga
-        sprintf(novo, "Temp%d.txt", i+1);
+        sprintf(novo, "Arquivos_Saida/Temp%d.txt", i+1);
         //remove(novo);
     }
     */
@@ -314,7 +315,7 @@ void cria_reset_file(char *nome_arquivo)
 
 int main()
 {
-    
+    mkdir("Arquivos_Saida", 0700);
     
     //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
     char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
