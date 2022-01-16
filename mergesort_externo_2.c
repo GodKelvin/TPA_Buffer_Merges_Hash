@@ -51,7 +51,7 @@ unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
 void print_matriz(char matriz[][255], unsigned long int tam_matriz)
 {
     printf("-----\n");
-    for(int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
+    for(unsigned long int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
     printf("-----\n");
 }
 //Mudar forma de associacao a matriz
