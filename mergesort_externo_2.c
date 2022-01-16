@@ -9,7 +9,7 @@
 
 //Tamanho MAXIMO em bytes na RAM
 //#define N 200000
-#define N 400
+#define N 300
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -80,39 +80,6 @@ void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int t
     fclose(file_dest);
 }
 
-//Cria arquivo com numeros aleatorios
-void criarArquivoTeste(char *nome)
-{
-    int i;
-    int div = 100;
-    FILE *f = fopen(nome, "w");
-    srand(time(NULL));
-    for(i = 0; i < 10; i++)
-    {
-        fprintf(f, "%d\n", rand() % div);
-    }
-    fprintf(f, "%d", rand() % div);
-    fclose(f);
-}
-
-void salvarArquivo(char *nome, int *vetor, int tam, int mudarLinhaFinal)
-{
-    int i;
-    FILE *f = fopen(nome, "a");
-    for(i = 0; i < tam-1; i++)
-    {
-        fprintf(f, "%d\n", vetor[i]);
-    }
-
-    if(mudarLinhaFinal)
-    {
-        fprintf(f, "%d\n", vetor[tam-1]);
-    }
-    else fprintf(f, "%d", vetor[tam-1]);
-
-    fclose(f);
-}
-
 unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
 {
     //total == numero total de registros que cabem na RAM (ou seja, N)
@@ -131,7 +98,7 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
     {
         nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
         qtd_arquivos++;
-        //printf("%ld\n", qtd_arquivos);
+
         //define nome do arquivo temporario
         sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%ld.txt", qtd_arquivos);
         //Carrega os dados
@@ -160,58 +127,19 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
         matriz_to_file(nome_arquivos_temp, matriz_buffer, tamanho_matriz);
 
         free(nome_arquivos_temp);
-
-        /*
-        for(int i = 0; i < tamanho_matriz; i++)
-        {
-            free(matriz_buffer[i]);
-        }
-        free(matriz_buffer);
-        */
     }
     freeBuffer(buffer);
 
-    //fclose(f);
 
     //Retorna a quantidade de arquivos
     return qtd_arquivos;
 }
 
-//Para a funcao merge
-struct arquivo
-{
-    FILE *f;
-    int pos, MAX;
-    char **buffer;
-};
 
-//Arquivo / tamanho do buffer
-void preencheBuffer(struct arquivo *arq, int K)
-{
-    int i;
-    if(arq->f == NULL) return;
-
-    arq->pos = 0;
-    arq->MAX = 0;
-    for(i = 0; i < K; i++)
-    {
-        if(!feof(arq->f))
-        {
-            //fscanf(arq->f, "%d", &arq->buffer[arq->MAX]);
-            arq->MAX++;
-        }
-        else
-        {
-            fclose(arq->f);
-            arq->f = NULL;
-            break;
-        }
-    }
-}
 
 //Lista de arquivos
 
-int procuraMenor_2(Buffer **lista_buffers, int numArqs, char menor[])
+int procuraMenor(Buffer **lista_buffers, int numArqs, char menor[])
 {
     int pos = -1;
     for(int i = 0; i < numArqs; i++)
@@ -273,55 +201,16 @@ int procuraMenor_2(Buffer **lista_buffers, int numArqs, char menor[])
                 lista_buffers[pos]->pos_atual_matriz = 0;
                 lista_buffers[pos]->pos_max_matriz = tamanho_matriz_i;
             }
+            else
+            {
+                //printBuffer(lista_buffers[pos]);
+                freeBuffer(lista_buffers[pos]);
+            }
         }
         return 1;
         
     }
 
-    return 0;
-}
-
-
-
-
-int procuraMenor(struct arquivo *arq, int numArqs, int K, int *menor)
-{
-    //idx == controle se encontrou ou nao(e tbm a pos)
-    int i, idx = -1;
-    //Procura o menor valor na primeira posicao de cada buffer
-    for(i = 0; i < numArqs; i++)
-    {
-        //Se n atingi o limite do arquivo
-        if(arq[i].pos < arq[i].MAX)
-        {
-            //Se estou na primeira iteracao, salvo o primeiro registro (menor)
-            if(idx == -1) 
-            {
-                idx = i;
-            }
-            //compara elemento do buffer atual do arquivo 2 com o elemento do buffer atual do arquivo 1
-            else if(arq[i].buffer[arq[i].pos] < arq[idx].buffer[arq[idx].pos])
-            {
-                //Salvar o indice do arquivo com o menor elemento
-                idx = i;
-            }
-        }
-    }
-    //Achou o menor valor. Atualiza a posicao do buffer. Encher se tiver vazio.
-    if(idx != -1)
-    {
-        //*menor = arq[idx].buffer[arq[idx].pos];
-        //incrementa o pos no arquivo no qual o menor valor foi encontrado
-        arq[idx].pos++;
-
-        //ja percorreu todos os elementos desse arquivo
-        if(arq[idx].pos == arq[idx].MAX)
-        {
-            preencheBuffer(&arq[idx], K);
-        }
-        return 1;
-    }
-    //else
     return 0;
 }
 
@@ -356,7 +245,7 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
     buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 3));
 
     printf("...Mergeando arquivos...\n");
-    while(procuraMenor_2(lista_buffers, numArqs, menor))
+    while(procuraMenor(lista_buffers, numArqs, menor))
     {
         //printf("MENOR VALOR LOOP: %s\n", menor);
         unsigned long int prever_tamanho = buffer->posicao + strlen(menor);
@@ -370,8 +259,6 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         }
         else
         {
-            //DEBUGGER
-            printBuffer(buffer);
             //buffer cheio == Salvar no arquivo, limpar buffer, armazenar novo dado
             //Escrevo o buffer no arquivo de saida
             write_buffer_on_file(nome_arq_saida, buffer);
@@ -394,11 +281,13 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         write_buffer_on_file(nome_arq_saida, buffer);
     }   
 
+    /*
     for(int i = 0; i < numArqs; i++) 
     {
         //freeBufferLista(&lista_buffers[i]);
         freeBuffer(lista_buffers[i]);
     }
+    */
 
 
     //free(arq);
@@ -424,7 +313,8 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     //Cria o arquivo de saida e ja ordenado
     merge(nome_arq_saida, numArqs, k);
 
-    //Apagar os arquivos temporarios
+    //Apagar os arquivos temporarios  
+    printf("...Apagando arquivos temporarios...\n")  ;
     for(int i = 0; i< numArqs; i++)
     {
         //Formata o nome dos arquivos e os apaga
