@@ -8,7 +8,8 @@
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-#define N 10000 //10MB
+#define N 200000
+//#define N 400
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -180,7 +181,8 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
 struct arquivo
 {
     FILE *f;
-    int pos, MAX, *buffer;
+    int pos, MAX;
+    char **buffer;
 };
 
 //Arquivo / tamanho do buffer
@@ -195,7 +197,7 @@ void preencheBuffer(struct arquivo *arq, int K)
     {
         if(!feof(arq->f))
         {
-            fscanf(arq->f, "%d", &arq->buffer[arq->MAX]);
+            //fscanf(arq->f, "%d", &arq->buffer[arq->MAX]);
             arq->MAX++;
         }
         else
@@ -207,6 +209,7 @@ void preencheBuffer(struct arquivo *arq, int K)
     }
 }
 
+//Lista de arquivos
 int procuraMenor(struct arquivo *arq, int numArqs, int K, int *menor)
 {
     //idx == controle se encontrou ou nao(e tbm a pos)
@@ -225,7 +228,7 @@ int procuraMenor(struct arquivo *arq, int numArqs, int K, int *menor)
             //compara elemento do buffer atual do arquivo 2 com o elemento do buffer atual do arquivo 1
             else if(arq[i].buffer[arq[i].pos] < arq[idx].buffer[arq[idx].pos])
             {
-                //Salvar o indice do arquivo 2
+                //Salvar o indice do arquivo com o menor elemento
                 idx = i;
             }
         }
@@ -233,7 +236,7 @@ int procuraMenor(struct arquivo *arq, int numArqs, int K, int *menor)
     //Achou o menor valor. Atualiza a posicao do buffer. Encher se tiver vazio.
     if(idx != -1)
     {
-        *menor = arq[idx].buffer[arq[idx].pos];
+        //*menor = arq[idx].buffer[arq[idx].pos];
         //incrementa o pos no arquivo no qual o menor valor foi encontrado
         arq[idx].pos++;
 
@@ -249,29 +252,48 @@ int procuraMenor(struct arquivo *arq, int numArqs, int K, int *menor)
 }
 
 //Nome arquivo / Quantidade de arquivos / Tamanho do buffer
-void merge(char *nome, int numArqs, int K)
+void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
 {
     //Nome do novo arquivo temporario
-    char novo[20];
-    int i;
-    int *buffer = (int*)malloc(K*sizeof(int));
+    char *nome_arquivos_temp = NULL;;
+    //int *buffer = (int*)malloc(K*sizeof(int));
+    Buffer* buffer = criaBuffer(nome_arq_saida, K);
 
-    struct arquivo* arq;
+    //struct arquivo* arq;
+    Buffer* lista_buffers;
     //Uma posicao para cada arquivo
-    arq = (struct arquivo*)malloc(numArqs*sizeof(struct arquivo));
+    //arq = (struct arquivo*)malloc(numArqs*sizeof(struct arquivo));
+    lista_buffers = (Buffer*)malloc(numArqs * sizeof(Buffer));
 
-    for(i = 0; i < numArqs; i++)
+    //Buffer* buffer_aux;
+    for(int i = 0; i < numArqs; i++)
     {
-        sprintf(novo, "Temp%d.txt", i+1);
+        nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
+        //Para abrir o arquivo
+        sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%d.txt", i+1);
+        //printf("NOME ARQ: %s\n", nome_arquivos_temp);
+        //printf("K == %ld\n", K);
+        //buffer_aux = criaBuffer(nome_arquivos_temp, K);
+
+        lista_buffers[i] = *criaBuffer(nome_arquivos_temp, K);
+        //lista_buffers[i] = *buffer_aux;
+        //freeBuffer(buffer_aux);
+
+        /*
         arq[i].f = fopen(novo, "r");
         arq[i].MAX = 0;
         arq[i].pos = 0;
-        
         //Quantidade de elementos que pode carregar na memoria para cada um dos buffers
         arq[i].buffer = (int*)malloc(K*sizeof(int));
-        preencheBuffer(&arq[i], K);
-    }
+        */
+        loadBuffer(&lista_buffers[i]);
+        //printBuffer(&lista_buffers[i]);
+        
+        //preencheBuffer(&arq[i], K);
 
+        free(nome_arquivos_temp);
+    }
+    /*
     int menor, qtdBuffer = 0;
     //Verificar se existe um menor elemento entre todos os buffers de cada arquivo
     while(procuraMenor(arq, numArqs, K, &menor) == 1)
@@ -283,16 +305,27 @@ void merge(char *nome, int numArqs, int K)
         if(qtdBuffer == K)
         {
             salvarArquivo(nome, buffer, K, 1);
+
+            //freeBuffer(buffer)
             qtdBuffer = 0;
         }
     }
     //Salva possiveis dados restantes no buffer
     if(qtdBuffer != 0) salvarArquivo(nome, buffer, qtdBuffer, 1);
+    */
 
-    for(i = 0; i < numArqs; i++) free(arq[i].buffer);
+    for(int i = 0; i < numArqs; i++) 
+    {
+        //printBuffer(&lista_buffers[i]);
 
-    free(arq);
+        //Nao libero a memoria do buffer em sim, apenas quando mato a lista inteira
+        freeBufferLista(&lista_buffers[i]);
+    }
+
+
+    //free(arq);
     free(buffer);
+    free(lista_buffers);
 }
 
 void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
@@ -312,7 +345,7 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     printf("Pedaco RAM pra cada arquivo == %ld\n", k);
     
     //Cria o arquivo de saida e ja ordenado
-    //merge(nome_arq_saida, numArqs, k);
+    merge(nome_arq_saida, numArqs, k);
 
     //Apagar os arquivos temporarios
     /*

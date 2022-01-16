@@ -136,6 +136,12 @@ void freeBuffer(Buffer* buffer)
     free(buffer);
 }
 
+void freeBufferLista(Buffer* buffer)
+{
+    free(buffer->conteudo);
+    fclose(buffer->arquivo);
+}
+
 void merging_buffers_to_file(char nome_arquivo_destino[], Buffer *buffer1, Buffer *buffer2)
 {
     /*

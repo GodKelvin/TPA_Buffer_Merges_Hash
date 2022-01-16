@@ -20,6 +20,7 @@ typedef struct
 
 //int calcula_tam_buffer_to_vetor(Buffer* buffer, char separador[]);
 void freeBuffer(Buffer* buffer);
+void freeBufferLista(Buffer* buffer);
 void merging_buffers_to_file(char nome_arquivo_destino[], Buffer *buffer1, Buffer *buffer2);
 void write_buffer_on_file(char *nome_arquivo_destino, Buffer* buffer);
 void merging_files(char *nome_arquivo_final, Buffer* buffer1, Buffer* buffer2);
