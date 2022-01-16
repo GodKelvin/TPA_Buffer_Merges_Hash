@@ -60,6 +60,7 @@ void* loadBuffer(Buffer* buffer)
             else
             {
                 printf("LoadBuffer ERROR 3 -> CONTEUDO NULO!\n");
+                printBuffer(buffer);
             }
         }
         else

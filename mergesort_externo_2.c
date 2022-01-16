@@ -9,7 +9,7 @@
 
 //Tamanho MAXIMO em bytes na RAM
 //#define N 200000
-#define N 300
+#define N 20000
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -201,11 +201,6 @@ int procuraMenor(Buffer **lista_buffers, int numArqs, char menor[])
                 lista_buffers[pos]->pos_atual_matriz = 0;
                 lista_buffers[pos]->pos_max_matriz = tamanho_matriz_i;
             }
-            else
-            {
-                //printBuffer(lista_buffers[pos]);
-                freeBuffer(lista_buffers[pos]);
-            }
         }
         return 1;
         
@@ -240,7 +235,6 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         free(nome_arquivos_temp);
     }
     char menor[255];
-    int flag_salvou;
     //unsigned long int tamanho = 0;
     buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 3));
 
@@ -254,15 +248,13 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
             strcat(buffer->conteudo, menor);
             strcat(buffer->conteudo, "\n");
             buffer->posicao += strlen(menor);
-            flag_salvou = 0;
-            //printf("%s\n", buffer->conteudo);
         }
         else
         {
             //buffer cheio == Salvar no arquivo, limpar buffer, armazenar novo dado
             //Escrevo o buffer no arquivo de saida
             write_buffer_on_file(nome_arq_saida, buffer);
-
+            
             free(buffer->conteudo);
             buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 3));
             strcpy(buffer->conteudo, menor);
@@ -270,24 +262,16 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
 
             //Salvo o tamanho do inicio do buffer
             buffer->posicao = strlen(menor);
-            flag_salvou = 1;
         }
-        
     }
 
-    //Verifica se tem dados restantes no buffer
-    if(!flag_salvou)
-    {
-        write_buffer_on_file(nome_arq_saida, buffer);
-    }   
+    write_buffer_on_file(nome_arq_saida, buffer);
 
-    /*
     for(int i = 0; i < numArqs; i++) 
     {
         //freeBufferLista(&lista_buffers[i]);
         freeBuffer(lista_buffers[i]);
     }
-    */
 
 
     //free(arq);
@@ -334,7 +318,8 @@ int main()
 {
     mkdir("Arquivos_Saida", 0700);
     
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada1.csv";
     //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
 
     //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
