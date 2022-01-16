@@ -8,8 +8,8 @@
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-#define N 200000
-//#define N 400
+//#define N 200000
+#define N 400
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -210,6 +210,29 @@ void preencheBuffer(struct arquivo *arq, int K)
 }
 
 //Lista de arquivos
+/*
+int procuraMenor_2(Buffer *lista_buffers, int numArqs)
+{
+    int pos = -1;
+    for(int i = 0; i < numArqs; i++)
+    {
+        //Calcula a quantidade de linhas para o respectivo arquivo
+        unsigned long int tamanho_matriz = calcula_tam_buffer_to_matriz(lista_buffers[i], "\n");
+
+        //Cria a matrix de string, com base no buffer lido
+        char matriz_buffer[tamanho_matriz][255];
+
+        buffer_to_matriz(lista_buffers[i], matriz_buffer, tamanho_matriz);
+
+        print_matriz(matriz_buffer, tamanho_matriz);
+    }
+
+    return pos;
+}
+*/
+
+
+
 int procuraMenor(struct arquivo *arq, int numArqs, int K, int *menor)
 {
     //idx == controle se encontrou ou nao(e tbm a pos)
@@ -260,10 +283,10 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
     Buffer* buffer = criaBuffer(nome_arq_saida, K);
 
     //struct arquivo* arq;
-    Buffer* lista_buffers;
+    Buffer* lista_buffers[numArqs];
     //Uma posicao para cada arquivo
     //arq = (struct arquivo*)malloc(numArqs*sizeof(struct arquivo));
-    lista_buffers = (Buffer*)malloc(numArqs * sizeof(Buffer));
+    //lista_buffers = (Buffer*)malloc(numArqs * sizeof(Buffer));
 
     //Buffer* buffer_aux;
     for(int i = 0; i < numArqs; i++)
@@ -275,7 +298,7 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         //printf("K == %ld\n", K);
         //buffer_aux = criaBuffer(nome_arquivos_temp, K);
 
-        lista_buffers[i] = *criaBuffer(nome_arquivos_temp, K);
+        lista_buffers[i] = criaBuffer(nome_arquivos_temp, K);
         //lista_buffers[i] = *buffer_aux;
         //freeBuffer(buffer_aux);
 
@@ -286,13 +309,14 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         //Quantidade de elementos que pode carregar na memoria para cada um dos buffers
         arq[i].buffer = (int*)malloc(K*sizeof(int));
         */
-        loadBuffer(&lista_buffers[i]);
-        //printBuffer(&lista_buffers[i]);
+        loadBuffer(lista_buffers[i]);
+        //printBuffer(lista_buffers[i]);
         
         //preencheBuffer(&arq[i], K);
 
         free(nome_arquivos_temp);
     }
+    //int a = procuraMenor_2(*lista_buffers, numArqs);
     /*
     int menor, qtdBuffer = 0;
     //Verificar se existe um menor elemento entre todos os buffers de cada arquivo
@@ -316,16 +340,13 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
 
     for(int i = 0; i < numArqs; i++) 
     {
-        //printBuffer(&lista_buffers[i]);
-
-        //Nao libero a memoria do buffer em sim, apenas quando mato a lista inteira
-        freeBufferLista(&lista_buffers[i]);
+        //freeBufferLista(&lista_buffers[i]);
+        freeBuffer(lista_buffers[i]);
     }
 
 
     //free(arq);
     free(buffer);
-    free(lista_buffers);
 }
 
 void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
@@ -369,8 +390,8 @@ int main()
 {
     mkdir("Arquivos_Saida", 0700);
     
-    //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
 
     //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
     //cria_reset_file(nome_arquivo_saida_teste);
