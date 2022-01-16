@@ -8,8 +8,8 @@
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-//#define N 200000
-#define N 400
+#define N 200000
+//#define N 400
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -330,16 +330,14 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
 {
     //Nome do novo arquivo temporario
     char *nome_arquivos_temp = NULL;;
-    //int *buffer = (int*)malloc(K*sizeof(int));
+    
+    //Buffer utilizado para salvar no arquivo final
     Buffer* buffer = criaBuffer(nome_arq_saida, K);
 
     //struct arquivo* arq;
-    Buffer* lista_buffers[numArqs];
     //Uma posicao para cada arquivo
-    //arq = (struct arquivo*)malloc(numArqs*sizeof(struct arquivo));
-    //lista_buffers = (Buffer*)malloc(numArqs * sizeof(Buffer));
+    Buffer* lista_buffers[numArqs];
 
-    //Buffer* buffer_aux;
     for(int i = 0; i < numArqs; i++)
     {
         nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
@@ -353,36 +351,48 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         free(nome_arquivos_temp);
     }
     char menor[255];
-    //int achou = procuraMenor_2(lista_buffers, numArqs, menor);
+    int flag_salvou;
+    //unsigned long int tamanho = 0;
+    buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 3));
+
+    printf("...Mergeando arquivos...\n");
     while(procuraMenor_2(lista_buffers, numArqs, menor))
     {
-        //printf("MENOR AQUI=============%s\n", menor);
-        //printf("OPA!\n");
-        printf("MENOR VALOR LOOP: %s\n", menor);
-    }
-
-    //CRIAR FUNCAO PARA CONCATENAR MENOR FRASE NO BUFFE
-    
-    /*
-    int menor, qtdBuffer = 0;
-    //Verificar se existe um menor elemento entre todos os buffers de cada arquivo
-    while(procuraMenor(arq, numArqs, K, &menor) == 1)
-    {
-        //Salvar no buffer
-        buffer[qtdBuffer] = menor;
-        qtdBuffer++;
-        //Buffer de saida cheio
-        if(qtdBuffer == K)
+        //printf("MENOR VALOR LOOP: %s\n", menor);
+        unsigned long int prever_tamanho = buffer->posicao + strlen(menor);
+        if(prever_tamanho < buffer->tamanho_original)
         {
-            salvarArquivo(nome, buffer, K, 1);
-
-            //freeBuffer(buffer)
-            qtdBuffer = 0;
+            strcat(buffer->conteudo, menor);
+            strcat(buffer->conteudo, "\n");
+            buffer->posicao += strlen(menor);
+            flag_salvou = 0;
+            //printf("%s\n", buffer->conteudo);
         }
+        else
+        {
+            //DEBUGGER
+            printBuffer(buffer);
+            //buffer cheio == Salvar no arquivo, limpar buffer, armazenar novo dado
+            //Escrevo o buffer no arquivo de saida
+            write_buffer_on_file(nome_arq_saida, buffer);
+
+            free(buffer->conteudo);
+            buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 3));
+            strcpy(buffer->conteudo, menor);
+            strcat(buffer->conteudo, "\n");
+
+            //Salvo o tamanho do inicio do buffer
+            buffer->posicao = strlen(menor);
+            flag_salvou = 1;
+        }
+        
     }
-    //Salva possiveis dados restantes no buffer
-    if(qtdBuffer != 0) salvarArquivo(nome, buffer, qtdBuffer, 1);
-    */
+
+    //Verifica se tem dados restantes no buffer
+    if(!flag_salvou)
+    {
+        write_buffer_on_file(nome_arq_saida, buffer);
+    }   
 
     for(int i = 0; i < numArqs; i++) 
     {
@@ -397,7 +407,7 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
 
 void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
 {
-    //char novo[20];
+    char arquivos_temp[100];
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
     unsigned long int numArqs = criarArquivosOrdenados(nome_arquivo_entrada);
@@ -415,14 +425,12 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     merge(nome_arq_saida, numArqs, k);
 
     //Apagar os arquivos temporarios
-    /*
     for(int i = 0; i< numArqs; i++)
     {
         //Formata o nome dos arquivos e os apaga
-        sprintf(novo, "Arquivos_Saida/Temp%d.txt", i+1);
-        //remove(novo);
+        sprintf(arquivos_temp, "Arquivos_Saida/Temp%d.txt", i+1);
+        remove(arquivos_temp);
     }
-    */
 }
 //Limpa o conteudo de um arquivo, tornando-o em branco
 void cria_reset_file(char *nome_arquivo)
@@ -436,8 +444,8 @@ int main()
 {
     mkdir("Arquivos_Saida", 0700);
     
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
-    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
 
     //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
     //cria_reset_file(nome_arquivo_saida_teste);
