@@ -59,7 +59,7 @@ void* loadBuffer(Buffer* buffer)
             }
             else
             {
-                printf("LoadBuffer ERROR 3\n");
+                printf("LoadBuffer ERROR 3 -> CONTEUDO NULO!\n");
             }
         }
         else
@@ -126,6 +126,10 @@ Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer)
     buffer->tamanho_original = tamanho_buffer;
 
     buffer->conteudo = NULL;
+
+    //Para matriz
+    buffer->pos_atual_matriz = 0;
+    buffer->pos_max_matriz = 0;
     return buffer;
 }
 
@@ -267,7 +271,9 @@ void printBuffer(Buffer* buffer)
     printf("FIM_ARQUIVO: %ld\n", buffer->fim_arquivo);
     printf("TAMANHO: %ld\n", buffer->tamanho);
     printf("TAMANHO_ORIGINAL: %ld\n", buffer->tamanho_original);
-    printf("CONTEUDO:%s", buffer->conteudo);
+    printf("CONTEUDO:%s\n", buffer->conteudo);
+    printf("POSICAO ATUAL MATRIZ: %ld\n", buffer->pos_atual_matriz);
+    printf("POSICAO MAX MATRIZ: %ld\n", buffer->pos_max_matriz);
     printf("\n------\n");
 }
 

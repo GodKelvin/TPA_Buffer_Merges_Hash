@@ -16,6 +16,10 @@ typedef struct
     unsigned long int tamanho;
     unsigned long int tamanho_original;
 
+    //Para manipulacao da matriz
+    unsigned long int pos_atual_matriz;
+    unsigned long int pos_max_matriz;
+
 }Buffer;
 
 //int calcula_tam_buffer_to_vetor(Buffer* buffer, char separador[]);

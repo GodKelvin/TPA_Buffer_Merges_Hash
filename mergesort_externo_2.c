@@ -210,26 +210,77 @@ void preencheBuffer(struct arquivo *arq, int K)
 }
 
 //Lista de arquivos
-/*
-int procuraMenor_2(Buffer *lista_buffers, int numArqs)
+
+int procuraMenor_2(Buffer **lista_buffers, int numArqs, char menor[])
 {
     int pos = -1;
     for(int i = 0; i < numArqs; i++)
     {
-        //Calcula a quantidade de linhas para o respectivo arquivo
-        unsigned long int tamanho_matriz = calcula_tam_buffer_to_matriz(lista_buffers[i], "\n");
+        unsigned long int tamanho_matriz_i = calcula_tam_buffer_to_matriz(lista_buffers[i], "\n");
+        char matriz_buffer_i[tamanho_matriz_i][255];
+        buffer_to_matriz(lista_buffers[i], matriz_buffer_i, tamanho_matriz_i);
+        lista_buffers[i]->pos_max_matriz = tamanho_matriz_i;
 
-        //Cria a matrix de string, com base no buffer lido
-        char matriz_buffer[tamanho_matriz][255];
+        //Se o buffer deste arquivo ainda nao foi todo percorrido
+        if(lista_buffers[i]->pos_atual_matriz < lista_buffers[i]->pos_max_matriz)
+        {
 
-        buffer_to_matriz(lista_buffers[i], matriz_buffer, tamanho_matriz);
+            //Se estou na primeira iteracao, salvo o primeiro registro (menor)
+            if(pos == -1)
+            {
+                pos = i;
+            }
+            else
+            {
+                //Calcula a quantidade de linhas para os respectivo arquivos
+                unsigned long int tamanho_matriz_pos = calcula_tam_buffer_to_matriz(lista_buffers[pos], "\n");
 
-        print_matriz(matriz_buffer, tamanho_matriz);
+                //Cria a matrix de string, com base no buffer lido
+                char matriz_buffer_pos[tamanho_matriz_pos][255];
+                buffer_to_matriz(lista_buffers[pos], matriz_buffer_pos, tamanho_matriz_pos);
+
+                //Compara os elementos das respectivas posicoes
+                if(strcmp(matriz_buffer_i[lista_buffers[i]->pos_atual_matriz], matriz_buffer_pos[lista_buffers[pos]->pos_atual_matriz]) < 0)
+                {
+                    pos = i;
+                }
+
+            }
+        }
     }
 
-    return pos;
+    if(pos != -1)
+    {
+        unsigned long int tamanho_matriz_menor = calcula_tam_buffer_to_matriz(lista_buffers[pos], "\n");
+        char matriz_buffer_menor[tamanho_matriz_menor][255];
+        buffer_to_matriz(lista_buffers[pos], matriz_buffer_menor, tamanho_matriz_menor);
+
+        //Copia o menor valor encontrado (valor esse que pega na funcao de baixo dentro do loop)
+        strcpy(menor, matriz_buffer_menor[lista_buffers[pos]->pos_atual_matriz]);
+
+        lista_buffers[pos]->pos_atual_matriz++;
+        //Se chegou ao tamanho maximo da matriz
+        if(lista_buffers[pos]->pos_atual_matriz == lista_buffers[pos]->pos_max_matriz)
+        {
+            //Se ainda nao chegou ao final do arquivo
+            if(lista_buffers[pos]->posicao < lista_buffers[pos]->fim_arquivo)
+            {
+                //Carrega o buffer para o proximo bloco de dados
+                loadBuffer(lista_buffers[pos]);
+
+                //Reseta as posicoes da matriz
+                unsigned long int tamanho_matriz_i = calcula_tam_buffer_to_matriz(lista_buffers[pos], "\n");
+                lista_buffers[pos]->pos_atual_matriz = 0;
+                lista_buffers[pos]->pos_max_matriz = tamanho_matriz_i;
+            }
+        }
+        return 1;
+        
+    }
+
+    return 0;
 }
-*/
+
 
 
 
@@ -294,29 +345,24 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int K)
         nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
         //Para abrir o arquivo
         sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%d.txt", i+1);
-        //printf("NOME ARQ: %s\n", nome_arquivos_temp);
-        //printf("K == %ld\n", K);
-        //buffer_aux = criaBuffer(nome_arquivos_temp, K);
-
         lista_buffers[i] = criaBuffer(nome_arquivos_temp, K);
-        //lista_buffers[i] = *buffer_aux;
-        //freeBuffer(buffer_aux);
-
-        /*
-        arq[i].f = fopen(novo, "r");
-        arq[i].MAX = 0;
-        arq[i].pos = 0;
-        //Quantidade de elementos que pode carregar na memoria para cada um dos buffers
-        arq[i].buffer = (int*)malloc(K*sizeof(int));
-        */
         loadBuffer(lista_buffers[i]);
-        //printBuffer(lista_buffers[i]);
-        
-        //preencheBuffer(&arq[i], K);
 
+        unsigned long int tamanho_matriz_i = calcula_tam_buffer_to_matriz(lista_buffers[i], "\n");
+        lista_buffers[i]->pos_max_matriz = tamanho_matriz_i;
         free(nome_arquivos_temp);
     }
-    //int a = procuraMenor_2(*lista_buffers, numArqs);
+    char menor[255];
+    //int achou = procuraMenor_2(lista_buffers, numArqs, menor);
+    while(procuraMenor_2(lista_buffers, numArqs, menor))
+    {
+        //printf("MENOR AQUI=============%s\n", menor);
+        //printf("OPA!\n");
+        printf("MENOR VALOR LOOP: %s\n", menor);
+    }
+
+    //CRIAR FUNCAO PARA CONCATENAR MENOR FRASE NO BUFFE
+    
     /*
     int menor, qtdBuffer = 0;
     //Verificar se existe um menor elemento entre todos os buffers de cada arquivo
