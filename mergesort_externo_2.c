@@ -8,8 +8,8 @@
 #include "buffer_2.h"
 
 //Tamanho MAXIMO em bytes na RAM
-#define N 200000
-//#define N 400
+//#define N 200000
+#define N 400
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -444,8 +444,8 @@ int main()
 {
     mkdir("Arquivos_Saida", 0700);
     
-    //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
 
     //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
     //cria_reset_file(nome_arquivo_saida_teste);
