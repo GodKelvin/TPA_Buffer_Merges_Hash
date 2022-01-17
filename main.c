@@ -11,6 +11,7 @@ typedef struct
     FILE *arquivo;
     char *conteudo;
     //0 -> 4.294.967.295
+    //Numero de bytes
     unsigned long int posicao;
     unsigned long int fim_arquivo;
 
@@ -390,7 +391,6 @@ char *get_word(char frase[], char separador[], int posicao)
         item = strtok_r(NULL, separador, &saveptr);
         i++;
     }
-    //printf("ITEM: %s\n", item);
     return item;
 }
 

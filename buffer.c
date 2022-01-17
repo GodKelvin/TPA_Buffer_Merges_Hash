@@ -8,6 +8,7 @@ Necessita dar um free no ponteiro que recebe o retorno
 Verificar se o ultimo character eh um '\n', por fins de consistencia dos dados
 Caso nao for, ler menos character (nao ler mais devido a estouro de memoria)
 */
+//Melhorar msgs de erro
 void* loadBuffer(Buffer* buffer)
 {
     
@@ -19,6 +20,7 @@ void* loadBuffer(Buffer* buffer)
         {
             //Desaloca memoria do conteudo, caso houver
             free(buffer->conteudo);
+            //buffer->conteudo = NULL;
             //Aloca memoria suficiente para a leitura do bloco (+ um \0 por seguranca)
             buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 1));
             //Se conseguiu alocar memoria corretamente
@@ -51,12 +53,29 @@ void* loadBuffer(Buffer* buffer)
                 else
                 {
                     //Verificar essa associacao para NULL
-                    buffer = NULL;
+                    //buffer = NULL;
                     buffer->tamanho = buffer->tamanho_original;
+                    printf("LoadBuffer ERROR 4\n");
                 }
             }
+            else
+            {
+                printf("LoadBuffer ERROR 3 -> CONTEUDO NULO!\n");
+                printBuffer(buffer);
+                printf("AQUI %s\n", buffer->conteudo);
+            }
         }
-    }   
+        else
+        {
+            printf("LoadBuffer ERROR 2\n");
+        }
+    }
+    else
+    {
+        printf("LoadBuffer ERROR 1\n");
+    }
+
+    return 0;
 }
 
 //Necessario para definir quando meu buffer chegou ao fim do arquivo
@@ -82,7 +101,7 @@ unsigned long int calcula_tamanho_arquivo(char *nome_arquivo)
     return numbytes;
 }
 
-Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer)
+Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer)
 {
     //Alocando memoria pro buffer em si
     Buffer* buffer = (Buffer*) malloc(sizeof(Buffer));
@@ -92,7 +111,6 @@ Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer)
     
     //Calculando o tamanho do arquivo
     buffer->fim_arquivo = calcula_tamanho_arquivo(buffer->nome_arquivo);
-
     //Abrindo o arquivo
     buffer->arquivo = fopen(buffer->nome_arquivo, "r");
     if(buffer->arquivo == NULL)
@@ -111,6 +129,10 @@ Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer)
     buffer->tamanho_original = tamanho_buffer;
 
     buffer->conteudo = NULL;
+
+    //Para matriz
+    buffer->pos_atual_matriz = 0;
+    buffer->pos_max_matriz = 0;
     return buffer;
 }
 
@@ -119,6 +141,12 @@ void freeBuffer(Buffer* buffer)
     free(buffer->conteudo);
     fclose(buffer->arquivo);
     free(buffer);
+}
+
+void freeBufferLista(Buffer* buffer)
+{
+    free(buffer->conteudo);
+    fclose(buffer->arquivo);
 }
 
 void merging_buffers_to_file(char nome_arquivo_destino[], Buffer *buffer1, Buffer *buffer2)
@@ -244,9 +272,11 @@ void printBuffer(Buffer* buffer)
     printf("ARQUIVO: %s\n", buffer->nome_arquivo);
     printf("POSICAO: %ld\n", buffer->posicao);
     printf("FIM_ARQUIVO: %ld\n", buffer->fim_arquivo);
-    printf("TAMANHO: %d\n", buffer->tamanho);
-    printf("TAMANHO_ORIGINAL: %d\n", buffer->tamanho_original);
-    printf("CONTEUDO:%s", buffer->conteudo);
+    printf("TAMANHO: %ld\n", buffer->tamanho);
+    printf("TAMANHO_ORIGINAL: %ld\n", buffer->tamanho_original);
+    printf("CONTEUDO:%s\n", buffer->conteudo);
+    printf("POSICAO ATUAL MATRIZ: %ld\n", buffer->pos_atual_matriz);
+    printf("POSICAO MAX MATRIZ: %ld\n", buffer->pos_max_matriz);
     printf("\n------\n");
 }
 
@@ -264,3 +294,42 @@ void limpaBuffer(Buffer* buffer)
     buffer->tamanho = 0;
     buffer->tamanho_original = 0;
 }
+
+//Verificar onde vai ficar
+/*
+char *get_word(char frase[], char separador[], int posicao)
+{
+    if(posicao < 0) return NULL;
+
+    char *item = NULL, *saveptr = NULL;
+    int i = 0;
+
+    item = strtok_r(frase, separador, &saveptr);
+    //Captura a palavra da respectiva posicao
+    while(i < posicao)
+    {
+        item = strtok_r(NULL, separador, &saveptr);
+        i++;
+    }
+    return item;
+}
+*/
+/*
+int calcula_tam_buffer_to_vetor(Buffer* buffer, char separador[])
+{
+    int tam = 0;
+    char *token = NULL;
+    char *copy_frase = strdup(buffer->conteudo);
+
+    token = strtok(copy_frase, separador);
+    while(token != NULL)
+    {
+        tam++;
+        token = strtok(NULL, separador);
+    }
+
+    free(copy_frase);
+    return tam;
+    
+}
+*/

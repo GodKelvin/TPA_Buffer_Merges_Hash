@@ -1,14 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "buffer_2.h"
+#include <sys/stat.h>
+
+//Melhorar Declaracao?
+//DECLARACAO DO TAD BUFFER
+typedef struct
+{
+    char nome_arquivo[50];
+    FILE *arquivo;
+    char *conteudo;
+    //0 -> 4.294.967.295
+    unsigned long int posicao;
+    unsigned long int fim_arquivo;
+
+    unsigned int tamanho;
+    unsigned int tamanho_original;
+
+}Buffer;
+
 /*
 Armazena o conteudo de um arquivo em um buffer
 Necessita dar um free no ponteiro que recebe o retorno
 Verificar se o ultimo character eh um '\n', por fins de consistencia dos dados
 Caso nao for, ler menos character (nao ler mais devido a estouro de memoria)
 */
-//Melhorar msgs de erro
 void* loadBuffer(Buffer* buffer)
 {
     
@@ -20,7 +36,6 @@ void* loadBuffer(Buffer* buffer)
         {
             //Desaloca memoria do conteudo, caso houver
             free(buffer->conteudo);
-            //buffer->conteudo = NULL;
             //Aloca memoria suficiente para a leitura do bloco (+ um \0 por seguranca)
             buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 1));
             //Se conseguiu alocar memoria corretamente
@@ -53,29 +68,12 @@ void* loadBuffer(Buffer* buffer)
                 else
                 {
                     //Verificar essa associacao para NULL
-                    //buffer = NULL;
+                    buffer = NULL;
                     buffer->tamanho = buffer->tamanho_original;
-                    printf("LoadBuffer ERROR 4\n");
                 }
             }
-            else
-            {
-                printf("LoadBuffer ERROR 3 -> CONTEUDO NULO!\n");
-                printBuffer(buffer);
-                printf("AQUI %s\n", buffer->conteudo);
-            }
         }
-        else
-        {
-            printf("LoadBuffer ERROR 2\n");
-        }
-    }
-    else
-    {
-        printf("LoadBuffer ERROR 1\n");
-    }
-
-    return 0;
+    }   
 }
 
 //Necessario para definir quando meu buffer chegou ao fim do arquivo
@@ -101,7 +99,7 @@ unsigned long int calcula_tamanho_arquivo(char *nome_arquivo)
     return numbytes;
 }
 
-Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer)
+Buffer* criaBuffer(char *nome_arquivo, int tamanho_buffer)
 {
     //Alocando memoria pro buffer em si
     Buffer* buffer = (Buffer*) malloc(sizeof(Buffer));
@@ -111,6 +109,7 @@ Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer)
     
     //Calculando o tamanho do arquivo
     buffer->fim_arquivo = calcula_tamanho_arquivo(buffer->nome_arquivo);
+
     //Abrindo o arquivo
     buffer->arquivo = fopen(buffer->nome_arquivo, "r");
     if(buffer->arquivo == NULL)
@@ -129,10 +128,6 @@ Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer)
     buffer->tamanho_original = tamanho_buffer;
 
     buffer->conteudo = NULL;
-
-    //Para matriz
-    buffer->pos_atual_matriz = 0;
-    buffer->pos_max_matriz = 0;
     return buffer;
 }
 
@@ -143,10 +138,12 @@ void freeBuffer(Buffer* buffer)
     free(buffer);
 }
 
-void freeBufferLista(Buffer* buffer)
+//Limpa o conteudo de um arquivo, tornando-o em branco
+void cria_reset_file(char *nome_arquivo)
 {
-    free(buffer->conteudo);
-    fclose(buffer->arquivo);
+    FILE *file;
+    file = fopen(nome_arquivo, "w");
+    fclose(file);
 }
 
 void merging_buffers_to_file(char nome_arquivo_destino[], Buffer *buffer1, Buffer *buffer2)
@@ -272,14 +269,11 @@ void printBuffer(Buffer* buffer)
     printf("ARQUIVO: %s\n", buffer->nome_arquivo);
     printf("POSICAO: %ld\n", buffer->posicao);
     printf("FIM_ARQUIVO: %ld\n", buffer->fim_arquivo);
-    printf("TAMANHO: %ld\n", buffer->tamanho);
-    printf("TAMANHO_ORIGINAL: %ld\n", buffer->tamanho_original);
-    printf("CONTEUDO:%s\n", buffer->conteudo);
-    printf("POSICAO ATUAL MATRIZ: %ld\n", buffer->pos_atual_matriz);
-    printf("POSICAO MAX MATRIZ: %ld\n", buffer->pos_max_matriz);
+    printf("TAMANHO: %d\n", buffer->tamanho);
+    printf("TAMANHO_ORIGINAL: %d\n", buffer->tamanho_original);
+    printf("CONTEUDO:%s", buffer->conteudo);
     printf("\n------\n");
 }
-
 /*
 Nome arquivo nao eh necessario limpar, visto
 que ao atribuir um novo novo, eh usado o strcpy
@@ -294,9 +288,94 @@ void limpaBuffer(Buffer* buffer)
     buffer->tamanho = 0;
     buffer->tamanho_original = 0;
 }
-
-//Verificar onde vai ficar
 /*
+1 == Arquivo existe
+0 == Arquivo nao existe
+*/
+int arquivoExiste(char *nome_arquivo)
+{
+    FILE *arquivo;
+    if(arquivo = fopen(nome_arquivo, "r"))
+    {
+        fclose(arquivo);
+        return 1;
+    }
+    else return 0;
+}
+
+//So consigo deletar se o arquivo existir
+void deletaArquivo(char *nome_arquivo)
+{
+    if(arquivoExiste(nome_arquivo)) remove(nome_arquivo);
+}
+
+/*
+Recebe como argumento arquivos ordenados para merging sem repeticao
+Ultimo char do arquivo eh necessario ser um '\n' (POR ENQUANTO. Futuras melhorias virao)
+*/
+int main_original(int argc, char *argv[])
+{
+    printf("..Criando diretorios e arquivos de saida...\n");
+    //Criando a pasta de arquivos de saida
+    char *nome_pasta_saida = "Arquivos_Saida";
+    mkdir(nome_pasta_saida, 0777);
+    
+    //Arquivos de saida
+    char nome_arquivo_aux[50], nome_arquivo_final[50];
+    strcpy(nome_arquivo_aux, nome_pasta_saida);
+    strcpy(nome_arquivo_final, nome_pasta_saida);
+
+    strcat(nome_arquivo_final, "/arquivo_final.txt");
+    strcat(nome_arquivo_aux, "/arquivo_aux.txt");
+    
+
+    cria_reset_file(nome_arquivo_aux);
+    cria_reset_file(nome_arquivo_final);
+
+    Buffer* buffer_1 = NULL;
+    Buffer* buffer_2 = NULL;
+
+    buffer_1 = criaBuffer(argv[1], 200);
+    buffer_2 = criaBuffer(argv[2], 200);
+
+    printf("...Realizando merging...\n");
+    //realizando o merging do primeiro e segundo arquivo
+    merging_files(nome_arquivo_aux, buffer_1, buffer_2);
+
+    //Limpando o conteudo do buffer 1 e 2
+    limpaBuffer(buffer_1);
+    limpaBuffer(buffer_2);
+
+    /*
+    Com o merging dos dois arquivos realizados, hora de fazer o merging do terceiro.
+    O buffer 1 agora aponta para o arquivo mergiado anteriormente
+    e o buffer 2 aponta para o terceiro arquivo.
+    */
+    buffer_1 = criaBuffer(nome_arquivo_aux, 200);
+    buffer_2 = criaBuffer(argv[3], 200);
+
+    /*
+    Realizando merging com os 3 arquivos.
+    (arquivo mergiado anteriormente + o terceiro arquivo)
+    */
+    merging_files(nome_arquivo_final, buffer_1, buffer_2);
+
+    //Desalocando memoria dos ponteiros de TAD criados (buffers);
+    freeBuffer(buffer_1);
+    freeBuffer(buffer_2);
+
+    //Removendo arquivo auxiliar
+    deletaArquivo(nome_arquivo_aux);
+
+    printf("...Mergin finalizado...\n");
+    return 0;
+}
+
+/*
+Dado uma string, separador e a posicao
+retorna a palavra da respectiva posicao da string.
+--> A Frase original eh modificada, portanto, recomenda-se passar uma copia.
+*/
 char *get_word(char frase[], char separador[], int posicao)
 {
     if(posicao < 0) return NULL;
@@ -311,25 +390,80 @@ char *get_word(char frase[], char separador[], int posicao)
         item = strtok_r(NULL, separador, &saveptr);
         i++;
     }
+    //printf("ITEM: %s\n", item);
     return item;
 }
-*/
-/*
-int calcula_tam_buffer_to_vetor(Buffer* buffer, char separador[])
+
+//MAIN DE TESTE
+int main(int argc, char *argv[])
 {
-    int tam = 0;
-    char *token = NULL;
-    char *copy_frase = strdup(buffer->conteudo);
-
-    token = strtok(copy_frase, separador);
-    while(token != NULL)
+    if(argc < 2)
     {
-        tam++;
-        token = strtok(NULL, separador);
+        printf("ERROR: Argumentos pendentesssssssss!\n");
+        return 0;
     }
-
-    free(copy_frase);
-    return tam;
+    printf("..Criando diretorios e arquivos de saida...\n");
+    //Criando a pasta de arquivos de saida
+    char *nome_pasta_saida = "Arquivos_Saida";
+    mkdir(nome_pasta_saida, 0777);
     
+    //Arquivos de saida
+    char nome_arquivo_aux[50], nome_arquivo_final[50];
+    
+    strcpy(nome_arquivo_aux, nome_pasta_saida);
+    strcpy(nome_arquivo_final, nome_pasta_saida);
+
+    strcat(nome_arquivo_final, "/arquivo_final.txt");
+    strcat(nome_arquivo_aux, "/arquivo_aux.txt");
+
+    cria_reset_file(nome_arquivo_aux);
+    cria_reset_file(nome_arquivo_final);
+
+    Buffer* buffer_1 = NULL;
+    Buffer* buffer_2 = NULL;
+
+    buffer_1 = criaBuffer(argv[1], 100);
+    loadBuffer(buffer_1);
+    printBuffer(buffer_1);
+    //O mesmo que: copy_frase = malloc(strlen(frase)+1) => strcpy(copy_frase, frase)
+    char *copia_conteudo = strdup(buffer_1->conteudo);
+    char *encontra_dados = get_word(copia_conteudo, "\n", 0);
+    printf("Dados: %s\n", encontra_dados);
+
+    char *conteudo = get_word(encontra_dados, ",", 0);
+    printf("Conteudo: %s\n", conteudo);
+
+    printf("...Realizando merging...\n");
+    //realizando o merging do primeiro e segundo arquivo
+    //merging_files(nome_arquivo_aux, buffer_1, buffer_2);
+
+    //Limpando o conteudo do buffer 1 e 2
+    //limpaBuffer(buffer_1);
+    //limpaBuffer(buffer_2);
+
+    /*
+    Com o merging dos dois arquivos realizados, hora de fazer o merging do terceiro.
+    O buffer 1 agora aponta para o arquivo mergiado anteriormente
+    e o buffer 2 aponta para o terceiro arquivo.
+    */
+    //buffer_1 = criaBuffer(nome_arquivo_aux, 200);
+    //buffer_2 = criaBuffer(argv[3], 200);
+
+    /*
+    Realizando merging com os 3 arquivos.
+    (arquivo mergiado anteriormente + o terceiro arquivo)
+    */
+    //merging_files(nome_arquivo_final, buffer_1, buffer_2);
+
+    //Desalocando memoria dos ponteiros de TAD criados (buffers);
+    freeBuffer(buffer_1);
+    //freeBuffer(buffer_2);
+
+    //Desacolando memoria das variaveis auxiliares
+    free(copia_conteudo);
+    //Removendo arquivo auxiliar
+    deletaArquivo(nome_arquivo_aux);
+
+    printf("...Mergin finalizado...\n");
+    return 0;
 }
-*/
