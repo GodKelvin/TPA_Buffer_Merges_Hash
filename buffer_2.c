@@ -20,6 +20,7 @@ void* loadBuffer(Buffer* buffer)
         {
             //Desaloca memoria do conteudo, caso houver
             free(buffer->conteudo);
+            //buffer->conteudo = NULL;
             //Aloca memoria suficiente para a leitura do bloco (+ um \0 por seguranca)
             buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char) + 1));
             //Se conseguiu alocar memoria corretamente
@@ -61,6 +62,7 @@ void* loadBuffer(Buffer* buffer)
             {
                 printf("LoadBuffer ERROR 3 -> CONTEUDO NULO!\n");
                 printBuffer(buffer);
+                printf("AQUI %s\n", buffer->conteudo);
             }
         }
         else

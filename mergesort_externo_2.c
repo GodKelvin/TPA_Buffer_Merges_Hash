@@ -9,7 +9,7 @@
 
 //Tamanho MAXIMO em bytes na RAM
 //#define N 200000
-#define N 20000
+#define N 200000
 
 void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
@@ -117,7 +117,6 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada)
             matriz_buffer[i] = malloc(255 * sizeof(char));
         }
         */
-
         buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
         
         //Ordena os dados utilizando o quick_sort para strings
@@ -284,7 +283,7 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
     unsigned long int numArqs = criarArquivosOrdenados(nome_arquivo_entrada);
-    printf("Quantidade de Arquivos: %ld\n", numArqs);
+    printf("--> Quantidade de Arquivos: %ld\n", numArqs);
 
     //N == Tamanho que a RAM comporta
     //k == numero de buffers que vao ser criados
@@ -292,7 +291,7 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida)
     para a ram e fazer a intercalacao*/
 
     unsigned long int k = N / (numArqs + 1);
-    printf("Pedaco RAM pra cada arquivo == %ld\n", k);
+    printf("--> Pedaco de RAM pra cada arquivo == %ld\n", k);
     
     //Cria o arquivo de saida e ja ordenado
     merge(nome_arq_saida, numArqs, k);
@@ -319,7 +318,8 @@ int main()
     mkdir("Arquivos_Saida", 0700);
     
     //char nome_arquivo_entrada[] = "Arquivos_Entrada/teste2.csv";
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada1.csv";
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada4.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste500k.csv";
     //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv";
 
     //char nome_arquivo_saida_teste[] = "Arquivos_Saida/saida_quick_sort.txt";
@@ -341,7 +341,7 @@ int main()
 
     
     
-    char nome_arquivo_saida[] = "Arquivos_Saida/saida_me.txt";
+    char nome_arquivo_saida[] = "Arquivos_Saida/saida_me500k.txt";
     cria_reset_file(nome_arquivo_saida);
     mergeSortExterno(nome_arquivo_entrada, nome_arquivo_saida);
     printf("TUDO CERTO!\n");
