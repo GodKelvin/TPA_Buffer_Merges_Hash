@@ -173,6 +173,29 @@ void show_ht(HashT *hashtable)
     }
 }
 
+void destroy_ht(HashT *hashtable)
+{
+    printf("\n...Destroy Hashtable...\n... ...\n");
+    CellHT *cell;
+    CellHT *next;
+    for(int i = 0; i < hashtable->size; i++)
+    {
+        cell = hashtable->buckets[i];
+        while(cell != NULL)
+        {
+            next = cell->next_cell;
+            free(cell->value);
+            free(cell->key);
+            free(cell);
+            cell = next;
+        }
+    }
+
+    free(hashtable->buckets);
+    free(hashtable);
+    printf("...Destroy Finish...\n");
+}
+
 //Criar funcao para destruir a matriz
 //Testar get cell
 int main(int argc, char **argv)
@@ -195,5 +218,6 @@ int main(int argc, char **argv)
     char key_teste[] = "Nome6";
     printf("CHAVE: %s, VALOR: %s\n", key_teste, get_value_ht(hashtable, key_teste));
 
+    destroy_ht(hashtable);
     return 0;
 }
