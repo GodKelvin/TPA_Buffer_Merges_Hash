@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-//MODIFICAR ISSO AQUI
-#define TABLE_SIZE 4
-
 typedef struct HashT HashT;
 typedef struct CellHT CellHT;
 
@@ -26,7 +22,6 @@ struct CellHT
 
 struct HashT
 {
-
     CellHT **buckets;
     unsigned long int size;
 };
@@ -55,7 +50,7 @@ HashT *create_ht(unsigned long size_ht)
 
 //Calcula qual vai ser a chave hash do respectivo valor
 //Renomear para hash_ht
-unsigned int hash(char *key)
+unsigned int hash(unsigned long int table_size, char *key)
 {
     unsigned long int value = 0;
     unsigned int key_len = strlen(key);
@@ -63,11 +58,11 @@ unsigned int hash(char *key)
     //Gerando a chave
     for(int i = 0; i < key_len; i++)
     {
-        value = value * 37 + key[i];
+        value = value * 15 + key[i];
     }
 
     //Associando a respectiva posicao da tabela de hash
-    value = value % TABLE_SIZE;
+    value = value % table_size;
 
     return value;
 }
@@ -91,7 +86,7 @@ CellHT *create_cell_ht(char *key, char *value)
 void set_value_ht(HashT *hashtable, char *key, char *value)
 {
     //Calcula a chave
-    unsigned long int slot = hash(key);
+    unsigned long int slot = hash(hashtable->size, key);
 
     //Captura o valor dessa posicao da tabela
     CellHT *cell = hashtable->buckets[slot];
@@ -129,7 +124,7 @@ void set_value_ht(HashT *hashtable, char *key, char *value)
 char *get_value_ht(HashT *hashtable, char *key)
 {
     //Calcula a chave
-    unsigned long int slot = hash(key);
+    unsigned long int slot = hash(hashtable->size, key);
 
     //Tenta encontrar um valor no slot da chave
     CellHT *cell = hashtable->buckets[slot];
@@ -201,17 +196,17 @@ void destroy_ht(HashT *hashtable)
 int main(int argc, char **argv)
 {
     //printf("%d\n", hash("em"));
-    HashT *hashtable = create_ht(4);
+    HashT *hashtable = create_ht(10000);
 
 
     set_value_ht(hashtable, "Nome1", "KELVIN LEHRBACK");
-    set_value_ht(hashtable, "Nome2", "CLARA LEHRBACK");
-    set_value_ht(hashtable, "Nome3", "KELEN LEHRBACK");
-    set_value_ht(hashtable, "Nome4", "VALDECI DOS SANTOS LEHRBACK");
-    set_value_ht(hashtable, "Nome5", "LUCAS LEHRBACK");
-    set_value_ht(hashtable, "Nome6", "RICHIELI LEHRBACK");
-    set_value_ht(hashtable, "Nome7", "JANE LEHRBACK");
-    set_value_ht(hashtable, "Nome8", "CARLOS LEHRBACK");
+    set_value_ht(hashtable, "Nome2", "a");
+    set_value_ht(hashtable, "Nome32", "RBACK");
+    set_value_ht(hashtable, "Nome4", "Fiofi");
+    set_value_ht(hashtable, "Nome5", "Perdido");
+    set_value_ht(hashtable, "Nome6", "Teste");
+    set_value_ht(hashtable, "Marcelle", "SHELDON");
+    set_value_ht(hashtable, "Nome8", "Teste 5");
 
     show_ht(hashtable);
     printf("\n");

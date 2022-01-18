@@ -16,7 +16,8 @@ void cria_reset_file(char *nome_arquivo)
 int arquivoExiste(char *nome_arquivo)
 {
     FILE *arquivo;
-    if(arquivo = fopen(nome_arquivo, "r"))
+    arquivo = fopen(nome_arquivo, "r");
+    if(arquivo)
     {
         fclose(arquivo);
         return 1;

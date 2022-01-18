@@ -294,30 +294,29 @@ void limpaBuffer(Buffer* buffer)
     buffer->tamanho = 0;
     buffer->tamanho_original = 0;
 }
-
-//Verificar onde vai ficar
-/*
-char *get_word(char frase[], char separador[], int posicao)
+///////////
+//DEIXAR AQUI MESMO???
+void get_word(char destino[], char frase[], char separador[], unsigned long int posicao)
 {
-    if(posicao < 0) return NULL;
-
+    char *copy_conteudo = strdup(frase);
     char *item = NULL, *saveptr = NULL;
-    int i = 0;
+    unsigned long int i = 0;
 
-    item = strtok_r(frase, separador, &saveptr);
+    item = strtok_r(copy_conteudo, separador, &saveptr);
     //Captura a palavra da respectiva posicao
     while(i < posicao)
     {
         item = strtok_r(NULL, separador, &saveptr);
         i++;
     }
-    return item;
+
+    strcpy(destino, item);
+    free(copy_conteudo);
 }
-*/
-/*
-int calcula_tam_buffer_to_vetor(Buffer* buffer, char separador[])
+
+unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
 {
-    int tam = 0;
+    unsigned long int tam = 0;
     char *token = NULL;
     char *copy_frase = strdup(buffer->conteudo);
 
@@ -332,4 +331,35 @@ int calcula_tam_buffer_to_vetor(Buffer* buffer, char separador[])
     return tam;
     
 }
-*/
+
+void buffer_to_matriz(Buffer* buffer, char matriz[][255], unsigned long int tam_matriz)
+{
+    //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
+    for(unsigned long int i = 0; i < tam_matriz; i++)
+    {
+        get_word(matriz[i], buffer->conteudo, "\n", i);
+    }
+}
+
+void print_matriz(char matriz[][255], unsigned long int tam_matriz)
+{
+    printf("-----\n");
+    for(unsigned long int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
+    printf("-----\n");
+}
+
+//Salva uma matriz de strings num arquivo
+//Recebe o nome do arquivos de destino, a matriz de strings e o tamanha da mesma
+void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int tam_matriz)
+{
+    FILE *file_dest = NULL;
+    file_dest = fopen(nome_arquivo, "w");
+    if(file_dest)
+    {
+        for(unsigned long int i = 0; i < tam_matriz; i++)
+        {
+            fprintf(file_dest, "%s\n", matriz[i]);
+        }
+    }
+    fclose(file_dest);
+}

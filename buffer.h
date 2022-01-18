@@ -33,5 +33,11 @@ void limpaBuffer(Buffer* buffer);
 void* loadBuffer(Buffer* buffer);
 unsigned long int calcula_tamanho_arquivo(char *nome_arquivo);
 Buffer* criaBuffer(char *nome_arquivo, unsigned long int tamanho_buffer);
+//
+unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[]);
+void buffer_to_matriz(Buffer* buffer, char matriz[][255], unsigned long int tam_matriz);
+void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int tam_matriz);
+void print_matriz(char matriz[][255], unsigned long int tam_matriz);
+void get_word(char destino[], char frase[], char separador[], unsigned long int posicao);
 
 #endif

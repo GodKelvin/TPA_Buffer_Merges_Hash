@@ -1,6 +1,7 @@
 COMPILAR ATUAL EM ANDAMENTO
-gcc buffer_2.c buffer_2.h utils_vector_2.c utils_vector_2.h mergesort_externo_2.c -o exec
-gcc buffer.c buffer.h utils_vector.c utils_vector.h mergesort_externo.c -o exec
+gcc -Wall -pedantic buffer.c buffer.h utils_vector.c utils_vector.h mergesort_externo.c -o exec
+EXECUTAR
+./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_me.txt 10500
 
 
 -> Calcular tamanho do arquivo para averiguar o espaço dele em RAM!
@@ -21,3 +22,7 @@ trabalhando atualmente no hashing : gcc -Wall -pedantic hashing.c -o exec
 
 Referencia:
 set_value_ht(hashtable, "Nome1", "KELVIN LEHRBACK");
+
+
+
+//PASSAR FUNCOES DO BUFFER DO MERGE SORT EXTERNO PARA O ARQUIVO DE BUFFER
