@@ -27,10 +27,17 @@ void print_cell(CellHT *cell)
         printf("NULL\n"); 
         return;
     }
-    printf("| Nome Completo: %s\n", cell->key);
-    printf("| Telefone: %s\n", cell->phone);
-    printf("| Cidade: %s\n", cell->city);
-    printf("| Pais: %s\n", cell->country);
+    /*
+    printf("Nome Completo: %s", cell->key);
+    printf("| Telefone: %s", cell->phone);
+    printf("| Cidade: %s", cell->city);
+    printf("| Pais: %s", cell->country);
+    */
+    printf("%s| ", cell->key);
+    printf("%s| ", cell->phone);
+    printf("%s| ", cell->city);
+    printf("%s", cell->country);
+    printf("\n");
 }
 
 //Criando a matriz de Hash
@@ -148,10 +155,6 @@ CellHT *get_value_ht(HashT *hashtable, char *key)
     //Tenta encontrar um valor no slot da chave
     CellHT *cell = hashtable->buckets[slot];
 
-    //Nada encontrado
-    //if(cell == NULL) return NULL;
-    if(cell == NULL) return NULL;
-
     //Caso encontre um hash da respectiva chave, verificar se eh a mesma chave
     while(cell != NULL)
     {
@@ -167,7 +170,6 @@ CellHT *get_value_ht(HashT *hashtable, char *key)
 
     //Encontrou nada
     return NULL;
-    //return;
 }
 
 void show_ht(HashT *hashtable)
@@ -178,7 +180,7 @@ void show_ht(HashT *hashtable)
         CellHT *cell = hashtable->buckets[i];
         if(cell == NULL) continue;
 
-        printf("slot[%4d]:\n", i);
+        printf("slot[%2d]:\n", i);
 
         while(cell != NULL)
         {
@@ -213,6 +215,8 @@ void destroy_ht(HashT *hashtable)
     free(hashtable);
 }
 
+
+
 //Testar get cell
 int main(int argc, char **argv)
 {
@@ -220,23 +224,14 @@ int main(int argc, char **argv)
     HashT *hashtable = create_ht(10000);
 
     set_value_ht(hashtable, "Kelvin", "999999999", "Cariacica", "Brasil");
+    set_value_ht(hashtable, "Jamila", "999393939", "Manaus", "Brasil");
+    set_value_ht(hashtable, "Temila", "999393939", "Manaus", "Brasil");
     set_value_ht(hashtable, "Camila", "999393939", "Manaus", "Brasil");
-
-    /*
-    set_value_ht(hashtable, "Nome32", "RBACK");
-    set_value_ht(hashtable, "Nome4", "Fiofi");
-    set_value_ht(hashtable, "Nome5", "Perdido");
-    set_value_ht(hashtable, "Nome6", "Teste");
-    set_value_ht(hashtable, "Marcelle", "SHELDON");
-    set_value_ht(hashtable, "Nome8", "Teste 5");
-    */
 
     show_ht(hashtable);
     printf("\n");
-    CellHT * get_cell = get_value_ht(hashtable, "Kelvin");
+    CellHT * get_cell = get_value_ht(hashtable, "aa");
     print_cell(get_cell);
-    //char key_teste[] = "Nome6";
-    //printf("CHAVE: %s, VALOR: %s\n", key_teste, get_value_ht(hashtable, key_teste));
 
     destroy_ht(hashtable);
     return 0;
