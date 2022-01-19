@@ -7,14 +7,15 @@ typedef struct CellHT CellHT;
 
 struct CellHT
 {
-    
-    //char *complete_name;
     char *key;
     char *phone;
     char *city;
-    char *country;
-
     CellHT* next_cell;
+
+    /*
+    char *city;
+    char *country;
+    */
     
 };
 
@@ -29,9 +30,8 @@ void print_cell(CellHT *cell)
     printf("Nome Completo: %s\n", cell->key);
     printf("Telefone: %s\n", cell->phone);
     printf("Cidade: %s\n", cell->city);
-    printf("Pais: %s\n", cell->country);
+    //printf("Pais: %s\n", cell->country);
 }
-
 
 //Criando a matriz de Hash
 HashT *create_ht(unsigned long size_ht)
@@ -74,27 +74,24 @@ unsigned int hash(unsigned long int table_size, char *key)
 }
 
 //Criando uma celula dado os valores
-//Chave == Nome Completo
-CellHT *create_cell_ht(char *key, char *phone, char *city, char *country)
+CellHT *create_cell_ht(char *key, char *phone, char *city)
 {
-    CellHT *cell = malloc(sizeof(cell) * 1);
-    cell->key = malloc(strlen(key) + 1);
-    cell->phone = malloc(strlen(phone) + 1);
-    cell->city = malloc(strlen(city) + 1);
-    cell->country = malloc(strlen(country) + 1);
+    CellHT *cell = (CellHT*) malloc(sizeof(cell));
+    cell->key = (char*) malloc(strlen(key) + 1);
+    cell->phone = (char*) malloc(strlen(phone) + 1);
+    cell->city = (char*) malloc(strlen(city) + 1);
 
-    //Armazena os dados
+    //Alterar para os dados do trabalho
     strcpy(cell->key, key);
     strcpy(cell->phone, phone);
     strcpy(cell->city, city);
-    strcpy(cell->country, country);
 
-    //print_cell(cell);
     cell->next_cell = NULL;
+
     return cell;
 }
 
-void set_value_ht(HashT *hashtable, char *key, char *phone, char *city, char *country)
+void set_value_ht(HashT *hashtable, char *key, char *phone, char *city)
 {
     //Calcula a chave
     unsigned long int slot = hash(hashtable->size, key);
@@ -105,33 +102,26 @@ void set_value_ht(HashT *hashtable, char *key, char *phone, char *city, char *co
     //Se o slot estiver vazio, seta o valor
     if(!cell)
     {
-        hashtable->buckets[slot] = create_cell_ht(key, phone, city, country);
+        hashtable->buckets[slot] = create_cell_ht(key, phone, city);
         return;
     }
 
-    printf("OPAAAAAAAAa\n");
     //Se nao estiver vazio: necessario atualizar ou inserir na proxima celula do slot
     CellHT *prev;
     while(cell != NULL)
     {
         //Chaves iguais e hashs iguais logo, atualizar valor
-        //ATUALIZA TUDO
+        //Atualizar para telefone, cidade e pais
         if(strcmp(cell->key, key) == 0)
         {
-            //Libera os dados
             free(cell->phone);
             free(cell->city);
-            free(cell->country);
 
-            //Alloca com base nos valores informados
             cell->phone = malloc(sizeof(phone) + 1);
             cell->city = malloc(sizeof(city) + 1);
-            cell->country = malloc(sizeof(country) + 1);
 
-            //Armazena
             strcpy(cell->phone, phone);
             strcpy(cell->city, city);
-            strcpy(cell->country, country);
             return;
         }
 
@@ -141,11 +131,11 @@ void set_value_ht(HashT *hashtable, char *key, char *phone, char *city, char *co
     }
 
     //Se chegou ao fim do slot e nao encontrou uma celula de mesma chave, cria uma nova no slot
-    prev->next_cell = create_cell_ht(key, phone, city, country);
+    prev->next_cell = create_cell_ht(key, phone, city);
 }
 
 //char *get_value_ht(HashT *hashtable, char *key)
-CellHT *get_value_ht(HashT *hashtable, char *key)
+void get_value_ht(HashT *hashtable, char *key)
 {
     //Calcula a chave
     unsigned long int slot = hash(hashtable->size, key);
@@ -154,7 +144,8 @@ CellHT *get_value_ht(HashT *hashtable, char *key)
     CellHT *cell = hashtable->buckets[slot];
 
     //Nada encontrado
-    if(cell == NULL) return NULL;
+    //if(cell == NULL) return NULL;
+    if(cell == NULL) return;
 
     //Caso encontre um hash da respectiva chave, verificar se eh a mesma chave
     while(cell != NULL)
@@ -162,7 +153,7 @@ CellHT *get_value_ht(HashT *hashtable, char *key)
         //Se a chave for a mesma informada, ou seja, hash e chaves iguais, sucesso
         if(strcmp(cell->key, key) == 0)
         {
-            return cell;
+            //print_cell(cell);
         }
 
         //Se nao for a mesma chave informada, tenta verificar se possui uma proxima celula de mesma chave
@@ -170,7 +161,8 @@ CellHT *get_value_ht(HashT *hashtable, char *key)
     }
 
     //Encontrou nada
-    return NULL;
+    //return NULL;
+    return;
 }
 
 void show_ht(HashT *hashtable)
@@ -180,11 +172,11 @@ void show_ht(HashT *hashtable)
         CellHT *cell = hashtable->buckets[i];
         if(cell == NULL) continue;
 
-        printf("slot[%4d]: ", i);
+        printf("slot[%4d]:\n", i);
 
         for(;;)
         {
-            printf("%s => %s / %s / %s ", cell->key, cell->phone, cell->city, cell->country);
+            //printf("%s= %s / %s ", cell->key, cell->phone, cell->city);
             //print_cell(cell);
             if(cell->next_cell == NULL) break;
             cell = cell->next_cell;
@@ -192,8 +184,6 @@ void show_ht(HashT *hashtable)
         printf("\n");
     }
 }
-
-
 
 void destroy_ht(HashT *hashtable)
 {
@@ -206,18 +196,20 @@ void destroy_ht(HashT *hashtable)
         while(cell != NULL)
         {
             print_cell(cell);
+            printf("\n");
             next = cell->next_cell;
             
-            free(cell->key);
             free(cell->phone);
             free(cell->city);
-            free(cell->country);
-            free(cell);
+            free(cell->key);
+            //free(cell);
             cell = next;
         }
+        free(hashtable->buckets[i]);
     }
 
-    free(hashtable->buckets);
+    //if(hashtable->buckets == NULL) printf("NULO TBM");
+    printf("Destruindo buckets\n");
     free(hashtable);
     printf("...Destroy Finish...\n");
 }
@@ -229,10 +221,10 @@ int main(int argc, char **argv)
     //printf("%d\n", hash("em"));
     HashT *hashtable = create_ht(10000);
 
-    
-    set_value_ht(hashtable, "Nome1", "998989", "Cariacica", "Brasil");
+    set_value_ht(hashtable, "Kelvin Lehrback", "999523517", "Cariacica");
+    set_value_ht(hashtable, "Marcelle Camila", "999393939", "Manaus");
+
     /*
-    set_value_ht(hashtable, "Nome2", "a");
     set_value_ht(hashtable, "Nome32", "RBACK");
     set_value_ht(hashtable, "Nome4", "Fiofi");
     set_value_ht(hashtable, "Nome5", "Perdido");
@@ -241,13 +233,10 @@ int main(int argc, char **argv)
     set_value_ht(hashtable, "Nome8", "Teste 5");
     */
 
-    
     show_ht(hashtable);
-    /*
     printf("\n");
-    char key_teste[] = "Nome6";
-    printf("CHAVE: %s, VALOR: %s\n", key_teste, get_value_ht(hashtable, key_teste));
-    */
+    //char key_teste[] = "Nome6";
+    //printf("CHAVE: %s, VALOR: %s\n", key_teste, get_value_ht(hashtable, key_teste));
 
     destroy_ht(hashtable);
     return 0;
