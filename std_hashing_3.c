@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+//
+#include "buffer.h"
+#include "arquivo.h"
 typedef struct HashT HashT;
 typedef struct CellHT CellHT;
 
@@ -57,7 +59,6 @@ HashT *create_ht(unsigned long size_ht)
 }
 
 //Calcula qual vai ser a chave hash do respectivo valor
-//Renomear para hash_ht
 unsigned int hash(unsigned long int table_size, char *key)
 {
     unsigned long int value = 0;
@@ -115,7 +116,6 @@ void set_value_ht(HashT *hashtable, char *key, char *phone, char *city, char *co
     while(cell != NULL)
     {
         //Chaves iguais e hashs iguais logo, atualizar valor
-        //Atualizar para telefone, cidade e pais
         if(strcmp(cell->key, key) == 0)
         {
             free(cell->phone);
@@ -141,7 +141,6 @@ void set_value_ht(HashT *hashtable, char *key, char *phone, char *city, char *co
     prev->next_cell = create_cell_ht(key, phone, city, country);
 }
 
-//char *get_value_ht(HashT *hashtable, char *key)
 CellHT *get_value_ht(HashT *hashtable, char *key)
 {
     //Calcula a chave
@@ -169,6 +168,8 @@ CellHT *get_value_ht(HashT *hashtable, char *key)
 
 void show_ht(HashT *hashtable)
 {
+    printf("----------\n");
+    printf("Size Hashtable: %ld\n", hashtable->size);
     printf("----------\n");
     for(int i = 0; i < hashtable->size; i++)
     {
@@ -273,7 +274,7 @@ void update_country(CellHT *cell, char *new_country)
     strcpy(cell->country, new_country);
 }
 
-void write_ht_on_file(HashT *hashtable, char *file_name)
+void write_hashtablet_on_file(HashT *hashtable, char *file_name)
 {
     FILE *file = fopen(file_name, "w");
     CellHT *cell;
@@ -282,21 +283,40 @@ void write_ht_on_file(HashT *hashtable, char *file_name)
         cell = hashtable->buckets[i];
         while(cell != NULL)
         {
-            //printf("%s, %s, %s, %s\n", cell->key, cell->phone, cell->city, cell->country);
-            fprintf(file, "%s, %s, %s, %s\n", cell->key, cell->phone, cell->city, cell->country);
+            fprintf(file, "%s,%s,%s,%s\n", cell->key, cell->phone, cell->city, cell->country);
             cell = cell->next_cell;
         }
     }
     fclose(file);
 }
 
+HashT *load_file_on_hashtable(char *file_name)
+{
+    if(!arquivoExiste(file_name)) return NULL;
+
+    unsigned long int qtd_lines = size_file_in_lines(file_name);
+    HashT *hashtable = create_ht(qtd_lines * 1.5);
+
+    FILE *file = fopen(file_name, "r");
+    char complete_name[100], phone[15], city[50], country[50];
+
+    unsigned long int i = 0;
+    for(i = 0; i < qtd_lines; i++)
+    {
+        fscanf(file, "%[^,],%[^,],%[^,],%[^\n]\n", complete_name, phone, city, country);
+        set_value_ht(hashtable, complete_name, phone, city, country);
+    }
+    fclose(file);
+    return hashtable;
+}
+
 
 //Testar get cell
 int main(int argc, char **argv)
 {
-    //printf("%d\n", hash("em"));
-    HashT *hashtable = create_ht(3);
-
+    
+    /*
+    HashT *hashtable = create_ht(30000);
     set_value_ht(hashtable, "Kelvin", "999999999", "Cariacica", "Brasil");
     set_value_ht(hashtable, "Jamila", "999393939", "Manaus", "Brasil");
     set_value_ht(hashtable, "Temila", "999393939", "Manaus", "Brasil");
@@ -318,8 +338,16 @@ int main(int argc, char **argv)
     show_ht(hashtable);
 
     printf("ARQUIVO!\n");
-    write_ht_on_file(hashtable, "Teste.txt");
+    write_hashtablet_on_file(hashtable, "Teste.txt");
 
     destroy_ht(hashtable);
+    */
+    
+
+    
+    HashT *hashtable = load_file_on_hashtable("Arquivos_Entrada/entrada1.csv");
+    show_ht(hashtable);
+    destroy_ht(hashtable);
+    
     return 0;
 }
