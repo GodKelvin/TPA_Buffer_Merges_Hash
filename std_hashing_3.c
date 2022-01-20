@@ -273,6 +273,23 @@ void update_country(CellHT *cell, char *new_country)
     strcpy(cell->country, new_country);
 }
 
+void write_ht_on_file(HashT *hashtable, char *file_name)
+{
+    FILE *file = fopen(file_name, "w");
+    CellHT *cell;
+    for(int i = 0; i < hashtable->size; i++)
+    {
+        cell = hashtable->buckets[i];
+        while(cell != NULL)
+        {
+            //printf("%s, %s, %s, %s\n", cell->key, cell->phone, cell->city, cell->country);
+            fprintf(file, "%s, %s, %s, %s\n", cell->key, cell->phone, cell->city, cell->country);
+            cell = cell->next_cell;
+        }
+    }
+    fclose(file);
+}
+
 
 //Testar get cell
 int main(int argc, char **argv)
@@ -299,6 +316,9 @@ int main(int argc, char **argv)
 
     printf("UPDATE:\n");
     show_ht(hashtable);
+
+    printf("ARQUIVO!\n");
+    write_ht_on_file(hashtable, "Teste.txt");
 
     destroy_ht(hashtable);
     return 0;
