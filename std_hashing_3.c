@@ -27,12 +27,7 @@ void print_cell(CellHT *cell)
         printf("NULL\n"); 
         return;
     }
-    /*
-    printf("Nome Completo: %s", cell->key);
-    printf("| Telefone: %s", cell->phone);
-    printf("| Cidade: %s", cell->city);
-    printf("| Pais: %s", cell->country);
-    */
+    
     printf("%s| ", cell->key);
     printf("%s| ", cell->phone);
     printf("%s| ", cell->city);
@@ -195,6 +190,7 @@ void show_ht(HashT *hashtable)
 
 void free_cell(CellHT *cell)
 {
+    free(cell->key);
     free(cell->phone);
     free(cell->city);
     free(cell->country);
@@ -253,6 +249,29 @@ void delete_value_ht(HashT *hashtable, char *key)
     }
 }
 
+void update_phone(CellHT *cell, char *new_phone)
+{
+    if(cell == NULL) return;
+    free(cell->phone);
+    cell->phone = (char*)malloc(strlen(new_phone));
+    strcpy(cell->phone, new_phone);
+}
+
+void update_city(CellHT *cell, char *new_city)
+{
+    if(cell == NULL) return;
+    free(cell->city);
+    cell->city = (char*)malloc(strlen(new_city));
+    strcpy(cell->city, new_city);
+}
+
+void update_country(CellHT *cell, char *new_country)
+{
+    if(cell == NULL) return;
+    free(cell->country);
+    cell->country = (char*)malloc(strlen(new_country));
+    strcpy(cell->country, new_country);
+}
 
 
 //Testar get cell
@@ -268,6 +287,15 @@ int main(int argc, char **argv)
 
     show_ht(hashtable);
     delete_value_ht(hashtable, "Temila");
+
+    CellHT *get_cell = get_value_ht(hashtable, "Kelvin");
+    update_phone(get_cell, "777777777");
+
+    get_cell = get_value_ht(hashtable, "Jamila");
+    update_city(get_cell, "Cariacica");
+
+    get_cell = get_value_ht(hashtable, "Camila");
+    update_country(get_cell, "EUA");
 
     printf("UPDATE:\n");
     show_ht(hashtable);
