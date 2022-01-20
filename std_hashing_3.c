@@ -193,6 +193,14 @@ void show_ht(HashT *hashtable)
     printf("----------\n");
 }
 
+void free_cell(CellHT *cell)
+{
+    free(cell->phone);
+    free(cell->city);
+    free(cell->country);
+    free(cell);
+}
+
 void destroy_ht(HashT *hashtable)
 {
     printf("\n...Destroy Hashtable...\n");
@@ -215,13 +223,43 @@ void destroy_ht(HashT *hashtable)
     free(hashtable);
 }
 
+void delete_value_ht(HashT *hashtable, char *key)
+{
+    unsigned long int slot = hash(hashtable->size, key);
+    CellHT *cell = hashtable->buckets[slot];
+
+    if(cell == NULL) return;
+
+    if(strcmp(cell->key, key) == 0)
+    {
+        //TOPO
+        hashtable->buckets[slot] = cell->next_cell;
+        free_cell(cell);
+        return;
+    }
+
+    CellHT *prev = cell;
+    cell = cell->next_cell;
+    while(cell != NULL)
+    {
+        if(strcmp(cell->key, key) == 0)
+        {
+            prev->next_cell = cell->next_cell;
+            free_cell(cell);
+            return;
+        }
+        prev = cell;
+        cell = cell->next_cell;
+    }
+}
+
 
 
 //Testar get cell
 int main(int argc, char **argv)
 {
     //printf("%d\n", hash("em"));
-    HashT *hashtable = create_ht(10000);
+    HashT *hashtable = create_ht(3);
 
     set_value_ht(hashtable, "Kelvin", "999999999", "Cariacica", "Brasil");
     set_value_ht(hashtable, "Jamila", "999393939", "Manaus", "Brasil");
@@ -229,9 +267,10 @@ int main(int argc, char **argv)
     set_value_ht(hashtable, "Camila", "999393939", "Manaus", "Brasil");
 
     show_ht(hashtable);
-    printf("\n");
-    CellHT * get_cell = get_value_ht(hashtable, "aa");
-    print_cell(get_cell);
+    delete_value_ht(hashtable, "Temila");
+
+    printf("UPDATE:\n");
+    show_ht(hashtable);
 
     destroy_ht(hashtable);
     return 0;
