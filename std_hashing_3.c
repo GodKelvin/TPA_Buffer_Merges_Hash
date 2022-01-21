@@ -22,6 +22,20 @@ struct HashT
     unsigned long int size;
 };
 
+void print_beuatiful_cell(CellHT *cell)
+{
+    if(cell == NULL) 
+    {
+        printf("Contato nao encontrado\n"); 
+        return;
+    }
+    
+    printf("Nome Completo: %s\n", cell->key);
+    printf("Telefone: %s\n", cell->phone);
+    printf("Cidade: %s\n", cell->city);
+    printf("Pais: %s\n", cell->country);
+}
+
 void print_cell(CellHT *cell)
 {
     if(cell == NULL) 
@@ -67,7 +81,7 @@ unsigned int hash(unsigned long int table_size, char *key)
     //Gerando a chave
     for(int i = 0; i < key_len; i++)
     {
-        value = value * 15 + key[i];
+        value = value * 11 + key[i];
     }
 
     //Associando a respectiva posicao da tabela de hash
@@ -283,7 +297,7 @@ void write_hashtablet_on_file(HashT *hashtable, char *file_name)
         cell = hashtable->buckets[i];
         while(cell != NULL)
         {
-            fprintf(file, "%s,%s,%s,%s\n", cell->key, cell->phone, cell->city, cell->country);
+            fprintf(file, "%s,%s,%s,%s,\n", cell->key, cell->phone, cell->city, cell->country);
             cell = cell->next_cell;
         }
     }
@@ -303,11 +317,42 @@ HashT *load_file_on_hashtable(char *file_name)
     unsigned long int i = 0;
     for(i = 0; i < qtd_lines; i++)
     {
-        fscanf(file, "%[^,],%[^,],%[^,],%[^\n]\n", complete_name, phone, city, country);
+        fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", complete_name, phone, city, country);
         set_value_ht(hashtable, complete_name, phone, city, country);
     }
     fclose(file);
     return hashtable;
+}
+
+void print_menu()
+{
+    printf("_____________MENU_______________\n");
+    printf("|1 --> Carregar arquivo.\t|\n");
+    printf("|2 --> Localizar Contato.\t|\n");
+    printf("|3 --> Inserir Novo Contato.\t|\n");
+    printf("|4 --> Excluir Contato.\t\t|\n");	
+    printf("|5 --> Atualizar Contato.\t|\n");
+	printf("|6 --> Visualizar HashTable.\t|\n");
+    printf("|7 --> Salvar Dados.\t\t|\n");
+    printf("|8 --> Sair do programa.\t|\n");
+    printf("________________________________|\n");
+
+}
+
+//Clear screen
+void clears()
+{
+	system("clear");
+}
+
+void print_menu_update()
+{
+	printf("_____UPDATE_____________________\n");
+	printf("|1 --> Atualizar Telefone.\t|\n");
+	printf("|2 --> Atualizar Cidade.\t|\n");
+	printf("|3 --> Atualizar Pais.\t\t|\n");
+	printf("|4 --> Voltar\t\t\t|\n");
+	printf("________________________________|\n");
 }
 
 
@@ -345,9 +390,249 @@ int main(int argc, char **argv)
     
 
     
-    HashT *hashtable = load_file_on_hashtable("Arquivos_Entrada/entrada1.csv");
-    show_ht(hashtable);
-    destroy_ht(hashtable);
+	/*
+    HashT *hashtable_2 = load_file_on_hashtable("Arquivos_Entrada/entrada1.csv");
+    show_ht(hashtable_2);
+    destroy_ht(hashtable_2);
+	*/
+	
+
+	//AJUSTAR FUNCOES PARA RETORNA CASO DE SUCESSO E CASO DE FALHA???
+	int option = 0;
+	char verify_option[100];
+	FILE *file = NULL;
+	HashT *hashtable = NULL;
+	char file_name[100];
+	char contact_name[100];
+	CellHT *find_contact;
+	char temp;
+	char del_contact[100];
+	char for_update[100];
+
+	while(option != 8)
+	{
+		if(hashtable != NULL) printf("-> Arquivo Carregado: %s\n", file_name);
+		print_menu();
+		printf("-----> Escolha uma opcao: ");
+		//scanf("%c", &temp);
+		//scanf("%d", &option);
+		scanf("%s", verify_option);
+		if(strlen(verify_option) > 1) option = 0;
+		else option = atoi(verify_option);
+		switch(option)
+		{
+			case 1:
+			{
+				if(!file)
+				{
+					clears();
+					printf("___CARREGAR ARQUIVO___\n");
+					printf("-> Nome do arquivo (Caminho completo): ");
+					scanf("%s", file_name);
+					if(arquivoExiste(file_name))
+					{
+						hashtable = load_file_on_hashtable("Arquivos_Entrada/entrada1.csv");
+					}
+					else
+					{
+						printf("--> ARQUIVO NAO ENCONTRADO.\n");
+					}
+
+				}
+				else
+				{
+					printf("-->ATENCAO: Primeiro salve os dados antes de carregar outro arquivo!\n");
+				}
+				break;
+			}
+			case 2:
+			{
+				if(hashtable != NULL)
+				{
+					//clears();
+					printf("___LOCALIZAR CONTATO___\n");
+					printf("-> Nome do contato: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", contact_name);
+
+					printf("BUSCA: %s\n", contact_name);
+					find_contact = get_value_ht(hashtable, contact_name);
+					print_beuatiful_cell(find_contact);
+					printf("\n");
+
+				}
+				else
+				{
+					clears();
+					printf("-->ATENCAO: Primeiro carregue um arquivo antes de realizar uma busca.\n");
+				}
+				break;
+			}
+			case 3:
+			{
+				if(hashtable != NULL)
+				{
+					clears();
+					char new_name[100];
+					char new_phone[100];
+					char new_city[100];
+					char new_country[100];
+					
+					printf("___INSERIR NOVO CONTATO__\n");
+					printf("--> OBS: Caso insira o nome de um contato ja existente, o mesmo sera atualizado POR COMPLETO, CUIDADO!\n");
+					//fgets(lixo, sizeof(lixo), stdin);
+					printf("Nome completo: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", new_name);
+					printf("\n");
+
+					printf("Telefone: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", new_phone);
+					printf("\n");
+
+					printf("Cidade: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", new_city);
+					printf("\n");
+
+					printf("Pais: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", new_country);
+					printf("\n");
+
+					set_value_ht(hashtable, new_name, new_phone, new_city, new_country);
+					printf("--> Contato inserido\n");
+				}
+				else
+				{
+					clears();
+					printf("-->ATENCAO: Primeiro carregue um arquivo antes de realizar uma insercao.\n");
+				}
+
+				break;
+			}
+			case 4:
+			{
+				if(hashtable != NULL)
+				{
+					printf("___EXCLUIR CONTATO___\n");
+					printf("Nome do contato para exclusao: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", del_contact);
+					printf("\n");
+					delete_value_ht(hashtable, del_contact);
+				}
+				else
+				{
+					clears();
+					printf("-->ATENCAO: Primeiro carregue um arquivo antes de realizar uma exclusao.\n");
+				}
+				break;
+			}
+			case 5:
+			{
+				if(hashtable != NULL)
+				{
+					int update = 0;
+					printf("___ATUALIZAR CONTATO___\n");
+					printf("Nome do contato para atualizacao: ");
+					scanf("%c", &temp);
+					scanf("%[^\n]s", contact_name);
+					find_contact = get_value_ht(hashtable, contact_name);
+
+					if(find_contact == NULL)
+					{
+						//Sair do loop
+						clears();
+						printf("--> Contato nao encontrado\n");
+						update = 4;
+					} 
+					print_beuatiful_cell(find_contact);
+					printf("\n");
+					while(update != 4)
+					{
+
+						print_menu_update();
+						printf("-> O que desejas atualizar? ");
+						scanf("%d", &update);
+
+						switch(update)
+						{
+							//Telefone
+							case 1:
+							{
+								printf("-> Atualizar Telefone: ");
+								scanf("%c", &temp);
+								scanf("%[^\n]s", for_update);
+								update_phone(find_contact, for_update);
+								break;	
+							}
+							//Cidade
+							case 2:
+							{	
+								printf("-> Atualizar Cidade: ");
+								scanf("%c", &temp);
+								scanf("%[^\n]s", for_update);
+								update_city(find_contact, for_update);
+								break;
+							}
+							//Pais
+							case 3:
+							{
+								printf("-> Atualizar Pais: ");
+								scanf("%c", &temp);
+								scanf("%[^\n]s", for_update);
+								update_country(find_contact, for_update);
+								break;
+							}
+							default:
+								printf("--Opcao invalida!--\n");
+						}
+					}
+				}
+				else
+				{	
+					printf("-->ATENCAO: Primeiro carregue um arquivo antes de realizar uma atualizacao.\n");
+				}
+				break;
+			}
+			case 6:
+			{
+				if(hashtable != NULL)
+				{
+					show_ht(hashtable);
+				}
+				else
+				{
+					printf("-->ATENCAO: Primeiro carregue um arquivo antes de visualizar a tabela.\n");
+				}
+				break;
+			}
+			case 7:
+			{
+				if(hashtable != NULL)
+				{
+					printf("___SALVAR DADOS___\n");
+					write_hashtablet_on_file(hashtable, file_name);
+				}
+				else
+				{
+					printf("-->ATENCAO: Primeiro carregue um arquivo antes de salvar.\n");
+				}
+				break;
+			}
+			case 8:
+			{
+				printf("Bye Bye!\n");
+				break;
+			}
+			//Criar funcao para fechar arquivo
+			default:
+				printf("--->OPCAO INVALIDA <---\n");
+
+		}
+	}
     
     return 0;
 }
