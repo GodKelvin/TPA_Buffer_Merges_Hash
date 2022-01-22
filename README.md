@@ -1,5 +1,5 @@
 COMPILAR ATUAL EM ANDAMENTO
-gcc -Wall -pedantic buffer.c buffer.h utils_vector.c utils_vector.h mergesort_externo.c -o exec
+gcc -Wall -pedantic buffer.c buffer.h utils_vector.c utils_vector.h mergesort_externo.c arquivo.c arquivo.h -o exec
 EXECUTAR
 ./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_me.txt 10500
 

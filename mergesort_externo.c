@@ -23,21 +23,31 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada, unsigned lo
     //Enquanto nao estiver chegado ao fim do arquivo
     while(buffer->posicao < buffer->fim_arquivo)
     {
+        printf("OPA1\n");
         nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
         qtd_arquivos++;
 
         //Define nome do arquivo temporario
         sprintf(nome_arquivos_temp, "Arquivos_Saida/Temp%ld.txt", qtd_arquivos);
         //Carrega os dados
+        printf("OPA1.2\n");
         loadBuffer(buffer);
-
+        printf("OPA1.3\n");
+        printf("OPA2\n");
         //Calcula a quantidade de linhas para o respectivo arquivo
         unsigned long int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
 
         //Cria a matrix de string, com base no buffer lido (UTILIZAR MALLOC?)
-        char matriz_buffer[tamanho_matriz][255];
-        buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
         
+        //char matriz_buffer[tamanho_matriz][255];
+        char **matriz_buffer = (char**)malloc(tamanho_matriz * sizeof(char*));
+        for(int i = 0; i < tamanho_matriz; i++)
+        {
+            matriz_buffer[i] = (char*)malloc(255 * sizeof(char));
+            //printf("I == %d\n", i);
+        }
+        printf("OPA3\n");
+        buffer_to_matriz(buffer, matriz_buffer, tamanho_matriz);
         //Ordena os dados utilizando o quick_sort para strings
         quick_sort_string(matriz_buffer, 0, tamanho_matriz-1);
 
@@ -45,7 +55,17 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada, unsigned lo
         matriz_to_file(nome_arquivos_temp, matriz_buffer, tamanho_matriz);
 
         free(nome_arquivos_temp);
+        printf("OPA4\n");
+        /*
+        for(int i = 0; i < tamanho_matriz; i++)
+        {
+            printf("OK\n");
+            free(matriz_buffer[i]);
+        }
+        */
+        //free(matriz_buffer);
     }
+    printf("ACABOU\n");
     freeBuffer(buffer);
 
 
@@ -94,6 +114,7 @@ int procuraMenor(Buffer **lista_buffers, int numArqs, char menor[])
         }
     }
 
+    
     if(pos != -1)
     {
         unsigned long int tamanho_matriz_menor = calcula_tam_buffer_to_matriz(lista_buffers[pos], "\n");
@@ -102,6 +123,7 @@ int procuraMenor(Buffer **lista_buffers, int numArqs, char menor[])
 
         //Copia o menor valor encontrado (valor esse que pega na funcao de baixo dentro do loop)
         strcpy(menor, matriz_buffer_menor[lista_buffers[pos]->pos_atual_matriz]);
+        //printf("%s\n", menor);
 
         lista_buffers[pos]->pos_atual_matriz++;
         //Se chegou ao tamanho maximo da matriz
@@ -198,7 +220,7 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida, unsigned
     Retorna o numero de arquivos que foram criados*/
     unsigned long int numArqs = criarArquivosOrdenados(nome_arquivo_entrada, tam_ram);
     printf("--> Quantidade de Arquivos: %ld\n", numArqs);
-
+    
     //k == numero de buffers que vao ser criados
     /*ou seja, k eh o tamanho que comporta pelo menos um pedacinho de cada arquivo para levar
     para a ram e fazer a intercalacao*/
