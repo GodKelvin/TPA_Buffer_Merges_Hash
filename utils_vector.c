@@ -55,7 +55,7 @@ int get_pos_pivo_string(char **matriz, int inicio, int fim)
     int index, desloca;
     char pivo[200], aux[200];
     strcpy(pivo, matriz[fim]);
-    //pivo = vetor[fim];
+
     index = inicio;
     desloca = inicio;
     
@@ -154,20 +154,6 @@ int busca_binaria_string(char alvo[], char matriz[][200], int tam)
         {
             lim_inf = meio + 1;
         }
-        /*
-        if(alvo == vetor[meio])
-        {
-            return 1;
-        }
-        else if(alvo < vetor[meio])
-        {
-            lim_sup = meio - 1;
-        }
-        else
-        {
-            lim_inf = meio + 1;
-        }
-        */
     }
     return 0;
 }
@@ -180,7 +166,6 @@ OBS: **vetor == endereco do vetor, necessario pois esta sendo allocado dentro de
 */
 int file_to_vetor(char *nome_arquivo, int **vetor)
 {
-    //printf("%s\n", nome_arquivo);
     int tam;
     FILE *arquivo = fopen(nome_arquivo, "r");
     if(!arquivo) 

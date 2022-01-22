@@ -333,11 +333,9 @@ unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
 
 void buffer_to_matriz(Buffer* buffer, char **matriz, unsigned long int tam_matriz)
 {
-    //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
     for(unsigned long int i = 0; i < tam_matriz; i++)
     {
         get_word(matriz[i], buffer->conteudo, "\n", i);
-        //printf("i = %ld\n", i);
     }
 }
 
