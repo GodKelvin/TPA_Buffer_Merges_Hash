@@ -12,7 +12,7 @@ criar funcao de matriz to buffer (file?)
 
 //
 merge sort nos arquivos _2
-trabalhando atualmente no hashing : gcc -Wall -pedantic hashing.c -o exec
+trabalhando atualmente no hashing : gcc -Wall -pedantic std_hashing_2.c buffer.c buffer.h arquivo.c arquivo.h -o exec_2
 
 
 
@@ -26,3 +26,5 @@ set_value_ht(hashtable, "Nome1", "KELVIN LEHRBACK");
 
 
 //PASSAR FUNCOES DO BUFFER DO MERGE SORT EXTERNO PARA O ARQUIVO DE BUFFER
+
+//QUANTO MENOR A QUANTIDADE DE ARQUIVOS, MAIS LENTO FICA

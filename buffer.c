@@ -16,21 +16,11 @@ void* loadBuffer(Buffer* buffer)
     {
         //Deslocando para a posicao de leitura do arquivo indicada pelo buffer
         //E se nao houver erro ao fazer isso,
-        //printf("BUFFER 1\n");
         if(fseek(buffer->arquivo, buffer->posicao, SEEK_SET) == 0)
         {
-            //printf("BUFFER 2\n");
-            //Desaloca memoria do conteudo, caso houver
-            //printBuffer(buffer);
-            //if(buffer->conteudo != NULL) free(buffer->conteudo);
-            //printf("TAMANHO BUFFER: %ld\n", buffer->tamanho);
-            //if(buffer->tamanho == buffer->tamanho_original)
-            printBuffer(buffer);
             free(buffer->conteudo);
-            printf("PASSOU AQUI\n");
-            //buffer->conteudo = NULL;
+
             //Aloca memoria suficiente para a leitura do bloco (+ um \0 por seguranca)
-            //printf("BUFFER 3\n");
             buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char)) + (sizeof(char)));
             //Se conseguiu alocar memoria corretamente
             if(buffer->conteudo != NULL)
@@ -45,7 +35,6 @@ void* loadBuffer(Buffer* buffer)
                     //Verificando se o ultimo char eh um '\n'
                     if((strcmp(&buffer->conteudo[new_tam-1], "\n") != 0))
                     {
-                        //free(buffer->conteudo);
                         buffer->conteudo = NULL;
                         //Diminui em um o tamanho do buffer, ate encontrar um '\n'
                         buffer->tamanho--;
@@ -59,13 +48,11 @@ void* loadBuffer(Buffer* buffer)
                         buffer->conteudo[new_tam++] = '\0';
                         buffer->posicao += buffer->tamanho;
                         buffer->tamanho = buffer->tamanho_original;
-                        //printBuffer(buffer);
                     }
                 }
                 else
                 {
-                    //Verificar essa associacao para NULL
-                    //buffer = NULL;
+                    printBuffer(buffer);
                     buffer->tamanho = buffer->tamanho_original;
                     printf("LoadBuffer ERROR 4\n");
                 }
@@ -344,17 +331,17 @@ unsigned long int calcula_tam_buffer_to_matriz(Buffer* buffer, char separador[])
     
 }
 
-void buffer_to_matriz(Buffer* buffer, char matriz[][255], unsigned long int tam_matriz)
+void buffer_to_matriz(Buffer* buffer, char **matriz, unsigned long int tam_matriz)
 {
     //int tamanho_matriz = calcula_tam_buffer_to_matriz(buffer, "\n");
     for(unsigned long int i = 0; i < tam_matriz; i++)
     {
-        
         get_word(matriz[i], buffer->conteudo, "\n", i);
+        //printf("i = %ld\n", i);
     }
 }
 
-void print_matriz(char matriz[][255], unsigned long int tam_matriz)
+void print_matriz(char **matriz, unsigned long int tam_matriz)
 {
     printf("-----\n");
     for(unsigned long int i = 0; i < tam_matriz; i++) printf("%s\n", matriz[i]);
@@ -363,7 +350,7 @@ void print_matriz(char matriz[][255], unsigned long int tam_matriz)
 
 //Salva uma matriz de strings num arquivo
 //Recebe o nome do arquivos de destino, a matriz de strings e o tamanha da mesma
-void matriz_to_file(char nome_arquivo[], char matriz[][255], unsigned long int tam_matriz)
+void matriz_to_file(char nome_arquivo[], char **matriz, unsigned long int tam_matriz)
 {
     FILE *file_dest = NULL;
     file_dest = fopen(nome_arquivo, "w");
