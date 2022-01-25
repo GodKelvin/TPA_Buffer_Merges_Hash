@@ -232,9 +232,21 @@ void merge(char *nome_arq_saida, int numArqs, unsigned long int pedaco_ram)
     free(buffer);
 }
 
+void delete_temp_files(int numArqs)
+{
+    char arquivos_temp[50];
+    //Apagar os arquivos temporarios  
+    printf("[...Apagando arquivos temporarios...]\n")  ;
+    for(int i = 0; i< numArqs; i++)
+    {
+        //Formata o nome dos arquivos e os apaga
+        sprintf(arquivos_temp, "Arquivos_Saida/Temp%d.txt", i+1);
+        remove(arquivos_temp);
+    }
+}
+
 void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida, unsigned long int tam_ram)
 {
-    char arquivos_temp[100];
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
     unsigned long int numArqs = criarArquivosOrdenados(nome_arquivo_entrada, tam_ram);
@@ -244,19 +256,21 @@ void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida, unsigned
     /*ou seja, pedaco_ram eh o tamanho que comporta pelo menos um pedacinho de cada arquivo para levar
     para a ram e fazer a intercalacao*/
     unsigned long int pedaco_ram = tam_ram / (numArqs + 1);
-    printf("--> Pedaco de RAM pra cada arquivo: %ld Bytes\n", pedaco_ram);
-    
-    //Cria o arquivo de saida e ja ordenado
-    merge(nome_arq_saida, numArqs, pedaco_ram);
 
-    //Apagar os arquivos temporarios  
-    printf("[...Apagando arquivos temporarios...]\n")  ;
-    for(int i = 0; i< numArqs; i++)
+    printf("--> Pedaco de RAM pra cada arquivo: %ld Bytes\n", pedaco_ram);
+    /*Em media, cada linha eh 200 bytes, portanto, o pedaco de ram deve ser maior que isso
+    dada a quantidade de RAM disponivel*/
+    if(pedaco_ram > 200)
     {
-        //Formata o nome dos arquivos e os apaga
-        sprintf(arquivos_temp, "Arquivos_Saida/Temp%d.txt", i+1);
-        remove(arquivos_temp);
+        //Cria o arquivo de saida e ja ordenado
+        merge(nome_arq_saida, numArqs, pedaco_ram);
+        printf("--> Arquivo ordenado com sucesso!\n--> Saida: %s\n", nome_arq_saida);
     }
+    else
+    {
+        printf("--> Pedaco de RAM insuficiente.\n");
+    }
+    delete_temp_files(numArqs);
 }
 
 //argv[1] == Arquivo de Entrada, argv[2] == Arquivo de Saida
@@ -293,7 +307,6 @@ int main(int argc, char *argv[])
 
     //Exemplo de tamanhos em bytes: 151200, 10500
     mergeSortExterno(argv[1], argv[2], tam_ram);
-    printf("--> Arquivo ordenado com sucesso!\n--> Saida: %s\n", argv[2]);
     
     return 0;
 }
