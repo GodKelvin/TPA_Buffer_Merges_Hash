@@ -40,7 +40,7 @@ unsigned long int criarArquivosOrdenados(char *nome_arquivo_entrada, unsigned lo
     //Enquanto nao estiver chegado ao fim do arquivo
     while(buffer->posicao < buffer->fim_arquivo)
     {
-        nome_arquivos_temp = (char*) malloc(200 * sizeof(char));
+        nome_arquivos_temp = (char*) malloc(50 * sizeof(char));
         qtd_arquivos++;
 
         //Define nome do arquivo temporario

@@ -83,7 +83,7 @@ unsigned long int calcula_tamanho_arquivo(char *nome_arquivo)
 {
     FILE *arquivo;
     arquivo = fopen(nome_arquivo, "r");
-    unsigned long int numbytes;
+    unsigned long int numbytes = 0;
     if(fseek(arquivo, 0, SEEK_END) == 0)
     {
         numbytes = ftell(arquivo);
