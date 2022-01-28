@@ -14,6 +14,7 @@ criar funcao de matriz to buffer (file?)
 merge sort nos arquivos _2
 trabalhando atualmente no hashing : gcc -Wall -pedantic std_hashing_2.c buffer.c buffer.h arquivo.c arquivo.h -o exec_2
 
+k-way-merge:  gcc -Wall -pedantic k_way_merge.c -o exec
 
 
 ## Merge externo
@@ -31,7 +32,7 @@ set_value_ht(hashtable, "Nome1", "KELVIN LEHRBACK");
 
 
 Arquivo 500k:
--Tamanho da ram: 105000
+-Tamanho da ram: 105.000
 
 Arquivo 1M: 
--Tamanho da ram: 200000
+-Tamanho da ram: 195.400

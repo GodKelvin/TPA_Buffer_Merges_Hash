@@ -35,6 +35,7 @@ void* loadBuffer(Buffer* buffer)
                     //Verificando se o ultimo char eh um '\n'
                     if((strcmp(&buffer->conteudo[new_tam-1], "\n") != 0))
                     {
+                        //APONTAR PARA NULL???
                         buffer->conteudo = NULL;
                         //Diminui em um o tamanho do buffer, ate encontrar um '\n'
                         buffer->tamanho--;
