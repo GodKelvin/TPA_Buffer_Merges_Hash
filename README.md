@@ -50,3 +50,5 @@ Executar: valgrind --leak-check=full ./exec
 valgrind --leak-check=full --track-origins=yes --log-file=valgrind_output.txt ./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_me.txt 10500
 
 ///REFATORAR CRIAR MATRIZ?????????????????????
+
+/MERGE SORT EXTERNO DEPENDE DA QUANTIDADE DE LINHAS LIDAS

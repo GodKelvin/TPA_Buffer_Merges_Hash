@@ -132,6 +132,11 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
     
     //Para verificar em qual arquivo escrever
     int flag_file = 1;
+    int write_file_1 = 0;
+    int write_file_2 = 0;
+
+    int read_file_1 = 0;
+    int read_file_2 = 0;
     while(total_linhas_lidas)
     {
         matriz = cria_matriz(tamanho_matriz);
@@ -141,42 +146,79 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
         pos_matriz = 0;
         linhas_lidas = 0;
 
-        //Leio da origem 1 e 2
+        //Leio da origem 1
         linhas_lidas = file_to_matriz(arq_origem_1, matriz, qtd_linhas, pos_matriz);
+        if(linhas_lidas) read_file_1 = 1;
         total_linhas_lidas += linhas_lidas;
         pos_matriz = linhas_lidas;
+
+        //Leio da origem 2
         linhas_lidas = file_to_matriz(arq_origem_2, matriz, qtd_linhas, pos_matriz);
+        if(linhas_lidas) read_file_2 = 1;
         total_linhas_lidas += linhas_lidas;
+
+        //Ordeno os elementos
         quick_sort_string(matriz, 0, total_linhas_lidas-1);
-        print_matriz(matriz, total_linhas_lidas);
 
         //Salvo no arquivo dependendo da flag
         if(flag_file)
         {
             append_matriz_to_file(arq_destino_1, matriz, total_linhas_lidas);
             flag_file = 0;
+            write_file_1 = 1;
         }
         else
         {
             append_matriz_to_file(arq_destino_2, matriz, total_linhas_lidas);
             flag_file = 1;
+            write_file_2 = 1;
         }
         free_matriz(matriz, total_linhas_lidas);
     }
+
+    //Se eu escrevi nos dois arquivos, entao nao terminou
+    
+    if(write_file_1 && write_file_2 && read_file_1 && read_file_2)
+    {
+        
+        
+        fclose(arq_origem_1);
+        fclose(arq_origem_2);
+        fclose(arq_destino_1);
+        fclose(arq_destino_2);
+
+        //Limpo os dois arquivos de destino;
+        cria_reset_file(origem_1);
+        cria_reset_file(origem_2);
+
+        //Duplica a quantidade de linhas, pois ja se foi uma RUN
+        qtd_linhas *= 2;
+
+        //Agora os arquivos de origem sao os arquivos de destinos anteriores
+        printf("W1: %d\nW2: %d\nR1: %d\nR2: %d\n", write_file_1, write_file_2, read_file_1, read_file_2);   
+        //int a;
+        //scanf("%d", &a);
+
+        run_merging(qtd_linhas, dest_1, dest_2, origem_1, origem_2);
+        
+    }
+    else
+    {
+        fclose(arq_origem_1);
+        fclose(arq_origem_2);
+        fclose(arq_destino_1);
+        fclose(arq_destino_2);
+    }
     
 
-    //print_matriz(matriz, total_linhas_lidas);
 
-    fclose(arq_origem_1);
-    fclose(arq_origem_2);
-    fclose(arq_destino_1);
-    fclose(arq_destino_2);
 }
 
 //void mergeSortExterno()
 int main()
 {
     char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada1.csv" ;
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste500k.csv" ;
 
     //Nome dos arquivos de Saida
     char aux_arq_1[] = "Arquivos_Saida/aux_arq_1.csv";
@@ -195,9 +237,8 @@ int main()
     //Divido o arquivo original ao meio
     half_file(nome_arquivo_entrada, aux_arq_1, aux_arq_2);
 
+    int run = 1000;
     //Quantidade de linhas dobra a cada rodada, iniciando em 1
-    run_merging(1, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
-
-
+    run_merging(run, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
     return 0;
 }
