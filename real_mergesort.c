@@ -63,10 +63,12 @@ void file_to_matriz(char *nome_arquivo, char **matriz, unsigned long int qtd_lin
         {
             //int leu = fscanf(arquivo, "%[^\n] ", &(*matriz)[pos_matriz]);
             int leu = fscanf(arquivo, "%[^\n] ", matriz[pos_matriz]);
-            //int leu = fscanf(arquivo, "%[^\n] ", line);
+            
+            //Apenas lixo de memoria
             leu++;
-            //printf("%s\n", line);
-            //printf("%s\n", matriz[pos_matriz]);
+            leu = 0;
+
+            //Avanco a posicao da matriz e informo que li uma linha
             pos_matriz++;
             tam++;
         }
@@ -75,13 +77,20 @@ void file_to_matriz(char *nome_arquivo, char **matriz, unsigned long int qtd_lin
 }
 
 //Recebe o tamanho das rodadas, arquivos de origem e de destino
-void run_merging(int number_rodadas, char *origem_1, char *origem_2, char *dest_1, char *dest2)
+//A quantidade de linhas dobra a cada rodada.
+void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, char *dest_1, char *dest2)
 {
     unsigned long int pos_matriz = 0;
-    /*EX: Rodada 1 == 2 linhas de cada arquivo.
-    2 linhas de cada arquivo == 4 posicoes na matriz*/
-    unsigned long int qtd_linhas = number_rodadas * 2;
-    unsigned long int tamanho_matriz = number_rodadas * 4;
+    /*EX: Rodada 1 == 1 linhas de cada arquivo.
+    1 linhas de cada arquivo == 2 posicoes na matriz.
+    
+    Rodada 2 == 2 linhas de cada arquivo.
+    2 linhas de cada arquivo == 4 posicoes na matriz.
+    
+    Rodada 3 == 4 linhas de cada arquivo.
+    4 linhas de cada arquivo == 8 posicoes na matriz*/
+    //unsigned long int qtd_linhas = number_rodadas * 2;
+    unsigned long int tamanho_matriz = qtd_linhas * 2;
 
     char **matriz = (char**)malloc(tamanho_matriz * sizeof(char*));
     for(unsigned long int i = 0; i < tamanho_matriz; i++)
@@ -90,7 +99,9 @@ void run_merging(int number_rodadas, char *origem_1, char *origem_2, char *dest_
     }
     
     file_to_matriz(origem_1, matriz, qtd_linhas, pos_matriz);
-    print_matriz(matriz, qtd_linhas);
+    pos_matriz = qtd_linhas;
+    file_to_matriz(origem_2, matriz, qtd_linhas, pos_matriz);
+    print_matriz(matriz, tamanho_matriz);
     free_matriz(matriz, tamanho_matriz);
     
 
@@ -118,7 +129,9 @@ int main()
     
     //Divido o arquivo original ao meio
     half_file(nome_arquivo_entrada, aux_arq_1, aux_arq_2);
-    run_merging(1, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
+
+    //Quantidade de linhas dobra a cada rodada, iniciando em 1
+    run_merging(4, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
 
 
     return 0;
