@@ -4,8 +4,21 @@
 //Criados por mim
 #include "buffer.h"
 #include "arquivo.h"
+#include "utils_vector.h"
 
 //MOVER PARA O ARQUIVO DE UTILS VECTOR?
+
+char **cria_matriz(unsigned long int tamanho_matriz)
+{
+    char **matriz = (char**)malloc(tamanho_matriz * sizeof(char*));
+    for(int i = 0; i < tamanho_matriz; i++)
+    {
+        matriz[i] = (char*)malloc(200 * sizeof(char));
+    }
+
+    return matriz;
+}
+
 void free_matriz(char **matriz, unsigned long int tamanho_matriz)
 {
     for(unsigned long int i = 0; i < tamanho_matriz; i++)
@@ -48,38 +61,55 @@ void half_file(char *nome_arquivo, char* half_arquivo_1, char *half_arquivo_2)
 
 //Dada a quantidade de linhas, armazena numa matriz
 //Receber tambem a posicao da matriz para dar continuidade a insercao
-void file_to_matriz(char *nome_arquivo, char **matriz, unsigned long int qtd_linhas, unsigned long int pos_matriz)
+unsigned long int file_to_matriz(FILE *arquivo, char **matriz, unsigned long int qtd_linhas, unsigned long int pos_matriz)
 {
-    int tam = 0;
-    FILE *arquivo = fopen(nome_arquivo, "r");
-    if(!arquivo)
+    unsigned long int tam = 0;
+    //Nao posso fechar o arquivo nessa funcao, pois perco o ponteiro de linha
+    while(tam < qtd_linhas && (fscanf(arquivo, "%[^\n] ", matriz[pos_matriz]) != EOF))
     {
-        printf("Nao foi possivel abrir o arquivo: %s\n", nome_arquivo);
-        return;
+        //Avanco a posicao da matriz e informo que li uma linha
+        pos_matriz++;
+        tam++;
     }
-    else
-    {
-        while(tam < qtd_linhas)
-        {
-            //int leu = fscanf(arquivo, "%[^\n] ", &(*matriz)[pos_matriz]);
-            int leu = fscanf(arquivo, "%[^\n] ", matriz[pos_matriz]);
-            
-            //Apenas lixo de memoria
-            leu++;
-            leu = 0;
+    /*Informo quantas linhas eu li,
+    pois o arquivo pode terminar antes da quantidade de linhas informado*/
+    return tam;
+}
 
-            //Avanco a posicao da matriz e informo que li uma linha
-            pos_matriz++;
-            tam++;
-        }
+void append_matriz_to_file(FILE *arquivo, char **matriz, unsigned long int tam_matriz)
+{
+    for(unsigned long int i = 0; i < tam_matriz; i++)
+    {
+        fprintf(arquivo, "%s\n", matriz[i]);
     }
-    fclose(arquivo);
 }
 
 //Recebe o tamanho das rodadas, arquivos de origem e de destino
 //A quantidade de linhas dobra a cada rodada.
-void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, char *dest_1, char *dest2)
+void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, char *dest_1, char *dest_2)
 {
+    FILE *arq_origem_1 = fopen(origem_1, "r");
+    FILE *arq_origem_2 = fopen(origem_2, "r");
+    FILE *arq_destino_1 = fopen(dest_1, "a");
+    FILE *arq_destino_2 = fopen(dest_2, "a");
+
+    if(arq_origem_1 == NULL) 
+    {
+        printf("ERROR ARQUIVO: %s\n", origem_1); return;
+    }
+    if(arq_origem_2 == NULL) 
+    {
+        printf("ERROR ARQUIVO: %s\n", origem_2); return;
+    }
+    if(arq_destino_1 == NULL) 
+    {
+        printf("ERROR ARQUIVO: %s\n", dest_1); return;
+    }
+    if(arq_destino_2 == NULL)
+    {
+        printf("ERROR ARQUIVO: %s\n", dest_2); return;
+    }
+
     unsigned long int pos_matriz = 0;
     /*EX: Rodada 1 == 1 linhas de cada arquivo.
     1 linhas de cada arquivo == 2 posicoes na matriz.
@@ -92,20 +122,55 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
     //unsigned long int qtd_linhas = number_rodadas * 2;
     unsigned long int tamanho_matriz = qtd_linhas * 2;
 
-    char **matriz = (char**)malloc(tamanho_matriz * sizeof(char*));
-    for(unsigned long int i = 0; i < tamanho_matriz; i++)
+    char **matriz = NULL;
+
+    
+    unsigned long int linhas_lidas = 0;
+    //Comeca com 1 apenas para iniciar o loop
+    unsigned long int total_linhas_lidas = 1;
+
+    
+    //Para verificar em qual arquivo escrever
+    int flag_file = 1;
+    while(total_linhas_lidas)
     {
-        matriz[i] = (char*)malloc(200 * sizeof(char));
+        matriz = cria_matriz(tamanho_matriz);
+
+        //Reseto as variaveis utilizadas
+        total_linhas_lidas = 0;
+        pos_matriz = 0;
+        linhas_lidas = 0;
+
+        //Leio da origem 1 e 2
+        linhas_lidas = file_to_matriz(arq_origem_1, matriz, qtd_linhas, pos_matriz);
+        total_linhas_lidas += linhas_lidas;
+        pos_matriz = linhas_lidas;
+        linhas_lidas = file_to_matriz(arq_origem_2, matriz, qtd_linhas, pos_matriz);
+        total_linhas_lidas += linhas_lidas;
+        quick_sort_string(matriz, 0, total_linhas_lidas-1);
+        print_matriz(matriz, total_linhas_lidas);
+
+        //Salvo no arquivo dependendo da flag
+        if(flag_file)
+        {
+            append_matriz_to_file(arq_destino_1, matriz, total_linhas_lidas);
+            flag_file = 0;
+        }
+        else
+        {
+            append_matriz_to_file(arq_destino_2, matriz, total_linhas_lidas);
+            flag_file = 1;
+        }
+        free_matriz(matriz, total_linhas_lidas);
     }
     
-    file_to_matriz(origem_1, matriz, qtd_linhas, pos_matriz);
-    pos_matriz = qtd_linhas;
-    file_to_matriz(origem_2, matriz, qtd_linhas, pos_matriz);
-    print_matriz(matriz, tamanho_matriz);
-    free_matriz(matriz, tamanho_matriz);
-    
 
+    //print_matriz(matriz, total_linhas_lidas);
 
+    fclose(arq_origem_1);
+    fclose(arq_origem_2);
+    fclose(arq_destino_1);
+    fclose(arq_destino_2);
 }
 
 //void mergeSortExterno()
@@ -131,7 +196,7 @@ int main()
     half_file(nome_arquivo_entrada, aux_arq_1, aux_arq_2);
 
     //Quantidade de linhas dobra a cada rodada, iniciando em 1
-    run_merging(4, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
+    run_merging(1, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
 
 
     return 0;
