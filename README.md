@@ -226,11 +226,26 @@ Simplesmente impeço tal ação. Tais impedimentos também ocorrem ao tentar rea
 <b> Opção 2: Localizar Contato </b>
 Com um contato existente na tabela (lembrando que a tabela ja esta carregada com o arquivo informado).
 
-![]()
+![contato_existe](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/contato_existe.png)
 
 
 Com um contato que não existe na tabela.
+![contato_nao_existe](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/contato_nao_existe.png)
+
+<b> Opção 3: Inserir novo contato </b>
+Vamos então inserir o contato não encontrado.
+
 ![]()
+
+E em seguida, buscar esse mesmo contato, que antes deu como não encontrado.
+
+![]()
+
+<b> Opção 4: Excluir Contato </b>
+Vamos tentar excluir o contato do Thomas e em seguida, tentar buscar ele na tabela.
+
+![]()
+
 
 
 
