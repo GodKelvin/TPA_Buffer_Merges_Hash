@@ -257,7 +257,23 @@ Vamos atualizar o país do Kelvin, por exemplo.
 
 Primeiro selecionamos a opção e digitamos o nome do contato. Em seguida, é aberto um submenu (dentro da categoria de atualização), nos perguntando o que queremos atualizar, vamos escolher a opção 3, referente à atualização do país.
 
-![atualizando_pais]()
+![atualizando_pais](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/atualizar_contato.png)
+
+E ao buscar o contato novamente, vemos o seu país atualizado.
+
+![contato_atualizado]()
+
+<b> Opção 6: Visualizando HashTable </b>
+
+O arquivo de entrada contém 10 mil registros, e o tamanho da tabela, eu defini sendo como: A quantidade de registros do arquivo carregado * 1.5, ou seja, um arquivo com 10 mil registros cria uma tabela com 15 mil posições. 
+
+Obviamente não é possivel mostrar todo o conteúdo da tabela no terminal, sendo assi, mostro o inicio e o fim da mesma.
+
+![inicio_ht]()
+
+![fim_ht]()
+
+
 
 
 
