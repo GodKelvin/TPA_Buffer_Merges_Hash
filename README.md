@@ -197,6 +197,10 @@ Vamos supor que eu queira inserir um elemento (uma célula) na tabela, cuja chav
 
 Porém, eu quero adicionar outro valor cuja chave é "Melvin", isso pode gerar uma colisão se a tabela for muito pequeno ou a função de gerar hash não conter um bom retorno. Caso gere um hash que retorne a mesma posição de "Kelvin", eu não posso apagar o registro de "Kelvin", e sim, faço com que a célula que contém as informações de "Kelvin" apontem para a célula que contém as informações de "Melvin", ou seja, ambas as células estão na mesma posição da tabela, porém o que difere eles é a chave "Kelvin" e "Melvin", e caso eu queira as informações de "Melvin", terei que primeiro acessar a célula de "Kelvin", pois é ele que contém o ponteiro para a célula de busca.
 
+Então dado um arquivo de entrada, fazemos operações na Hash Table.
+
+Tais como: <b>Carregar arquivo, Localizar Contato, inserir novo contato, excluir contato, atualizar contato, salvar dados e sair do programa.</b>
+
 ## Vamos ver como fica no terminal
 Para compilar:<br>
 <i><b>gcc -Wall -pedantic hashing.c buffer.c buffer.h arquivo.c arquivo.h -o exec</b></i>
@@ -205,6 +209,14 @@ Para executar:<br>
 <i><b>./exec</b></i>
 
 <b>Menu</b>
-![menuHT]()
+![menuHT](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/menuHT.png)
+
+<b> Opção 1: Carregando um arquivo </b>
+![load_file](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/carregando_arquivoHT.png)
+
+Dependendo da opção selecionada, eu escolhi limpar a tela do terminal para uma melhor visualização.
+
+E se eu tentar buscar algum contato sem ter um arquivo carregado?
+![impedindo](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/impedindo_carregar_arquivo.png)
 
 
