@@ -208,11 +208,11 @@ Para compilar:<br>
 Para executar:<br>
 <i><b>./exec</b></i>
 
-<b>Menu</b>
+## Menu
 
 ![menuHT](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/menuHT.png)
 
-<b> Opção 1: Carregando um arquivo </b>
+## Opção 1: Carregando um arquivo
 
 ![load_file](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/carregando_arquivoHT.png)
 
@@ -223,7 +223,7 @@ E se eu tentar buscar algum contato sem ter um arquivo carregado?
 
 Simplesmente impeço tal ação. Tais impedimentos também ocorrem ao tentar realizar as demais ações sem ter um arquivo carregado.
 
-<b> Opção 2: Localizar Contato </b>
+## Opção 2: Localizar Contato
 Com um contato existente na tabela (lembrando que a tabela ja esta carregada com o arquivo informado).
 
 ![contato_existe](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/contato_existe.png)
@@ -232,7 +232,7 @@ Com um contato existente na tabela (lembrando que a tabela ja esta carregada com
 Com um contato que não existe na tabela.
 ![contato_nao_existe](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/contato_nao_existe.png)
 
-<b> Opção 3: Inserir novo contato </b>
+## Opção 3: Inserir novo contato
 Vamos então inserir o contato não encontrado.
 
 ![inserindo](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/buscando_contato.png)
@@ -243,7 +243,7 @@ E em seguida, buscar esse mesmo contato, que antes deu como não encontrado.
 
 E está ai as informações que inserimos anteriormente.
 
-<b> Opção 4: Excluir Contato </b>
+## Opção 4: Excluir Contato
 
 Vamos tentar excluir o contato do Thomas e em seguida, tentar buscar ele na tabela.
 
@@ -251,7 +251,7 @@ Vamos tentar excluir o contato do Thomas e em seguida, tentar buscar ele na tabe
 
 Ou seja, apagamos o contato do Thomas e em seguida o buscamos novamente, nos informando que não foi encontrado e constatando que a exclusão foi feita corretamente.
 
-<b> Opção 5: Atualizar Contato </b>
+## Opção 5: Atualizar Contato
 
 Vamos atualizar o país do Kelvin, por exemplo.
 
@@ -263,7 +263,7 @@ E ao buscar o contato novamente, vemos o seu país atualizado.
 
 ![contato_atualizado](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/contato_atualizado.png)
 
-<b> Opção 6: Visualizando HashTable </b>
+## Opção 6: Visualizando HashTable
 
 O arquivo de entrada contém 10 mil registros, e o tamanho da tabela, eu defini sendo como: A quantidade de registros do arquivo carregado * 1.5, ou seja, um arquivo com 10 mil registros cria uma tabela com 15 mil posições. 
 
@@ -272,7 +272,7 @@ Obviamente não é possivel mostrar todo o conteúdo da tabela no terminal, send
 Mostro o tamanho da tabela (15 mil).
 O slot é referente a posição do contato na tabela (ou seja, a Danyelle ocupa o slot 4). 
 
-E em baixo do slot é informado o nome completo, cidade, telefone e país, separados por <b>|</b>.
+E em baixo do slot é informado o nome completo, telefone, cidade e país, separados por <b>|</b>.
 
 
 ![inicio_ht](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/inicio_ht.png)
@@ -285,22 +285,26 @@ Vamos inserir mais dois contatos em nossa tabela e em seguida, salvar a tabela n
 
 Inserindo novo contato
 
-![insere_clara]()
+![insere_clara](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/inserindo_contato_1.png)
 
 Inserindo novo contato²
 
-![insere_jon_snow]()
+![insere_jon_snow](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/inserindo_contato_2.png)
 
 Salvando tabela no arquivo
 
-![salvando_tabela]()
+![salvando_tabela](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/salvando_tabela_arquivo.png)
 
 E ao buscarmos o contato <i>Clara dos Santos</i> e <i>Jon Snow</i> em nosso arquivo, é visto que eles foram salvos corretamente.
 
-![ver_contato1]()
+![ver_contato1](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/visualizando_contato_1.png)
 
-![ver_contato2]()
+![ver_contato2](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/visualizando_contato_2.png)
 
+## Opção 8: Sair do programa
+Simplesmente, bye bye.
+
+![bye_bye]()
 
 
 
