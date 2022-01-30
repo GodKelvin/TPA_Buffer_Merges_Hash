@@ -99,4 +99,5 @@ Para fins de registro, os prints serão feitos utilizando o arquivo de apenas 10
 
 Compilando e executando.
 
+![kwaymerge image](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/kwaymerge.png)
 
