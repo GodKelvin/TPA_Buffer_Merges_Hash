@@ -235,16 +235,20 @@ Com um contato que não existe na tabela.
 <b> Opção 3: Inserir novo contato </b>
 Vamos então inserir o contato não encontrado.
 
-![]()
+![inserindo](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/buscando_contato.png)
 
 E em seguida, buscar esse mesmo contato, que antes deu como não encontrado.
 
-![]()
+![contato_existe](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/buscando_contato.png)
+
+E está ai as informações que inserimos anteriormente.
 
 <b> Opção 4: Excluir Contato </b>
 Vamos tentar excluir o contato do Thomas e em seguida, tentar buscar ele na tabela.
 
-![]()
+![apagando_e_verificando](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/apagando_contato.png)
+
+Ou seja, apagamos o contato do Thomas e em seguida o buscamos novamente, nos informando que não foi encontrado e constatando que a exclusão foi feita corretamente.
 
 
 
