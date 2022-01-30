@@ -88,7 +88,7 @@ Ou seja, estou compilando com o gcc, utilizando funções de verificação de c�
 
 E para executar (exemplo):
 
-<i><b>./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_me.txt 10500</b></i>
+<i><b>./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_kway_merge.txt 10500</b></i>
 
 Sendo: Arquivo de entrada, arquivo de saída e a quantidade de RAM disponível em bytes.
 
@@ -101,3 +101,14 @@ Compilando e executando.
 
 ![kwaymerge image](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/kwaymerge.png)
 
+Ao final da execucao, temos o arquivo de entrada ordenado no respectivo arquivo de saída informado.
+
+IMAGEM_AQUI
+
+Por questões óbvias, impossível mostrar todo o arquivo ordenado no print, por conta disso, mostrarei apenas o fim deles (no lado direita da imagem, é possível ver o quão extenso o mesmo é).
+
+Ao final da execução, os arquivos quebrados em partes menores são apagados, mas para ver como o algoritmo se comportar, vou comentar essa parte do código e executar novamente.
+
+IMAGEM_AQUI
+
+Ou seja, foram criados vários arquivos temporários com base no arquivo de entrada e o tamanho do buffer para cada um.
