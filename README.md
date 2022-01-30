@@ -103,12 +103,16 @@ Compilando e executando.
 
 Ao final da execucao, temos o arquivo de entrada ordenado no respectivo arquivo de saída informado.
 
-IMAGEM_AQUI
+![arquivo ordenado](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/kway_ordenado.png)
 
 Por questões óbvias, impossível mostrar todo o arquivo ordenado no print, por conta disso, mostrarei apenas o fim deles (no lado direita da imagem, é possível ver o quão extenso o mesmo é).
 
 Ao final da execução, os arquivos quebrados em partes menores são apagados, mas para ver como o algoritmo se comportar, vou comentar essa parte do código e executar novamente.
 
 IMAGEM_AQUI
+![arquivos criados](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/arquivos_criados_kwaymerge.png)
 
-Ou seja, foram criados vários arquivos temporários com base no arquivo de entrada e o tamanho do buffer para cada um.
+Ou seja, foram criados vários arquivos temporários (e já ordenados) com base no arquivo de entrada e o tamanho do buffer para cada um, e depois disso, é realizado K way merge.
+
+## Merge Sort Externo
+
