@@ -174,6 +174,37 @@ Para executar:<br>
 ![mergesorte externo terminal](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/mergesorte_externo_terminal.png)
 
 E temos então o arquivo ordenado.
-![arquivo ordenado merge sort]()
+![arquivo ordenado merge sort](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/arquivo_ordenado_mergesort.png)
+
+Ao término do merge, também é deletado os arquivos que não possuem conteúdos, restando apenas o arquivo ordenado.
+
+# Testes com outros arquivos
+
+__TABELA AQUI__
+
+# Hashing Table
+<i>"Hashtable é um conjunto de pares de valores-chave, que são organizadas no hash de suas respectivas chaves.
+
+Quando você adiciona um elemento, ele é adicionado à tabela hash e seu código de hash correspondente é gerado automaticamente."</i>
+<br>-[codigosimples.net](https://codigosimples.net/)
+
+Para quem conhece python, conhece bem os dicionários e sabem o quão preciso eles são em termos de velocidade. Semelhante à isso, vamos construir a Hash Table em C.
+
+A struct de cada elemento contêm os campos: key, phone, city, country e next_cell (Chave(Nome completo da pessoa), telefone, cidade país e um ponteiro para a próxima célula de mesmo hash).
+
+## Como funciona?
+Vamos supor que eu queira inserir um elemento (uma célula) na tabela, cuja chave é "Kelvin", essa chave irá produzir uma chave com base no tamanho da tabela e me retornará a posição da célula "Kelvin" na tabela, e assim, insiro os demais dados da respectiva célula.
+
+Porém, eu quero adicionar outro valor cuja chave é "Melvin", isso pode gerar uma colisão se a tabela for muito pequeno ou a função de gerar hash não conter um bom retorno. Caso gere um hash que retorne a mesma posição de "Kelvin", eu não posso apagar o registro de "Kelvin", e sim, faço com que a célula que contém as informações de "Kelvin" apontem para a célula que contém as informações de "Melvin", ou seja, ambas as células estão na mesma posição da tabela, porém o que difere eles é a chave "Kelvin" e "Melvin", e caso eu queira as informações de "Melvin", terei que primeiro acessar a célula de "Kelvin", pois é ele que contém o ponteiro para a célula de busca.
+
+## Vamos ver como fica no terminal
+Para compilar:<br>
+<i><b>gcc -Wall -pedantic hashing.c buffer.c buffer.h arquivo.c arquivo.h -o exec</b></i>
+
+Para executar:<br>
+<i><b>./exec</b></i>
+
+<b>Menu</b>
+![menuHT]()
 
 
