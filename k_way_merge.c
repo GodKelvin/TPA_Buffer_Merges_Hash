@@ -245,7 +245,7 @@ void delete_temp_files(int numArqs)
     }
 }
 
-void mergeSortExterno(char *nome_arquivo_entrada, char *nome_arq_saida, unsigned long int tam_ram)
+void k_way_merge(char *nome_arquivo_entrada, char *nome_arq_saida, unsigned long int tam_ram)
 {
     /*Quebrar os arquivos em partes menores e depois ordenar
     Retorna o numero de arquivos que foram criados*/
@@ -308,7 +308,7 @@ int main(int argc, char *argv[])
     cria_reset_file(argv[2]);
 
     //Exemplo de tamanhos em bytes: 151200, 10500
-    mergeSortExterno(argv[1], argv[2], tam_ram);
+    k_way_merge(argv[1], argv[2], tam_ram);
     fim = time(NULL);
     total = fim - inicio;
     //Tempo em segundos
