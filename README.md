@@ -129,7 +129,7 @@ Ou seja, vamos supor que meu arquivo de entrada tenha 10 mil registros. O arquiv
 
 Anteriormente foi citado o número de ouro do k-way merge. Aqui também temos o número de ouro que influencia de forma SIGNIFICATIVA no algorítmo. Mas vale ressaltar que o foco aqui é resultado e não velocidade. 
 
-O número de ouro é com base no tamanho da RUN (Sim, RUN e não RAM). O que é uma RUN? É a passada que o algoritmo faz em cada arquivo de origem.
+O número de ouro é com base no tamanho de linhas lidas de cada RUN (Sim, RUN e não RAM). O que é uma RUN? É a passada que o algoritmo faz em cada arquivo de origem.
 
 Para um melhor entendimento, vamos tornar isso numa escala de 7.
 Temos os seguintes registros:
@@ -147,13 +147,30 @@ Então temos:<br>
 Destino_1: 09 40 20 80<br>
 Destino_2: 05 12 43
 
-Agora, o tamanho da RUN é dobrado, os arquivos de Destino se tornam e o Origem e os de Origem se tornam os de destino, ou seja, durante a execução do algoritmo, os arquivos vão se revezando entre origem e destino.
+Agora, na segunda RUN é dobrado a quantidade de linhas lido de cada arquivo, os arquivos de Destino se tornam os de Origem e os de Origem se tornam os de destino, ou seja, durante a execução do algoritmo, os arquivos vão se revezando entre origem e destino.
 
 Ao final desta segunda RUN, temos:
 
 Origem_1: 05 09 12 40<br>
 origem_2: 20 43 80
 
-E por fim, temos a última RUN (para o tamanho 7, claro):
+E por fim, temos a última RUN deste exemplo, com tamanho de linhas = 4.
+
+Destino_1: 05 09 12 20 40 43 80<br>
+
+Ou seja, o arquivo ordenado. 
+
+Devido a esse vai e vem de dados entre os arquivos, a forma de verificar qual o arquivo contém o arquivo ordenado é simplesmente verificando o único que contém dados (pois depois de cada RUN, como os arquivos de destino se tornam os de origem, os de origem são limpos).
+
+## Vamos ver como fica no terminal
+Demais explicações a respeito dos prints foram dadas anteriormente.
+
+Para compilar o projeto:<br>
+<i><b>gcc -Wall -pedantic buffer.c buffer.h utils_vector.c utils_vector.h arquivo.c arquivo.h mergesort_externo.c -o exec</b></i>
+
+Para executar:<br> 
+<i><b>./exec Arquivos_Entrada/entrada1.csv 1</b></i>
+
+![mergesorte externo terminal]()
 
 

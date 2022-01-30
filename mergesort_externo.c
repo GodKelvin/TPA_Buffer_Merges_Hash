@@ -149,6 +149,7 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
     int read_file_1 = 0;
     int read_file_2 = 0;
     printf("[...Nova Rodada...]\n");
+    //printf("%ld\n", qtd_linhas);
     while(total_linhas_lidas)
     {
         matriz = cria_matriz(tamanho_matriz);
