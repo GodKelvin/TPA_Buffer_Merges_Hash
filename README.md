@@ -304,7 +304,7 @@ E ao buscarmos o contato <i>Clara dos Santos</i> e <i>Jon Snow</i> em nosso arqu
 ## Opção 8: Sair do programa
 Simplesmente, bye bye.
 
-![bye_bye]()
+![bye_bye](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/bye_bye.png)
 
 
 
