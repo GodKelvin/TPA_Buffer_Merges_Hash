@@ -244,11 +244,21 @@ E em seguida, buscar esse mesmo contato, que antes deu como não encontrado.
 E está ai as informações que inserimos anteriormente.
 
 <b> Opção 4: Excluir Contato </b>
+
 Vamos tentar excluir o contato do Thomas e em seguida, tentar buscar ele na tabela.
 
 ![apagando_e_verificando](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/apagando_contato.png)
 
 Ou seja, apagamos o contato do Thomas e em seguida o buscamos novamente, nos informando que não foi encontrado e constatando que a exclusão foi feita corretamente.
+
+<b> Opção 5: Atualizar Contato </b>
+
+Vamos atualizar o país do Kelvin, por exemplo.
+
+Primeiro selecionamos a opção e digitamos o nome do contato. Em seguida, é aberto um submenu (dentro da categoria de atualização), nos perguntando o que queremos atualizar, vamos escolher a opção 3, referente à atualização do país.
+
+![atualizando_pais]()
+
 
 
 

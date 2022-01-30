@@ -549,6 +549,10 @@ int main(int argc, char **argv)
 								update_country(find_contact, for_update);
 								break;
 							}
+							case 4:
+							{
+								break;
+							}
 							default:
 								printf("--Opcao invalida!--\n");
 						}
