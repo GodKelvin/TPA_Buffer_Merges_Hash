@@ -35,9 +35,6 @@ void half_file(char *nome_arquivo, char* half_arquivo_1, char *half_arquivo_2)
 
     Buffer *buffer_original_file = criaBuffer(nome_arquivo, half);
 
-    
-
-
     //Carrega metade do arquivo original e salva no novo arquivo_1
     loadBuffer(buffer_original_file);
     write_buffer_on_file(half_arquivo_1, buffer_original_file);
@@ -81,6 +78,19 @@ void append_matriz_to_file(FILE *arquivo, char **matriz, unsigned long int tam_m
     for(unsigned long int i = 0; i < tam_matriz; i++)
     {
         fprintf(arquivo, "%s\n", matriz[i]);
+    }
+}
+
+void delete_empty_file(char *nome_arquivo)
+{
+    unsigned long int has_content = calcula_tamanho_arquivo(nome_arquivo);
+    if(!has_content)
+    {
+        remove(nome_arquivo);;
+    }
+    else
+    {
+        rename(nome_arquivo, "Arquivos_Saida/saida_merge_sort_externo.csv");
     }
 }
 
@@ -137,6 +147,7 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
 
     int read_file_1 = 0;
     int read_file_2 = 0;
+    printf("[...Nova Rodada...]\n");
     while(total_linhas_lidas)
     {
         matriz = cria_matriz(tamanho_matriz);
@@ -148,18 +159,30 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
 
         //Leio da origem 1
         linhas_lidas = file_to_matriz(arq_origem_1, matriz, qtd_linhas, pos_matriz);
-        if(linhas_lidas) read_file_1 = 1;
+        if(linhas_lidas)
+        { 
+            read_file_1 = 1;
+        }
         total_linhas_lidas += linhas_lidas;
         pos_matriz = linhas_lidas;
 
         //Leio da origem 2
         linhas_lidas = file_to_matriz(arq_origem_2, matriz, qtd_linhas, pos_matriz);
-        if(linhas_lidas) read_file_2 = 1;
+        if(linhas_lidas)
+        {   
+            read_file_2 = 1;
+        }
+        //if(linhas_lidas) read_file_2 = 1;
         total_linhas_lidas += linhas_lidas;
+        
+        //Se eu li somente de um arquivo, ja esta tudo ordenado!
+        if(!read_file_1 || !read_file_2)
+        {
+            break;
+        }
 
         //Ordeno os elementos
         quick_sort_string(matriz, 0, total_linhas_lidas-1);
-
         //Salvo no arquivo dependendo da flag
         if(flag_file)
         {
@@ -177,7 +200,6 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
     }
 
     //Se eu escrevi nos dois arquivos, entao nao terminou
-    
     if(write_file_1 && write_file_2 && read_file_1 && read_file_2)
     {
         
@@ -195,19 +217,25 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
         qtd_linhas *= 2;
 
         //Agora os arquivos de origem sao os arquivos de destinos anteriores
-        printf("W1: %d\nW2: %d\nR1: %d\nR2: %d\n", write_file_1, write_file_2, read_file_1, read_file_2);   
-        //int a;
-        //scanf("%d", &a);
-
         run_merging(qtd_linhas, dest_1, dest_2, origem_1, origem_2);
         
     }
     else
     {
+        printf("\n[...Finalizando...]\n");
         fclose(arq_origem_1);
         fclose(arq_origem_2);
         fclose(arq_destino_1);
         fclose(arq_destino_2);
+
+        /*Verifica quais os arquivos vazios e os apaga.
+        Restando somente o com o conteudo ordenado.
+        E renomeando-o*/
+        delete_empty_file(dest_1);
+        delete_empty_file(dest_2);
+        delete_empty_file(origem_1);
+        delete_empty_file(origem_2);
+        
     }
     
 
@@ -217,8 +245,9 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
 //void mergeSortExterno()
 int main()
 {
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada1.csv" ;
-    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste500k.csv" ;
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada1.csv";
+    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste500k.csv" ;
+    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv" ;
 
     //Nome dos arquivos de Saida
     char aux_arq_1[] = "Arquivos_Saida/aux_arq_1.csv";
@@ -235,9 +264,10 @@ int main()
     
     
     //Divido o arquivo original ao meio
+    printf("[...Dividindo arquivo ao meio...]\n\n");
     half_file(nome_arquivo_entrada, aux_arq_1, aux_arq_2);
 
-    int run = 1000;
+    unsigned long int run = 1;
     //Quantidade de linhas dobra a cada rodada, iniciando em 1
     run_merging(run, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
     return 0;
