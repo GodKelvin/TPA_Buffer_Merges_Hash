@@ -317,7 +317,7 @@ HashT *load_file_on_hashtable(char *file_name)
     unsigned long int i = 0;
     for(i = 0; i < qtd_lines; i++)
     {
-        fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", complete_name, phone, city, country);
+        fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", complete_name, city, phone, country);
         set_value_ht(hashtable, complete_name, phone, city, country);
     }
     fclose(file);

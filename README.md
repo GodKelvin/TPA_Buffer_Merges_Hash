@@ -261,7 +261,7 @@ Primeiro selecionamos a opção e digitamos o nome do contato. Em seguida, é ab
 
 E ao buscar o contato novamente, vemos o seu país atualizado.
 
-![contato_atualizado]()
+![contato_atualizado](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/contato_atualizado.png)
 
 <b> Opção 6: Visualizando HashTable </b>
 
@@ -269,9 +269,15 @@ O arquivo de entrada contém 10 mil registros, e o tamanho da tabela, eu defini 
 
 Obviamente não é possivel mostrar todo o conteúdo da tabela no terminal, sendo assi, mostro o inicio e o fim da mesma.
 
-![inicio_ht]()
+Mostro o tamanho da tabela (15 mil).
+O slot é referente a posição do contato na tabela (ou seja, a Danyelle ocupa o slot 4). 
 
-![fim_ht]()
+E em baixo do slot é informado o nome completo, cidade, telefone e país, separados por <b>|</b>.
+
+
+![inicio_ht](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/inicio_ht.png)
+
+![fim_ht](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/fim_ht.png)
 
 
 
