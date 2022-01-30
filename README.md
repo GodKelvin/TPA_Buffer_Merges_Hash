@@ -221,4 +221,16 @@ Dependendo da opção selecionada, eu escolhi limpar a tela do terminal para uma
 E se eu tentar buscar algum contato sem ter um arquivo carregado?
 ![impedindo](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/impedindo_carregar_arquivo.png)
 
+Simplesmente impeço tal ação. Tais impedimentos também ocorrem ao tentar realizar as demais ações sem ter um arquivo carregado.
+
+<b> Opção 2: Localizar Contato </b>
+Com um contato existente na tabela (lembrando que a tabela ja esta carregada com o arquivo informado).
+
+![]()
+
+
+Com um contato que não existe na tabela.
+![]()
+
+
 
