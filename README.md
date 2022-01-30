@@ -209,9 +209,11 @@ Para executar:<br>
 <i><b>./exec</b></i>
 
 <b>Menu</b>
+
 ![menuHT](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/menuHT.png)
 
 <b> Opção 1: Carregando um arquivo </b>
+
 ![load_file](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/carregando_arquivoHT.png)
 
 Dependendo da opção selecionada, eu escolhi limpar a tela do terminal para uma melhor visualização.
