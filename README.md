@@ -53,3 +53,6 @@ valgrind --leak-check=full --track-origins=yes --log-file=valgrind_output.txt ./
 
 /MERGE SORT EXTERNO DEPENDE DA QUANTIDADE DE LINHAS LIDAS
 //NUMERO DE OURO PARA O MERGE SORTE E KWAY MERGE
+
+
+//MERGE SORT EXTERNO: ./exec Arquivos_Entrada/entrada1.csv 1

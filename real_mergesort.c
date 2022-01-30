@@ -243,16 +243,26 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
 }
 
 //void mergeSortExterno()
-int main()
+int main(int argc, char *argv[])
 {
-    //char nome_arquivo_entrada[] = "Arquivos_Entrada/entrada1.csv";
-    char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste500k.csv" ;
-    //char nome_arquivo_entrada[] = "Arquivos_Entrada/AgendaTeste1M.csv" ;
+    if(argc < 3)
+    {
+        printf("ERROR: Favor informar o arquivo de entrada e inicio da RUN!\n");
+        printf("--> EXEMPLO: ./exec arquivo_entrada 1\n");
+        return 0;
+    }
+
+
+    //Normalmente inicado em 1, mas pode ser variavel
+    unsigned long int run = strtol(argv[2], NULL, 10);
 
     //Nome dos arquivos de Saida
+    //Arquivos de origem divididos ao meio (inicialmente)
+    //Vao ficar se revezando entre origem e destino.
     char aux_arq_1[] = "Arquivos_Saida/aux_arq_1.csv";
     char aux_arq_2[] = "Arquivos_Saida/aux_arq_2.csv";
 
+    //Os dois arquivos de destinos que vão ficar se revezando entre origem e destno
     char aux_arq_3[] = "Arquivos_Saida/aux_arq_3.csv";
     char aux_arq_4[] = "Arquivos_Saida/aux_arq_4.csv";
 
@@ -265,10 +275,14 @@ int main()
     
     //Divido o arquivo original ao meio
     printf("[...Dividindo arquivo ao meio...]\n\n");
-    half_file(nome_arquivo_entrada, aux_arq_1, aux_arq_2);
-
-    unsigned long int run = 1;
-    //Quantidade de linhas dobra a cada rodada, iniciando em 1
+    half_file(argv[1], aux_arq_1, aux_arq_2);
+    
+    /*Informo a RUN inicial, os dois arquivos de origem (arquivo inicial)
+    dividido ao meio e os dois arquivos de destino.
+    Durante a execucao, os 4 arquivos vao ficar se revezando entre
+    origem e destino.*/
+    //Quantidade de linhas lidas dobra a cada rodada.
+    printf("[...Iniciando as Rodadas...]\n");
     run_merging(run, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
     return 0;
 }
