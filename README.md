@@ -171,6 +171,9 @@ Para compilar o projeto:<br>
 Para executar:<br> 
 <i><b>./exec Arquivos_Entrada/entrada1.csv 1</b></i>
 
-![mergesorte externo terminal]()
+![mergesorte externo terminal](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/mergesorte_externo_terminal.png)
+
+E temos então o arquivo ordenado.
+![arquivo ordenado merge sort]()
 
 
