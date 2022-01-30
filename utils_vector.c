@@ -176,7 +176,9 @@ int file_to_vetor(char *nome_arquivo, int **vetor)
     else
     {
         //Primeira linha do arquivo == tamanho do vetor
-        fscanf(arquivo, "%d", &tam);
+        int lixo_mem = fscanf(arquivo, "%d", &tam);
+        lixo_mem ++;
+        lixo_mem = 0;
         *vetor = (int*) malloc(tam * sizeof(int));
         int i = 0;
         //As linhas posteriores do arquivos sao os valores do vetor

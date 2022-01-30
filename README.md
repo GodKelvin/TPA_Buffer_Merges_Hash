@@ -1,5 +1,5 @@
 COMPILAR ATUAL EM ANDAMENTO
-gcc -Wall -pedantic buffer.c buffer.h utils_vector.c utils_vector.h mergesort_externo.c arquivo.c arquivo.h -o exec
+gcc -Wall -pedantic buffer.c buffer.h utils_vector.c utils_vector.h k_way_merge.c arquivo.c arquivo.h -o exec
 EXECUTAR
 ./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_me.txt 10500
 
@@ -49,3 +49,10 @@ Executar: valgrind --leak-check=full ./exec
 //COMPLETO?
 valgrind --leak-check=full --track-origins=yes --log-file=valgrind_output.txt ./exec Arquivos_Entrada/entrada1.csv Arquivos_Saida/saida_me.txt 10500
 
+///REFATORAR CRIAR MATRIZ?????????????????????
+
+/MERGE SORT EXTERNO DEPENDE DA QUANTIDADE DE LINHAS LIDAS
+//NUMERO DE OURO PARA O MERGE SORTE E KWAY MERGE
+
+
+//MERGE SORT EXTERNO: ./exec Arquivos_Entrada/entrada1.csv 1
