@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>//MKDIR
+#include <time.h>
 //Criados por mim
 #include "buffer.h"
 #include "arquivo.h"
@@ -251,7 +252,8 @@ int main(int argc, char *argv[])
         printf("--> EXEMPLO: ./exec arquivo_entrada 1\n");
         return 0;
     }
-
+    time_t inicio, fim, total;
+    inicio = time(NULL);
 
     //Normalmente inicado em 1, mas pode ser variavel
     unsigned long int run = strtol(argv[2], NULL, 10);
@@ -284,5 +286,10 @@ int main(int argc, char *argv[])
     //Quantidade de linhas lidas dobra a cada rodada.
     printf("[...Iniciando as Rodadas...]\n");
     run_merging(run, aux_arq_1, aux_arq_2, aux_arq_3, aux_arq_4);
+    fim = time(NULL);
+    total = fim - inicio;
+
+    //Tempo em segundos
+    printf("\n->TEMPO TOTAL DE EXECUCAO: %ld segundo(s).\n", total);
     return 0;
 }

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/stat.h>//MKDIR
-
+#include <time.h>
 //Criados por mim
 #include "utils_vector.h"
 #include "buffer.h"
@@ -299,6 +299,8 @@ int main(int argc, char *argv[])
 
 
     }
+    time_t inicio, fim, total;
+    inicio = time(NULL);
     //Utilizado para armazenar os arquivos temporarios
     mkdir("Arquivos_Saida", 0700);
 
@@ -307,6 +309,9 @@ int main(int argc, char *argv[])
 
     //Exemplo de tamanhos em bytes: 151200, 10500
     mergeSortExterno(argv[1], argv[2], tam_ram);
-    
+    fim = time(NULL);
+    total = fim - inicio;
+    //Tempo em segundos
+    printf("\n->TEMPO TOTAL DE EXECUCAO: %ld segundo(s).\n", total);
     return 0;
 }
