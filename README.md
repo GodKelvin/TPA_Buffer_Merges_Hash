@@ -279,7 +279,27 @@ E em baixo do slot é informado o nome completo, cidade, telefone e país, separ
 
 ![fim_ht](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/fim_ht.png)
 
+## Opção 7: Salvar Dados
 
+Vamos inserir mais dois contatos em nossa tabela e em seguida, salvar a tabela no nosso arquivo.
+
+Inserindo novo contato
+
+![insere_clara]()
+
+Inserindo novo contato²
+
+![insere_jon_snow]()
+
+Salvando tabela no arquivo
+
+![salvando_tabela]()
+
+E ao buscarmos o contato <i>Clara dos Santos</i> e <i>Jon Snow</i> em nosso arquivo, é visto que eles foram salvos corretamente.
+
+![ver_contato1]()
+
+![ver_contato2]()
 
 
 
