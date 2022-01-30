@@ -112,7 +112,48 @@ Ao final da execução, os arquivos quebrados em partes menores são apagados, m
 IMAGEM_AQUI
 ![arquivos criados](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/arquivos_criados_kwaymerge.png)
 
-Ou seja, foram criados vários arquivos temporários (e já ordenados) com base no arquivo de entrada e o tamanho do buffer para cada um, e depois disso, é realizado K way merge.
+Ou seja, foram criados vários arquivos temporários (e já ordenados) com base no arquivo de entrada e o tamanho do buffer para cada um, e depois disso, é realizado o K-way merge.
 
 ## Merge Sort Externo
+Como funciona?
+
+O mais complicado deste algoritmo foi entender (diferente do K-way merge que foi implementar (ou talvez o sentimento de ter sido mais complicado é devido a não ter nada pronto e a pouca experiência, mas enfim)). 
+
+O mergesort externo utiliza 5 arquivos, sendo 1 arquivo de entrada, que gera dois arquivos de origem com a metade do conteúdo do arquivo de entrada cada e 2 arquivos de destinos em branco.
+
+Esses 4 últimos arquivos são os que nos interessa. Os dois arquivos de origem serão posteriormente os de destino e os de destino serão os de origem. 
+
+Ou seja, vamos supor que meu arquivo de entrada tenha 10 mil registros. O arquivo de origem_1 terá os 5 primeiros mil registros e o arquivo de origem_2 terá os outros 5 mil (essa divisão não é exata, simplesmente porque eu não conto linhas, eu conto a quantidade de bytes que o arquivos possui, ou seja, o seu tamanho). E internamente é criado dois arquivos em branco, que serão os de destino.
+
+## Arquivos prontos, hora de executar.
+
+Anteriormente foi citado o número de ouro do k-way merge. Aqui também temos o número de ouro que influencia de forma SIGNIFICATIVA no algorítmo. Mas vale ressaltar que o foco aqui é resultado e não velocidade. 
+
+O número de ouro é com base no tamanho da RUN (Sim, RUN e não RAM). O que é uma RUN? É a passada que o algoritmo faz em cada arquivo de origem.
+
+Para um melhor entendimento, vamos tornar isso numa escala de 7.
+Temos os seguintes registros:
+
+Original: 40 05 80 43 09 12 20
+
+Dividindo ao meio, temos:
+
+Origem_1: 40 05 80 43<br>
+Origem_2: 09 12 20<br>
+
+Na primeira run é lido a primeira linha de cada arquivo, ordena e grava-se no arquivo de destino_1 (ou seja, serão lidos 40 e 09 e gravados 09 e 40 (pois 09 é menor que 40)). Em seguida, é lida a próxima linha de cada arquivo, ordenada e colocada no arquivo de destino_2, e assim sucessivamente. 
+
+Então temos:<br>
+Destino_1: 09 40 20 80<br>
+Destino_2: 05 12 43
+
+Agora, o tamanho da RUN é dobrado, os arquivos de Destino se tornam e o Origem e os de Origem se tornam os de destino, ou seja, durante a execução do algoritmo, os arquivos vão se revezando entre origem e destino.
+
+Ao final desta segunda RUN, temos:
+
+Origem_1: 05 09 12 40<br>
+origem_2: 20 43 80
+
+E por fim, temos a última RUN (para o tamanho 7, claro):
+
 
