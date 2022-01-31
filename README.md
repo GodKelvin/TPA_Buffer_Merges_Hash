@@ -21,7 +21,7 @@
 #### 4.4 - [Testes-com-outros-arquivos](#Testes-com-outros-arquivos)
 ## 5 - [Hash Table](#Hash-Table)
 #### 5.2 - [Menu](#Menu)
-#### 5.3 - [Carregando um arquivo](#Opção-1:-Carregando-um-arquivo)
+#### 5.3 - [Carregando um arquivo](#Opcao-1:-Carregando-um-arquivo)
 #### 5.4 - [Localizar Contato](#Opção-2:-Localizar-Contato)
 #### 5.5 - [Inserir Novo Contato](#Opção-3:-Inserir-novo-contato)
 #### 5.6 - [Excluir Contato](#Opção-4:-Excluir-Contato)
