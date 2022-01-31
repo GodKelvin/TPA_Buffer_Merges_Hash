@@ -184,14 +184,21 @@ Ao término do merge, também é deletado os arquivos que não possuem conteúdo
 
 <b>Comando para o arquivo de 500 mil registros:</b> <i>./exec Arquivos_Entrada/AgendaTeste500k.csv Arquivos_Saida/saida_kway_merge.txt 105000</i>
 
-<b>Comando para o arquivo de 1 milhão de registros: </b> <i>./exec Arquivos_Entrada/AgendaTeste1M.csv Arquivos_Saida/saida_kway_merge.txt 195400</i>
 
-------------------------------
-Arquivo | K-Way Merge   | Merge Sort Externo
-        |               |
+<b>Comando para o arquivo de 1 milhão de registros: </b> <i>/exec Arquivos_Entrada/AgendaTeste1M.csv Arquivos_Saida/saida_kway_merge.txt 195400</i>
 
+### Merge Sort Externo:
 
-__TABELA AQUI__
+<b>Comando para o arquivo de 500 mil registros:</b> <i>./exec Arquivos_Entrada/AgendaTeste500k.csv 1</i>
+
+<b>Comando para o arquivo de 1 milhão de registros: </b> <i>./exec Arquivos_Entrada/AgendaTeste1M.csv 1</i>
+
+| Quantidade de registros no arquivo 	|   K-Way Merge   	| Merge Sort Externo 	|
+|:----------------------------------:	|:---------------:	|:------------------:	|
+|               10 mil               	|   <=1 segundo   	|     <=1 segundo    	|
+|               500 mil              	|   ≅ 516s(8min)  	|    ≅ 3 segundos    	|
+|              1 milhão              	| ≅ 2767s (46min) 	|    ≅ 8 segundos    	|
+
 
 # Hashing Table
 <i>"Hashtable é um conjunto de pares de valores-chave, que são organizadas no hash de suas respectivas chaves.
