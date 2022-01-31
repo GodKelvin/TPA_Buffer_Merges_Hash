@@ -178,7 +178,18 @@ E temos então o arquivo ordenado.
 
 Ao término do merge, também é deletado os arquivos que não possuem conteúdos, restando apenas o arquivo ordenado.
 
-# Testes com outros arquivos
+## Testes com outros arquivos
+
+### K-way Merge:
+
+<b>Comando para o arquivo de 500 mil registros:</b> <i>./exec Arquivos_Entrada/AgendaTeste500k.csv Arquivos_Saida/saida_kway_merge.txt 105000</i>
+
+<b>Comando para o arquivo de 1 milhão de registros: </b> <i>./exec Arquivos_Entrada/AgendaTeste1M.csv Arquivos_Saida/saida_kway_merge.txt 195400</i>
+
+------------------------------
+Arquivo | K-Way Merge   | Merge Sort Externo
+        |               |
+
 
 __TABELA AQUI__
 

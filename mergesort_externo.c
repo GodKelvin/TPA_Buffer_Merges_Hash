@@ -131,16 +131,26 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
     Rodada 3 == 4 linhas de cada arquivo.
     4 linhas de cada arquivo == 8 posicoes na matriz*/
     //unsigned long int qtd_linhas = number_rodadas * 2;
+
+    unsigned long int tamanho_origem_1, tamanho_origem_2, soma_tamanho_origens;
+    tamanho_origem_1 = calcula_tamanho_arquivo(origem_1);
+    tamanho_origem_2 = calcula_tamanho_arquivo(origem_2);
+    soma_tamanho_origens = tamanho_origem_1 + tamanho_origem_2;
+
     unsigned long int tamanho_matriz = qtd_linhas * 2;
 
-    char **matriz = NULL;
+    /*Se chegou numa rodada cujo o dobro da matriz eh totalmente desproporcional,
+    faco com que a matriz seja do tamanho maximo da soma de ambos os arquivos*/
+    if(tamanho_matriz > soma_tamanho_origens)
+    {
+        tamanho_matriz = soma_tamanho_origens;
+    }
 
-    
+    char **matriz = NULL;
     unsigned long int linhas_lidas = 0;
     //Comeca com 1 apenas para iniciar o loop
     unsigned long int total_linhas_lidas = 1;
 
-    
     //Para verificar em qual arquivo escrever
     int flag_file = 1;
     int write_file_1 = 0;
@@ -180,6 +190,7 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
         //Se eu li somente de um arquivo, ja esta tudo ordenado!
         if(!read_file_1 || !read_file_2)
         {
+            free_matriz(matriz, tamanho_matriz);
             break;
         }
 
@@ -198,7 +209,8 @@ void run_merging(unsigned long int qtd_linhas, char *origem_1, char *origem_2, c
             flag_file = 1;
             write_file_2 = 1;
         }
-        free_matriz(matriz, total_linhas_lidas);
+        //free_matriz(matriz, total_linhas_lidas);
+        free_matriz(matriz, tamanho_matriz);
     }
 
     //Se eu escrevi nos dois arquivos, entao nao terminou
