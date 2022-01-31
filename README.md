@@ -5,7 +5,17 @@
 ### Professor: Mateus Conrad
 <br>
 
-## Objetivo
+# Índice
+### 1 - [Objetivo](#Objetivo)
+### 2 - [O início](#O-início)
+### 1 - [Objetivo](#Objetivo)
+### 1 - [Objetivo](#Objetivo)
+### 1 - [Objetivo](#Objetivo)
+### 1 - [Objetivo](#Objetivo)
+### 1 - [Objetivo](#Objetivo)
+### 1 - [Objetivo](#Objetivo)
+
+# Objetivo
 1 - Ordenar arquivos com uma grande quantidade de registros utilizando ambos os métodos de ordenação (K-Way Merge & Merge Sort Externo). De modo a utilizar pouca quantidade de RAM.
 
 2 - Criar uma tabela hash de acesso direto aos respectivos valores, dado uma chave. De modo a evitar colisão e priorizando eficiência na busca.
@@ -24,10 +34,10 @@ Arquivos: [buffer.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/m
 ## Um breve resumo sobre os arquivos <b>.C e .H</b>.
 Os arquivos .C contém a implementação das funções utilizadas, enquanto os arquivos .H contém a definição dessas funções, bem como dos tipos abstratos de dados (TAD), que por ventura serão utilizados.
 
-Para que outros programas utilizem as respectivas funções implementadas, basta incluir a biblioteca com <b>#include<"nome_biblioteca.h></b>.
+Para que outros programas utilizem as respectivas funções implementadas, basta incluir a biblioteca com <b>#include "nome_biblioteca.h"</b>.
 
 ## Continuando,
-### Tomei a liberdade de quebrar certos protocolos e utilizarei sem pensar 2x, uma linguagem coloquial, para uma leitura mais agradável e fluída do que foi o desenvolvimento deste trabalho.
+### Tomei a liberdade de quebrar certos protocolos e utilizarei sem pensar 2x, uma linguagem coloquial, para uma leitura mais agradável e fluida do que foi o desenvolvimento deste trabalho.
 
 ## Continuando²,
 Os códigos estão muito bem comentados, e com excessão dos arquivos [k_way_merge.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/k_way_merge.c), [mergesort_externo.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/mergesort_externo.c) e [hashing.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/hashing.c), o restante bem dividido em .C e .H.
@@ -41,7 +51,7 @@ O maior empecilho deste trabalho é decorrente da sua maior força, a própria l
 ## Seguindo,
 Em resumo, precisava evitar de carregar um arquivo gigantesco INTEIRO na memória RAM, para isso o gerenciador de buffer foi desenvolvido. Dado o nome de um arquivo e o tamanho do buffer em BYTES, tudo estava pronto para ser utilizado!
 
-A função principal do gerenciador (e por consequência a que me deu mais dor de cabeça (e por coincidência, a qual mais me orgulho)) é a <b> loadBuffer() </b>. Tenho total ciência que ela pode ser melhorada em inúmeros aspctos, e assim será feito posteriormente, pois percebi uma escassez na comunidade a respeito de algo desse tipo.
+A função principal do gerenciador (e por consequência a que me deu mais dor de cabeça (e por coincidência, a qual mais me orgulho)) é a <b> loadBuffer() </b>. Tenho total ciência que ela pode ser melhorada em inúmeros aspectos, e assim será feito posteriormente, pois percebi uma escassez na comunidade a respeito de algo desse tipo.
 
 Para implementa-la, precisei entender como funciona o SEEK_SET em arquivos, a manipulação da função fseek, conceitos um pouco mais "avançados" de recursividade (amiga ou inimiga? Depende) e meu deus, TER CUIDADO COM A RAM, 
 
@@ -65,7 +75,7 @@ Para um melhor entendimento, favor dar uma conferida nos respectivos arquivos ci
 Conforme as ideias foram sendo postas em código, foi necessário a divisão em outras bibliotecas, sendo: [arquivo.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/arquivo.c) e [arquivo.h](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/arquivo.h), [utils_vector.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/utils_vector.c) e [utils_vector.h](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/utils_vector.h), cujo o próprio nome revela suas funções. Contêm métodos para manipulação de arquivos(verificar se arquivo existe, criar e deletar arquivos etc) e manipulação de vetores e matrizes, sendo o principal método desta segunda o <b>quick_sort()</b>.
 
 # Tudo pronto, vamos começar.
-
+# Ordenação
 ## K-way Merge
 Como funciona? Simples. Tenho um arquivo grande e dado o tamanho da minha RAM disponível, o quebro em vários arquivos e crio os meus buffers com base na RAM disponível para carda arquivo, cujo cálculo é: (número de arquivos criados + 1) / RAM disponível. 
 
@@ -74,7 +84,7 @@ Os arquivos criados já estão ordenados utilizando o quickSort().
 "Porque o +1?", pelo simples fato de ter a necessidade de um buffer encarregado de guardar cada pedaço de todos os arquivos e descarregar no arquivo final.
 
 ### O número de ouro.
-Existem um número de ouro da RAM que influência demais na execução do algorítmo. 
+Existe um número de ouro da RAM que influência demais na execução do algorítmo. 
 
 <i><b>Dado o tamanho da RAM e a quantidade de arquivos criados, o melhor valor para cada buffer é o que se aproxima do intervalo de 300~600 bytes</b></i>
 
@@ -107,9 +117,8 @@ Ao final da execucao, temos o arquivo de entrada ordenado no respectivo arquivo 
 
 Por questões óbvias, impossível mostrar todo o arquivo ordenado no print, por conta disso, mostrarei apenas o fim deles (no lado direita da imagem, é possível ver o quão extenso o mesmo é).
 
-Ao final da execução, os arquivos quebrados em partes menores são apagados, mas para ver como o algoritmo se comportar, vou comentar essa parte do código e executar novamente.
+Ao final da execução, os arquivos quebrados em partes menores são apagados, mas para ver como o algoritmo se comporta, vou comentar essa parte do código e executar novamente.
 
-IMAGEM_AQUI
 ![arquivos criados](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/arquivos_criados_kwaymerge.png)
 
 Ou seja, foram criados vários arquivos temporários (e já ordenados) com base no arquivo de entrada e o tamanho do buffer para cada um, e depois disso, é realizado o K-way merge.
@@ -170,6 +179,8 @@ Para compilar o projeto:<br>
 
 Para executar:<br> 
 <i><b>./exec Arquivos_Entrada/entrada1.csv 1</b></i>
+
+Segundo: nome do arquivo de entrada e a quantidade de linhas iniciais.
 
 ![mergesorte externo terminal](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/mergesorte_externo_terminal.png)
 
@@ -325,5 +336,21 @@ Simplesmente, bye bye.
 ![bye_bye](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/bye_bye.png)
 
 
+# Referências
+Métodos de ordenação:<br>https://www.devmedia.com.br/algoritmos-de-ordenacao-analise-e-comparacao/28261
+
+Explicação do QuickSort:<br>https://youtu.be/wx5juM9bbFo
+
+Andando em arquivos por ponteiros & buffer:<br>http://www.cmaismais.com.br/referencia/cstdio/fseek/
+
+Lendo arquivos em buffer:<br>https://stackoverflow.com/questions/2029103/correct-way-to-read-a-text-file-into-a-buffer-in-c
+
+Como dividir uma string em tokens com a função strtok() em C:<br>https://wagnergaspar.com/como-dividir-uma-string-em-tokens-com-a-funcao-strtok-em-c/
+
+Usando strtok_r para dividir mais de uma string ao mesmo tempo::<br>https://www.geeksforgeeks.org/strtok-strtok_r-functions-c-examples/<br>&<br>https://stackoverflow.com/questions/15961253/c-correct-usage-of-strtok-r
+
+Como utilizar FSEEK in C (SEEK_SET, SEEK_END, SEEK_CUR):<br>https://fresh2refresh.com/c-programming/c-file-handling/fseek-seek_set-seek_cur-seek_end-functions-c/
+
+Utilizando o Valgrind em C::<br>https://www.ic.unicamp.br/~rafael/materiais/valgrind.html<br>&<br>https://qastack.com.br/programming/5134891/how-do-i-use-valgrind-to-find-memory-leaks
 
 
