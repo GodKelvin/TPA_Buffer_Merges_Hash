@@ -20,6 +20,7 @@ void* loadBuffer(Buffer* buffer)
         {
             free(buffer->conteudo);
 
+            buffer->conteudo = NULL;
             //Aloca memoria suficiente para a leitura do bloco (+ um \0 por seguranca)
             buffer->conteudo = (char*)malloc(buffer->tamanho * (sizeof(char)) + (sizeof(char)));
             //Se conseguiu alocar memoria corretamente
@@ -36,7 +37,7 @@ void* loadBuffer(Buffer* buffer)
                     if((strcmp(&buffer->conteudo[new_tam-1], "\n") != 0))
                     {
                         //APONTAR PARA NULL???
-                        buffer->conteudo = NULL;
+                        //buffer->conteudo = NULL;
                         //Diminui em um o tamanho do buffer, ate encontrar um '\n'
                         buffer->tamanho--;
                         loadBuffer(buffer);

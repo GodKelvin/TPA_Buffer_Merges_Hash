@@ -1,0 +1,139 @@
+==3768== Memcheck, a memory error detector
+==3768== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3768== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==3768== Command: ./exec Arquivos_Entrada/entrada1.csv 1
+==3768== Parent PID: 1576
+==3768== 
+==3768== Conditional jump or move depends on uninitialised value(s)
+==3768==    at 0x1093C8: loadBuffer (buffer.c:37)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x109BC1: half_file (mergesort_externo.c:40)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768==  Uninitialised value was created by a heap allocation
+==3768==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x109375: loadBuffer (buffer.c:25)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x109BC1: half_file (mergesort_externo.c:40)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768== 
+==3768== Conditional jump or move depends on uninitialised value(s)
+==3768==    at 0x1093D1: loadBuffer (buffer.c:37)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x109BC1: half_file (mergesort_externo.c:40)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768==  Uninitialised value was created by a heap allocation
+==3768==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x109375: loadBuffer (buffer.c:25)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x10940E: loadBuffer (buffer.c:43)
+==3768==    by 0x109BC1: half_file (mergesort_externo.c:40)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768== 
+==3768== Conditional jump or move depends on uninitialised value(s)
+==3768==    at 0x1093C8: loadBuffer (buffer.c:37)
+==3768==    by 0x109C04: half_file (mergesort_externo.c:51)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768==  Uninitialised value was created by a heap allocation
+==3768==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x109375: loadBuffer (buffer.c:25)
+==3768==    by 0x109C04: half_file (mergesort_externo.c:51)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768== 
+==3768== Conditional jump or move depends on uninitialised value(s)
+==3768==    at 0x1093D1: loadBuffer (buffer.c:37)
+==3768==    by 0x109C04: half_file (mergesort_externo.c:51)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768==  Uninitialised value was created by a heap allocation
+==3768==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x109375: loadBuffer (buffer.c:25)
+==3768==    by 0x109C04: half_file (mergesort_externo.c:51)
+==3768==    by 0x10A12F: main (mergesort_externo.c:293)
+==3768== 
+==3768== Source and destination overlap in strcpy(0x55c45e0, 0x55c45e0)
+==3768==    at 0x4C34E97: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x10988A: strcpy (string_fortified.h:90)
+==3768==    by 0x10988A: get_pos_pivo_string (utils_vector.c:68)
+==3768==    by 0x109925: quick_sort_string (utils_vector.c:90)
+==3768==    by 0x109FA5: run_merging (mergesort_externo.c:198)
+==3768==    by 0x10A14F: main (mergesort_externo.c:301)
+==3768== 
+==3768== Source and destination overlap in strcpy(0x55c46f0, 0x55c46f0)
+==3768==    at 0x4C34E97: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x1098D1: strcpy (string_fortified.h:90)
+==3768==    by 0x1098D1: get_pos_pivo_string (utils_vector.c:76)
+==3768==    by 0x109925: quick_sort_string (utils_vector.c:90)
+==3768==    by 0x109FA5: run_merging (mergesort_externo.c:198)
+==3768==    by 0x10A14F: main (mergesort_externo.c:301)
+==3768== 
+==3768== Source and destination overlap in strcpy(0x56f4340, 0x56f4340)
+==3768==    at 0x4C34E97: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x10988A: strcpy (string_fortified.h:90)
+==3768==    by 0x10988A: get_pos_pivo_string (utils_vector.c:68)
+==3768==    by 0x109925: quick_sort_string (utils_vector.c:90)
+==3768==    by 0x109935: quick_sort_string (utils_vector.c:92)
+==3768==    by 0x109FA5: run_merging (mergesort_externo.c:198)
+==3768==    by 0x10A027: run_merging (mergesort_externo.c:234)
+==3768==    by 0x10A14F: main (mergesort_externo.c:301)
+==3768== 
+==3768== Source and destination overlap in strcpy(0x56f4560, 0x56f4560)
+==3768==    at 0x4C34E97: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x1098D1: strcpy (string_fortified.h:90)
+==3768==    by 0x1098D1: get_pos_pivo_string (utils_vector.c:76)
+==3768==    by 0x109925: quick_sort_string (utils_vector.c:90)
+==3768==    by 0x109935: quick_sort_string (utils_vector.c:92)
+==3768==    by 0x109FA5: run_merging (mergesort_externo.c:198)
+==3768==    by 0x10A027: run_merging (mergesort_externo.c:234)
+==3768==    by 0x10A14F: main (mergesort_externo.c:301)
+==3768== 
+==3768== Source and destination overlap in strcpy(0x56fb000, 0x56fb000)
+==3768==    at 0x4C34E97: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x10988A: strcpy (string_fortified.h:90)
+==3768==    by 0x10988A: get_pos_pivo_string (utils_vector.c:68)
+==3768==    by 0x109925: quick_sort_string (utils_vector.c:90)
+==3768==    by 0x109943: quick_sort_string (utils_vector.c:95)
+==3768==    by 0x109FA5: run_merging (mergesort_externo.c:198)
+==3768==    by 0x10A027: run_merging (mergesort_externo.c:234)
+==3768==    by 0x10A14F: main (mergesort_externo.c:301)
+==3768== 
+==3768== Source and destination overlap in strcpy(0x56fb110, 0x56fb110)
+==3768==    at 0x4C34E97: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3768==    by 0x1098D1: strcpy (string_fortified.h:90)
+==3768==    by 0x1098D1: get_pos_pivo_string (utils_vector.c:76)
+==3768==    by 0x109925: quick_sort_string (utils_vector.c:90)
+==3768==    by 0x109943: quick_sort_string (utils_vector.c:95)
+==3768==    by 0x109FA5: run_merging (mergesort_externo.c:198)
+==3768==    by 0x10A027: run_merging (mergesort_externo.c:234)
+==3768==    by 0x10A14F: main (mergesort_externo.c:301)
+==3768== 
+==3768== 
+==3768== HEAP SUMMARY:
+==3768==     in use at exit: 0 bytes in 0 blocks
+==3768==   total heap usage: 68,776 allocs, 68,776 frees, 17,534,889 bytes allocated
+==3768== 
+==3768== All heap blocks were freed -- no leaks are possible
+==3768== 
+==3768== For counts of detected and suppressed errors, rerun with: -v
+==3768== ERROR SUMMARY: 6141388 errors from 10 contexts (suppressed: 0 from 0)
