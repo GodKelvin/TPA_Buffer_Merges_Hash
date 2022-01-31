@@ -6,14 +6,30 @@
 <br>
 
 # Índice
-### 1 - [Objetivo](#Objetivo)
-### 2 - [O início](#O-início)
-### 1 - [Objetivo](#Objetivo)
-### 1 - [Objetivo](#Objetivo)
-### 1 - [Objetivo](#Objetivo)
-### 1 - [Objetivo](#Objetivo)
-### 1 - [Objetivo](#Objetivo)
-### 1 - [Objetivo](#Objetivo)
+## 1 - [Objetivo](#Objetivo)
+#### 1.2 - [Linguagem Utilizada](#Linguagem-Utilizada)
+## 2 - [O início](#O-início)
+#### 2.2 - [Um breve resumo sobre os arquivos .C e .H](#Um-breve-resumo-sobre-os-arquivos-.C-e-.H)
+#### 2.3 - [Continuando](#Continuando)
+#### 2.4 - [Continuando²](#Continuando²)
+#### 2.5 - [Seguindo](#Seguindo)
+#### 2.6 - [Como Funciona o loadBuffer()?](#Como-Funciona-o-loadBuffer()?)
+## 3 - [Outras Bibliotecas](#Outras-Bibliotecas)
+## 4 - [Ordenação](#Ordenação)
+#### 4.2 - [K-way Merge](#K-way-Merge)
+#### 4.3 - [Merge Sort Externo](#Merge-Sort-Externo)
+#### 4.4 - [Testes-com-outros-arquivos](#Testes-com-outros-arquivos)
+## 5 - [Hash Table](#Hash-Table)
+#### 5.2 - [Menu](#Menu)
+#### 5.3 - [Carregando um arquivo](#Opção-1:-Carregando-um-arquivo)
+#### 5.4 - [Localizar Contato](#Opção-2:-Localizar-Contato)
+#### 5.5 - [Inserir Novo Contato](#Opção-3:-Inserir-novo-contato)
+#### 5.6 - [Excluir Contato](#Opção-4:-Excluir-Contato)
+#### 5.7 - [Atualizar Contato](#Opção-5:-Atualizar-Contato)
+#### 5.8 - [Visualizar HashTable](#Opção-6:-Visualizando-HashTable)
+#### 5.9 - [Salvar Dados](#Opção-7:-Salvar-Dados)
+#### 5.10 - [Sair do Programa](#Opção-7:-Sair-do-programa)
+## 6 - [Referências](#Referências)
 
 # Objetivo
 1 - Ordenar arquivos com uma grande quantidade de registros utilizando ambos os métodos de ordenação (K-Way Merge & Merge Sort Externo). De modo a utilizar pouca quantidade de RAM.
@@ -211,7 +227,7 @@ Ao término do merge, também é deletado os arquivos que não possuem conteúdo
 |              1 milhão              	| ≅ 2767s (46min) 	|    ≅ 8 segundos    	|
 
 
-# Hashing Table
+# Hash Table
 <i>"Hashtable é um conjunto de pares de valores-chave, que são organizadas no hash de suas respectivas chaves.
 
 Quando você adiciona um elemento, ele é adicionado à tabela hash e seu código de hash correspondente é gerado automaticamente."</i>
