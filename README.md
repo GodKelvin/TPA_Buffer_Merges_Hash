@@ -104,7 +104,7 @@ Existe um número de ouro da RAM que influência demais na execução do algorí
 
 <i><b>Dado o tamanho da RAM e a quantidade de arquivos criados, o melhor valor para cada buffer é o que se aproxima do intervalo de 300~600 bytes</b></i>
 
-Por que isso? Simplesmente pela quantidade de acesso ao disco X a quantidade de leitura de cada arquivo. Essa percepção só foi conseguido executando o algoritmo INÚMERAS E INÚMERAS vezes!
+Por que isso? Simplesmente pela quantidade de acesso ao disco X a quantidade de leitura de cada arquivo. Essa percepção só foi possível executando o algoritmo INÚMERAS E INÚMERAS vezes!
 
 Para compilar o K-way Merge neste projeto, basta executar:
 
