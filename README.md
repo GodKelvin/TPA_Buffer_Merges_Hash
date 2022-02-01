@@ -127,7 +127,7 @@ Compilando e executando.
 
 ![kwaymerge image](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/kwaymerge.png)
 
-Ao final da execucao, temos o arquivo de entrada ordenado no respectivo arquivo de saída informado.
+Ao final da execução, temos o arquivo de entrada ordenado no respectivo arquivo de saída informado.
 
 ![arquivo ordenado](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/kway_ordenado.png)
 
@@ -144,11 +144,11 @@ Como funciona?
 
 O mais complicado deste algoritmo foi entender (diferente do K-way merge que foi implementar (ou talvez o sentimento de ter sido mais complicado é devido a não ter nada pronto e a pouca experiência, mas enfim)). 
 
-O mergesort externo utiliza 5 arquivos, sendo 1 arquivo de entrada, que gera dois arquivos de origem com a metade do conteúdo do arquivo de entrada cada e 2 arquivos de destinos em branco.
+O mergesort externo utiliza 5 arquivos, sendo 1 arquivo de entrada, que gera 2 arquivos de origem com a metade do conteúdo do arquivo de entrada cada e 2 arquivos de destinos em branco.
 
-Esses 4 últimos arquivos são os que nos interessa. Os dois arquivos de origem serão posteriormente os de destino e os de destino serão os de origem. 
+Esses 4 últimos arquivos são os que nos interessa. Os 2 arquivos de origem serão posteriormente os de destino e os de destino serão os de origem. 
 
-Ou seja, vamos supor que meu arquivo de entrada tenha 10 mil registros. O arquivo de origem_1 terá os 5 primeiros mil registros e o arquivo de origem_2 terá os outros 5 mil (essa divisão não é exata, simplesmente porque eu não conto linhas, eu conto a quantidade de bytes que o arquivos possui, ou seja, o seu tamanho). E internamente é criado dois arquivos em branco, que serão os de destino.
+Ou seja, vamos supor que meu arquivo de entrada tenha 10 mil registros. O arquivo de origem_1 terá os 5 primeiros mil registros e o arquivo de origem_2 terá os outros 5 mil (essa divisão não é exata, simplesmente porque eu não conto linhas, eu conto a quantidade de bytes que o arquivos possui, ou seja, o seu tamanho). E internamente é criado 2 arquivos em branco, que serão os de destino.
 
 ## Arquivos prontos, hora de executar.
 
@@ -166,18 +166,18 @@ Dividindo ao meio, temos:
 Origem_1: 40 05 80 43<br>
 Origem_2: 09 12 20<br>
 
-Na primeira run é lido a primeira linha de cada arquivo, ordena e grava-se no arquivo de destino_1 (ou seja, serão lidos 40 e 09 e gravados 09 e 40 (pois 09 é menor que 40)). Em seguida, é lida a próxima linha de cada arquivo, ordenada e colocada no arquivo de destino_2, e assim sucessivamente. 
+Na primeira RUN é lido a primeira linha de cada arquivo, realiza o merging de uma linha e grava-se no arquivo de destino_1 (ou seja, serão lidos 40 e 09 e gravados 09 e 40 (pois 09 é menor que 40)). Em seguida, é lida a próxima linha de cada arquivo, ordenada e colocada no arquivo de destino_2, e assim sucessivamente. 
 
 Então temos:<br>
 Destino_1: 09 40 20 80<br>
 Destino_2: 05 12 43
 
-Agora, na segunda RUN é dobrado a quantidade de linhas lido de cada arquivo, os arquivos de Destino se tornam os de Origem e os de Origem se tornam os de destino, ou seja, durante a execução do algoritmo, os arquivos vão se revezando entre origem e destino.
+Agora, na segunda RUN é dobrado a quantidade de linhas lido de cada arquivo, os arquivos de Destino se tornam os de Origem e os de Origem se tornam os de Destino, ou seja, durante a execução do algoritmo, os arquivos vão se revezando entre origem e destino.
 
 Ao final desta segunda RUN, temos:
 
 Origem_1: 05 09 12 40<br>
-origem_2: 20 43 80
+Origem_2: 20 43 80
 
 E por fim, temos a última RUN deste exemplo, com tamanho de linhas = 4.
 
