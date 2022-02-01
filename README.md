@@ -9,11 +9,9 @@
 ## 1 - [Objetivo](#Objetivo)
 #### 1.2 - [Linguagem Utilizada](#Linguagem-Utilizada)
 ## 2 - [O início](#O-início)
-#### 2.2 - [Um breve resumo sobre os arquivos .C e .H](#Um-breve-resumo-sobre-os-arquivos-.C-e-.H)
-#### 2.3 - [Continuando](#Continuando)
-#### 2.4 - [Continuando²](#Continuando²)
-#### 2.5 - [Seguindo](#Seguindo)
-#### 2.6 - [Como Funciona o loadBuffer()?](#Como-Funciona-o-loadBuffer()?)
+#### 2.2 - [Continuando](#Continuando)
+#### 2.3 - [Seguindo](#Seguindo)
+#### 2.4 - [O loadBuffer](#O-loadBuffer)
 ## 3 - [Outras Bibliotecas](#Outras-Bibliotecas)
 ## 4 - [Ordenação](#Ordenação)
 #### 4.2 - [K-way Merge](#K-way-Merge)
@@ -76,7 +74,9 @@ Arquivos do valgrind: [Veja aqui](https://github.com/GodKelvin/TPA_Buffer_Order_
 
 As referências das funções e métodos utilizados para o gerenciador de buffer, bem como as demais bibliotecas, você poderá ver nas Referências deste documento (Andando em arquivos por ponteiros utilizando o fseek, como dividir uma string em tokens (strtok(recursivo e não recursivo))).
 
-## Como Funciona o loadBuffer()?
+## O loadBuffer
+Como Funciona?
+
 Em resumo, não poderia carregar o arquivo inteiro, então o loadbuffer() o lê em partes dado o tamanho do buffer. 
 
 Por exemplo, meu arquivo tem 50MB(MegaByte), e o tamanho do meu buffer é de apenas 300 bytes. Ou seja, iria ler um conteudo do arquivo cujo valor seja igual ou menor a 300 bytes. "Ah, mas porque menor?", por questão de consistência dos dados. Um registro completo equivale a uma linha do arquivo. 
