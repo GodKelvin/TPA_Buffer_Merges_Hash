@@ -131,7 +131,7 @@ Ao final da execucao, temos o arquivo de entrada ordenado no respectivo arquivo 
 
 ![arquivo ordenado](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/imagens_readme/kway_ordenado.png)
 
-Por questões óbvias, impossível mostrar todo o arquivo ordenado no print, por conta disso, mostrarei apenas o fim deles (no lado direita da imagem, é possível ver o quão extenso o mesmo é).
+Por questões óbvias, impossível mostrar todo o arquivo ordenado no print, por conta disso, mostrarei apenas o fim deles (no lado direito da imagem, é possível ver o quão extenso o mesmo é).
 
 Ao final da execução, os arquivos quebrados em partes menores são apagados, mas para ver como o algoritmo se comporta, vou comentar essa parte do código e executar novamente.
 
@@ -238,9 +238,9 @@ Para quem conhece python, conhece bem os dicionários e sabem o quão preciso el
 A struct de cada elemento contêm os campos: key, phone, city, country e next_cell (Chave(Nome completo da pessoa), telefone, cidade país e um ponteiro para a próxima célula de mesmo hash).
 
 ## Como funciona?
-Vamos supor que eu queira inserir um elemento (uma célula) na tabela, cuja chave é "Kelvin", essa chave irá produzir uma chave com base no tamanho da tabela e me retornará a posição da célula "Kelvin" na tabela, e assim, insiro os demais dados da respectiva célula.
+Vamos supor que eu queira inserir um elemento (uma célula) na tabela, cuja chave é o valor "Kelvin", esse valor irá produzir um hash com base no tamanho da tabela e me retornará a posição da célula "Kelvin" na tabela, e assim, insiro os demais dados da respectiva célula.
 
-Porém, eu quero adicionar outro valor cuja chave é "Melvin", isso pode gerar uma colisão se a tabela for muito pequeno ou a função de gerar hash não conter um bom retorno. Caso gere um hash que retorne a mesma posição de "Kelvin", eu não posso apagar o registro de "Kelvin", e sim, faço com que a célula que contém as informações de "Kelvin" apontem para a célula que contém as informações de "Melvin", ou seja, ambas as células estão na mesma posição da tabela, porém o que difere eles é a chave "Kelvin" e "Melvin", e caso eu queira as informações de "Melvin", terei que primeiro acessar a célula de "Kelvin", pois é ele que contém o ponteiro para a célula de busca.
+Porém, eu quero adicionar outro elemento cuja chave é o valor "Melvin", isso pode gerar uma colisão se a tabela for muito pequena ou a função de gerar hash não conter um bom retorno. Caso gere um hash que retorne a mesma posição de "Kelvin", eu não posso apagar o registro de "Kelvin", e sim, faço com que a célula que contém as informações de "Kelvin" apontem para a célula que contém as informações de "Melvin", ou seja, ambas as células estão na mesma posição da tabela, porém o que difere eles é a chave "Kelvin" e "Melvin", e caso eu queira as informações de "Melvin", terei que primeiro acessar a célula de "Kelvin", pois é ele que contém o ponteiro para a célula de busca.
 
 Então dado um arquivo de entrada, fazemos operações na Hash Table.
 
