@@ -58,7 +58,7 @@ Os códigos estão muito bem comentados, e com excessão dos arquivos [k_way_mer
 
 O maior empecilho deste trabalho é decorrente da sua maior força, a própria linguagem de programação (ou talvez seja o inexperiente programador que quis se aventurar nisso tudo? <b>Talvez</b>). 
 
-<b>C</b>, uma linguagem de programação que faz EXATAMENTE o que você pedir pra ela fazer, cria variáveis a hora que você pedir, se tiver memória disponível, ela te dá, mas adivinha? Ela não pede de volta... Quer devolver a memória para o sistema? Faça você mesmo! 
+<b>C</b>, uma linguagem de programação que faz EXATAMENTE o que você pedir pra ela fazer, cria variáveis a hora que você solicita, se tiver memória disponível, ela te dá, mas adivinha? Ela não pede de volta... Quer devolver a memória para o sistema? Faça você mesmo! 
 
 <b>C</b> é uma linguagem amiga, pois te avisa quando estás prestes a fazer m&rd@, evitando assim que o PC exploda (okay, explodir talvez seja exagero, mas uma tela azul é bem comum). Veja bem, ela TENTA impedir você de fazer besteira, mas não quer dizer que ela vai te impedir. Pois bem, quer utilizar memória do sistema? Use! Quer devolver essa memória? Libere-a! Que acessar regiões de memória que não são suas? <b>Tente</b>.
 
@@ -67,7 +67,7 @@ Em resumo, precisava evitar de carregar um arquivo gigantesco INTEIRO na memóri
 
 A função principal do gerenciador (e por consequência a que me deu mais dor de cabeça (e por coincidência, a qual mais me orgulho)) é a <b> loadBuffer() </b>. Tenho total ciência que ela pode ser melhorada em inúmeros aspectos, e assim será feito posteriormente, pois percebi uma escassez na comunidade a respeito de algo desse tipo.
 
-Para implementa-la, precisei entender como funciona o SEEK_SET em arquivos, a manipulação da função fseek, conceitos um pouco mais "avançados" de recursividade (amiga ou inimiga? Depende) e meu deus, TER CUIDADO COM A RAM, 
+Para implementá-la, precisei entender como funciona o SEEK_SET em arquivos, a manipulação da função fseek, conceitos um pouco mais "avançados" de recursividade (amiga ou inimiga? Depende) e meu deus, TER CUIDADO COM A RAM, 
 
 Comecei a estudar o VALGRIND para poder capturar todos os vazamentos de memória e/ou outras pendências que por ventura poderiam acontecer. Porém, o estudo de tal ferramenta foi iniciado de modo tardio, não sendo possível uma aplicação completa no respectivo projeto. Porém, deixei os comandos utilizados bem como o arquivo de teste e o log que o mesmo gera (esse log foi rodado em cima do k-way merge). 
 Arquivos do valgrind: [Veja aqui](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/tree/master/Studying_Valgrind).
@@ -79,7 +79,7 @@ Como Funciona?
 
 Em resumo, não poderia carregar o arquivo inteiro, então o loadbuffer() o lê em partes dado o tamanho do buffer. 
 
-Por exemplo, meu arquivo tem 50MB(MegaByte), e o tamanho do meu buffer é de apenas 300 bytes. Ou seja, iria ler um conteudo do arquivo cujo valor seja igual ou menor a 300 bytes. "Ah, mas porque menor?", por questão de consistência dos dados. Um registro completo equivale a uma linha do arquivo. 
+Por exemplo, meu arquivo tem 50MB(MegaByte), e o tamanho do meu buffer é de apenas 300 bytes. Ou seja, iria ler um conteudo do arquivo cujo valor seja igual ou menor a 300 bytes. "Ah, mas por que menor?", por questão de consistência dos dados. Um registro completo equivale a uma linha do arquivo. 
 
 Para os respectivos arquivos utilizados, uma linha tem cerca de 120 bytes, ou seja, eu consigo ler inteiramente 2 linhas do arquivo com um buffer de 300 bytes (240 bytes), os 60 bytes eu simplesmente descarto e deixo para a próxima leitura do buffer. 
 
