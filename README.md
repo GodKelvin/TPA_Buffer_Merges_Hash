@@ -52,10 +52,10 @@ Os arquivos .C contém a implementação das funções utilizadas, enquanto os a
 
 Para que outros programas utilizem as respectivas funções implementadas, basta incluir a biblioteca com <b>#include "nome_biblioteca.h"</b>.
 
-## Continuando,
+## Continuando
 ### Tomei a liberdade de quebrar certos protocolos e utilizarei sem pensar 2x, uma linguagem coloquial, para uma leitura mais agradável e fluida do que foi o desenvolvimento deste trabalho.
 
-## Continuando²,
+## Continuando²
 Os códigos estão muito bem comentados, e com excessão dos arquivos [k_way_merge.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/k_way_merge.c), [mergesort_externo.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/mergesort_externo.c) e [hashing.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/hashing.c), o restante bem dividido em .C e .H.
 
 O maior empecilho deste trabalho é decorrente da sua maior força, a própria linguagem de programação (ou talvez seja o inexperiente programador que quis se aventurar nisso tudo? <b>Talvez</b>). 
