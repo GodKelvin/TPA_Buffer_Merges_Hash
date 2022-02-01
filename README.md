@@ -85,7 +85,7 @@ Para os respectivos arquivos utilizados, uma linha tem cerca de 120 bytes, ou se
 
 Ao ler 240 bytes(e andar essa respectiva quantidade no arquivo), eu salvo a linha em que parei para a proxima leitura do buffer (próximo loadbuffer()), até chegar ao fim do arquivo, cujo o fim é denominado pelo tamanho do arquivo em bytes (foi também criada uma função para o respectivo cálculo).
 
-Para um melhor entendimento, favor dar uma conferida nos respectivos arquivos citados anteriormente.
+Para um melhor entendimento, favor conferir os respectivos arquivos citados anteriormente.
 
 # Outras Bibliotecas
 Conforme as ideias foram sendo postas em código, foi necessário a divisão em outras bibliotecas, sendo: [arquivo.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/arquivo.c) e [arquivo.h](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/arquivo.h), [utils_vector.c](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/utils_vector.c) e [utils_vector.h](https://github.com/GodKelvin/TPA_Buffer_Order_Merges/blob/master/utils_vector.h), cujo o próprio nome revela suas funções. Contêm métodos para manipulação de arquivos(verificar se arquivo existe, criar e deletar arquivos etc) e manipulação de vetores e matrizes, sendo o principal método desta segunda o <b>quick_sort()</b>.
@@ -95,9 +95,9 @@ Conforme as ideias foram sendo postas em código, foi necessário a divisão em 
 ## K-way Merge
 Como funciona? Simples. Tenho um arquivo grande e dado o tamanho da minha RAM disponível, o quebro em vários arquivos e crio os meus buffers com base na RAM disponível para carda arquivo, cujo cálculo é: (número de arquivos criados + 1) / RAM disponível. 
 
-Os arquivos criados já estão ordenados utilizando o quickSort().
+O conteúdo dos arquivos criados foram ordenados utilizando o quickSort().
 
-"Porque o +1?", pelo simples fato de ter a necessidade de um buffer encarregado de guardar cada pedaço de todos os arquivos e descarregar no arquivo final.
+"Por que o +1?", pelo simples fato de ter a necessidade de um buffer encarregado de guardar cada pedaço de todos os arquivos e descarregar no arquivo final.
 
 ### O número de ouro.
 Existe um número de ouro da RAM que influência demais na execução do algorítmo. 
